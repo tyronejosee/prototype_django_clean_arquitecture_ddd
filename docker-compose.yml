@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: grocery_db
+      POSTGRES_USER: grocery_user
+      POSTGRES_PASSWORD: grocery_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5500:5432"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=grocery_db
+      - DB_USER=grocery_user
+      - DB_PASSWORD=grocery_password
+
+volumes:
+  postgres_data:
