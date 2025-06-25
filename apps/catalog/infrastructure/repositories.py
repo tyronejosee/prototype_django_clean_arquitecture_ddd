@@ -10,6 +10,8 @@ from apps.catalog.domain.interfaces import (
     CategoryRepositoryInterface,
     ProductRepositoryInterface,
 )
+from apps.catalog.domain.factories.category_factory import CategoryFactory
+from apps.catalog.domain.factories.product_factory import ProductFactory
 from apps.catalog.infrastructure.models import CategoryModel, ProductModel
 
 
@@ -20,13 +22,13 @@ class CategoryRepository(CategoryRepositoryInterface):
                 pk=category_id,
                 is_active=True,
             )
-            return self._to_entity(category_model)
+            return CategoryFactory.from_model(category_model)
         except CategoryModel.DoesNotExist:
             return None
 
     def list_all(self) -> list[Category]:
         return [
-            self._to_entity(category_model)
+            CategoryFactory.from_model(category_model)
             for category_model in CategoryModel.objects.filter(
                 is_active=True,
             )
@@ -53,18 +55,6 @@ class CategoryRepository(CategoryRepositoryInterface):
         except CategoryModel.DoesNotExist:
             pass
 
-    def _to_entity(self, category_model: CategoryModel) -> Category:
-        return Category(
-            id=category_model.id,
-            name=category_model.name,
-            description=category_model.description,
-            parent_id=category_model.parent_id,  # type: ignore[attr-defined]
-            image_url=category_model.image.url if category_model.image else None,
-            is_active=category_model.is_active,
-            created_at=category_model.created_at,
-            updated_at=category_model.updated_at,
-        )
-
 
 class ProductRepository(ProductRepositoryInterface):
     def get_by_id(self, product_id: UUID) -> Optional[Product]:
@@ -73,7 +63,7 @@ class ProductRepository(ProductRepositoryInterface):
                 pk=product_id,
                 is_active=True,
             )
-            return self._to_entity(product_model)
+            return ProductFactory.from_model(product_model)
         except ProductModel.DoesNotExist:
             return None
 
@@ -81,11 +71,15 @@ class ProductRepository(ProductRepositoryInterface):
         queryset = self._apply_filters(
             ProductModel.objects.filter(is_active=True), filters
         )
-        return [self._to_entity(product_model) for product_model in queryset]
+        return [ProductFactory.from_model(product_model) for product_model in queryset]
 
-    def save(self, product: Product) -> None:
+    def save(
+        self,
+        product: Product,
+        product_id: UUID,
+    ) -> None:
         product_model, _ = ProductModel.objects.update_or_create(
-            pk=product.id,
+            pk=product_id,
             defaults={
                 "name": product.name,
                 "description": product.description,
@@ -114,7 +108,7 @@ class ProductRepository(ProductRepositoryInterface):
 
     def list_featured(self) -> list[Product]:
         return [
-            self._to_entity(product_model)
+            ProductFactory.from_model(product_model)
             for product_model in ProductModel.objects.filter(
                 is_featured=True,
                 is_active=True,
@@ -123,7 +117,7 @@ class ProductRepository(ProductRepositoryInterface):
 
     def list_by_category(self, category_id: UUID) -> list[Product]:
         return [
-            self._to_entity(product_model)
+            ProductFactory.from_model(product_model)
             for product_model in ProductModel.objects.filter(
                 category_id=category_id,
                 is_active=True,
@@ -146,23 +140,3 @@ class ProductRepository(ProductRepositoryInterface):
             queryset = queryset.filter(price__lte=max_price)
 
         return queryset.distinct()
-
-    def _to_entity(self, product_model: ProductModel) -> Product:
-        return Product(
-            id=product_model.id,
-            name=product_model.name,
-            description=product_model.description,
-            sku=product_model.sku,
-            category_id=product_model.category_id,  # type: ignore[attr-defined]
-            price=product_model.price,
-            discount_price=product_model.discount_price,
-            stock=product_model.stock,
-            min_stock=product_model.min_stock,
-            image_url=product_model.image.url if product_model.image else None,
-            is_active=product_model.is_active,
-            is_featured=product_model.is_featured,
-            weight=product_model.weight,
-            unit=product_model.unit,
-            created_at=product_model.created_at,
-            updated_at=product_model.updated_at,
-        )

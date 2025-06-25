@@ -5,6 +5,7 @@ from typing import Optional
 
 from apps.catalog.domain.entities import Product
 from apps.catalog.domain.interfaces import ProductRepositoryInterface
+from apps.catalog.domain.factories.product_factory import ProductFactory
 
 
 class ListAllProductsUseCase:
@@ -19,8 +20,9 @@ class CreateProductUseCase:
     def __init__(self, repo: ProductRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, product: Product) -> Product:
-        self.repo.save(product)
+    def execute(self, data: dict) -> Product:
+        product = ProductFactory.from_dict(data)
+        self.repo.save(product=product, product_id=None)
         return product
 
 
@@ -32,12 +34,21 @@ class GetProductUseCase:
         return self.repo.get_by_id(id)
 
 
+class UpdateProductUseCase:
+    def __init__(self, repo: ProductRepositoryInterface) -> None:
+        self.repo = repo
+
+    def execute(self, product_id: UUID, data: dict) -> None:
+        product = ProductFactory.from_dict(data)
+        self.repo.save(product=product, product_id=product_id)
+
+
 class DeleteProductUseCase:
     def __init__(self, repo: ProductRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, id: UUID) -> None:
-        self.repo.delete(id)
+    def execute(self, product_id: UUID) -> None:
+        self.repo.delete(product_id)
 
 
 class ListFeaturedProductsUseCase:

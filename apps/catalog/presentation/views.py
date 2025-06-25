@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 from apps.catalog.application.use_cases.product_use_cases import (
     ListAllProductsUseCase,
     CreateProductUseCase,
+    UpdateProductUseCase,
     GetProductUseCase,
     ListFeaturedProductsUseCase,
     ListProductsByCategoryUseCase,
@@ -62,6 +63,20 @@ class ProductDetailView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+
+    def put(self, request: Request, product_id: UUID) -> Response:
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            use_case = UpdateProductUseCase(ProductRepository())
+            use_case.execute(
+                product_id,
+                serializer.validated_data,  # type: ignore[arg-type]
+            )
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FeaturedProductsView(APIView):

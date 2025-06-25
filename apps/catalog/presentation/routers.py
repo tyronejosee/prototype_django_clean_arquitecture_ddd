@@ -29,7 +29,7 @@ urlpatterns: list = [
         name="product-list",
     ),
     path(
-        "products/<uuid:pk>",
+        "products/<uuid:product_id>",
         ProductDetailView.as_view(),
         name="product-detail",
     ),
