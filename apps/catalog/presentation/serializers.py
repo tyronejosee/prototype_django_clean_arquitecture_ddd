@@ -1,4 +1,4 @@
-"""Serializers (DTOs) for the catalog interfaces."""
+"""Serializers (DTOs) for the catalog presentation"""
 
 from rest_framework import serializers
 

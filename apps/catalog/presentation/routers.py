@@ -1,11 +1,11 @@
-"""Routers for the catalog interfaces"""
+"""Routers for the catalog presentation"""
 
 from django.urls import path
 
-from apps.catalog.interfaces.views import (
-    CategoryListView,
+from apps.catalog.presentation.views import (
+    CategoryListCreateView,
     CategoryProductListView,
-    ProductListView,
+    ProductListCreateView,
     ProductDetailView,
     FeaturedProductsView,
 )
@@ -15,7 +15,7 @@ app_name = "catalog"
 urlpatterns: list = [
     path(
         "categories",
-        CategoryListView.as_view(),
+        CategoryListCreateView.as_view(),
         name="category-list",
     ),
     path(
@@ -25,7 +25,7 @@ urlpatterns: list = [
     ),
     path(
         "products",
-        ProductListView.as_view(),
+        ProductListCreateView.as_view(),
         name="product-list",
     ),
     path(

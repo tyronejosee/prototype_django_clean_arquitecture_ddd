@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator
 
 
 class CategoryModel(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -34,6 +35,7 @@ class CategoryModel(models.Model):
 
 
 class ProductModel(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -74,15 +76,3 @@ class ProductModel(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-    @property
-    def current_price(self) -> Decimal:
-        return self.discount_price if self.discount_price else self.price
-
-    @property
-    def is_in_stock(self) -> bool:
-        return self.stock > 0
-
-    @property
-    def is_low_stock(self) -> bool:
-        return self.stock <= self.min_stock
