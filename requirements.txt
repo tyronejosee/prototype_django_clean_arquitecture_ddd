@@ -4,3 +4,12 @@ django-cors-headers>=4.0.0
 psycopg2-binary>=2.9.0
 python-decouple>=3.8
 Pillow>=9.0.0
+
+# Testing
+pytest>=8.3.4
+pytest-django>=4.5.2
+pytest-cov>=6.2.1
+coverage==7.6.7
+django-coverage-plugin==3.1.1
+pytest-xdist==3.6.1
+factory-boy==3.3.0
