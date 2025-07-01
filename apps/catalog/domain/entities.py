@@ -1,31 +1,45 @@
 """Entities for the catalog domain"""
 
 from uuid import UUID
-from typing import Optional
 from decimal import Decimal
 from datetime import datetime
 
+from apps.catalog.domain.exceptions import (
+    CategoryDomainException,
+    ProductDomainException,
+)
+
 
 class Category:
+    _forbidden_words = {"forbidden", "badword", "invalid", "test"}
+
     def __init__(
         self,
         id: UUID,
         name: str,
         description: str = "",
-        parent_id: Optional[UUID] = None,
-        image_url: Optional[str] = None,
         is_active: bool = True,
-        created_at: Optional[datetime] = None,
-        updated_at: Optional[datetime] = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
     ) -> None:
         self.id = id
         self.name = name
         self.description = description
-        self.parent_id = parent_id
-        self.image_url = image_url
         self.is_active = is_active
         self.created_at = created_at
         self.updated_at = updated_at
+
+        self._validate()
+
+    def _validate(self) -> None:
+        if not self.name:
+            raise CategoryDomainException("Name is required.")
+
+        for forbidden_word in self._forbidden_words:
+            if forbidden_word in self.name.strip().lower():
+                raise CategoryDomainException(
+                    f"The name contains a forbidden word: '{forbidden_word}'."
+                )
 
 
 class Product:
@@ -37,16 +51,16 @@ class Product:
         sku: str,
         category_id: UUID,
         price: Decimal,
-        discount_price: Optional[Decimal] = None,
+        discount_price: Decimal | None = None,
         stock: int = 0,
         min_stock: int = 5,
-        image_url: Optional[str] = None,
+        image_url: str | None = None,
         is_active: bool = True,
         is_featured: bool = False,
-        weight: Optional[Decimal] = None,
+        weight: Decimal | None = None,
         unit: str = "kg",
-        created_at: Optional[datetime] = None,
-        updated_at: Optional[datetime] = None,
+        created_at: datetime | None = None,
+        updated_at: datetime | None = None,
     ) -> None:
         self.id = id
         self.name = name
@@ -64,3 +78,29 @@ class Product:
         self.unit = unit
         self.created_at = created_at
         self.updated_at = updated_at
+
+        self._validate()
+
+    def _validate(self) -> None:
+        if not self.name:
+            raise ProductDomainException("Name is required.")
+
+        if self.price < 0:
+            raise ProductDomainException("Price cannot be negative.")
+
+        if self.discount_price is not None and self.discount_price < 0:
+            raise ProductDomainException("Discount price cannot be negative.")
+
+        if self.discount_price is not None and self.discount_price > self.price:
+            raise ProductDomainException("Discount price cannot exceed price.")
+
+        if self.stock < 0:
+            raise ProductDomainException("Stock cannot be negative.")
+
+        if self.stock > 100:
+            raise ProductDomainException(
+                "Cannot create a product with more than 100 stock units."
+            )
+
+        if self.min_stock < 0:
+            raise ProductDomainException("Min stock cannot be negative.")

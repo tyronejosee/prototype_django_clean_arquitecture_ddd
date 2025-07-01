@@ -1,7 +1,6 @@
 """Interfaces for the catalog domain"""
 
 from uuid import UUID
-from typing import Optional
 from abc import ABC, abstractmethod
 
 from apps.catalog.domain.entities import Category, Product
@@ -9,7 +8,7 @@ from apps.catalog.domain.entities import Category, Product
 
 class CategoryRepositoryInterface(ABC):
     @abstractmethod
-    def get_by_id(self, category_id: UUID) -> Optional[Category]:
+    def get_by_id(self, category_id: UUID) -> Category | None:
         pass
 
     @abstractmethod
@@ -17,17 +16,25 @@ class CategoryRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def save(self, category: Category) -> None:
+    def create(self, category: Category) -> Category:
+        pass
+
+    @abstractmethod
+    def update(self, category_id: UUID, category: Category) -> Category:
         pass
 
     @abstractmethod
     def delete(self, category_id: UUID) -> None:
         pass
 
+    @abstractmethod
+    def exists_by_name(self, name: str) -> bool:
+        pass
+
 
 class ProductRepositoryInterface(ABC):
     @abstractmethod
-    def get_by_id(self, product_id: UUID) -> Optional[Product]:
+    def get_by_id(self, product_id: UUID) -> Product | None:
         pass
 
     @abstractmethod
@@ -35,7 +42,10 @@ class ProductRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def save(self, product: Product, product_id: Optional[UUID] = None) -> Product:
+    def create(self, product: Product) -> Product:
+        pass
+
+    def update(self, product_id: UUID, product: Product) -> Product | None:
         pass
 
     @abstractmethod

@@ -1,9 +1,9 @@
 """Exceptions for the catalog domain"""
 
 
-class DomainError(Exception):
+class CategoryDomainException(Exception):
     pass
 
 
-class ProductOutOfStock(DomainError):
+class ProductDomainException(Exception):
     pass

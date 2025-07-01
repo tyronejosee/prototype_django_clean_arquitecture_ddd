@@ -5,6 +5,8 @@ from typing import Optional
 
 from apps.catalog.domain.entities import Category
 from apps.catalog.domain.interfaces import CategoryRepositoryInterface
+from apps.catalog.domain.exceptions import CategoryDomainException
+from apps.catalog.domain.factories.category_factory import CategoryFactory
 
 
 class ListCategoriesUseCase:
@@ -19,17 +21,30 @@ class CreateCategoryUseCase:
     def __init__(self, repo: CategoryRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, category: Category) -> Category:
-        self.repo.save(category)
-        return category
+    def execute(self, data: dict) -> Category:
+        if self.repo.exists_by_name(data["name"]):
+            raise CategoryDomainException("Category with that name already exists.")
+        category = CategoryFactory.from_dict(data)
+        category_created = self.repo.create(category)
+        return category_created
 
 
 class GetCategoryUseCase:
     def __init__(self, repo: CategoryRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, id: UUID) -> Optional[Category]:
-        return self.repo.get_by_id(id)
+    def execute(self, category_id: UUID) -> Optional[Category]:
+        return self.repo.get_by_id(category_id)
+
+
+class UpdateCategoryUseCase:
+    def __init__(self, repo: CategoryRepositoryInterface) -> None:
+        self.repo = repo
+
+    def execute(self, category_id: UUID, data: dict) -> Category:
+        category = CategoryFactory.from_dict(data)
+        self.repo.update(category_id, category)
+        return category
 
 
 class DeleteCategoryUseCase:
