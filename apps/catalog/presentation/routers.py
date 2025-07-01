@@ -4,6 +4,7 @@ from django.urls import path
 
 from apps.catalog.presentation.views import (
     CategoryListCreateView,
+    CategoryDetailView,
     CategoryProductListView,
     ProductListCreateView,
     ProductDetailView,
@@ -17,6 +18,11 @@ urlpatterns: list = [
         "categories",
         CategoryListCreateView.as_view(),
         name="category-list",
+    ),
+    path(
+        "categories/<uuid:category_id>",
+        CategoryDetailView.as_view(),
+        name="category-detail",
     ),
     path(
         "categories/<uuid:category_id>/products",

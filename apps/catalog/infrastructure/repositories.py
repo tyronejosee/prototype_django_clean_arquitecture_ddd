@@ -34,18 +34,25 @@ class CategoryRepository(CategoryRepositoryInterface):
             )
         ]
 
-    def save(self, category: Category) -> None:
-        category_model, _ = CategoryModel.objects.update_or_create(
-            pk=category.id,
-            defaults={
-                "name": category.name,
-                "description": category.description,
-                "parent_id": category.parent_id,
-                "image": category.image_url,
-                "is_active": category.is_active,
-            },
+    def create(self, category: Category) -> Category:
+        category_model = CategoryModel.objects.create(
+            id=category.id,
+            name=category.name,
+            description=category.description,
+            is_active=category.is_active,
         )
-        category_model.save()
+        return CategoryFactory.from_model(category_model)
+
+    def update(self, category_id: UUID, category: Category) -> Category | None:
+        updated = CategoryModel.objects.filter(pk=category_id).update(
+            name=category.name,
+            description=category.description,
+            is_active=category.is_active,
+        )
+        if updated:
+            category_model = CategoryModel.objects.get(pk=category_id)
+            return CategoryFactory.from_model(category_model)
+        return None
 
     def delete(self, category_id: UUID) -> None:
         try:
@@ -54,6 +61,9 @@ class CategoryRepository(CategoryRepositoryInterface):
             category_model.save()
         except CategoryModel.DoesNotExist:
             pass
+
+    def exists_by_name(self, name: str) -> bool:
+        return CategoryModel.objects.filter(name=name, is_active=True).exists()
 
 
 class ProductRepository(ProductRepositoryInterface):
@@ -73,30 +83,45 @@ class ProductRepository(ProductRepositoryInterface):
         )
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
-    def save(
-        self,
-        product: Product,
-        product_id: UUID,
-    ) -> None:
-        product_model, _ = ProductModel.objects.update_or_create(
-            pk=product_id,
-            defaults={
-                "name": product.name,
-                "description": product.description,
-                "sku": product.sku,
-                "category_id": product.category_id,
-                "price": product.price,
-                "discount_price": product.discount_price,
-                "stock": product.stock,
-                "min_stock": product.min_stock,
-                "image": product.image_url,
-                "is_active": product.is_active,
-                "is_featured": product.is_featured,
-                "weight": product.weight,
-                "unit": product.unit,
-            },
+    def create(self, product: Product) -> Product:
+        product_model = ProductModel.objects.create(
+            id=product.id,
+            name=product.name,
+            description=product.description,
+            sku=product.sku,
+            category_id=product.category_id,
+            price=product.price,
+            discount_price=product.discount_price,
+            stock=product.stock,
+            min_stock=product.min_stock,
+            image=product.image_url,
+            is_active=product.is_active,
+            is_featured=product.is_featured,
+            weight=product.weight,
+            unit=product.unit,
         )
-        product_model.save()
+        return ProductFactory.from_model(product_model)
+
+    def update(self, product_id: UUID, product: Product) -> Product | None:
+        updated = ProductModel.objects.filter(pk=product_id).update(
+            name=product.name,
+            description=product.description,
+            sku=product.sku,
+            category_id=product.category_id,
+            price=product.price,
+            discount_price=product.discount_price,
+            stock=product.stock,
+            min_stock=product.min_stock,
+            image=product.image_url,
+            is_active=product.is_active,
+            is_featured=product.is_featured,
+            weight=product.weight,
+            unit=product.unit,
+        )
+        if updated:
+            product_model = ProductModel.objects.get(pk=product_id)
+            return ProductFactory.from_model(product_model)
+        return None
 
     def delete(self, product_id: UUID) -> None:
         try:
@@ -124,7 +149,7 @@ class ProductRepository(ProductRepositoryInterface):
             )
         ]
 
-    def _apply_filters(self, queryset, filters: dict):
+    def _apply_filters(self, queryset, filters: dict) -> list[Product]:
         q = filters.get("q", None)
         category_id = filters.get("category", None)
         min_price = filters.get("min_price", None)

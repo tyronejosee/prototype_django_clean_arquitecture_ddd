@@ -7,8 +7,9 @@ from apps.catalog.infrastructure.models import CategoryModel, ProductModel
 
 @admin.register(CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["name", "parent", "is_active", "created_at"]
-    list_filter = ["is_active", "parent"]
+    list_display = ["name", "is_active", "created_at"]
+    list_filter = ["is_active"]
+    readonly_fields = ["id"]
     search_fields = ["name", "description"]
 
 
