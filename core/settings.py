@@ -29,8 +29,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    # "apps.users",
-    # "apps.catalog",
+    "apps.users",
+    "apps.catalog",
     # "apps.cart",
     # "apps.orders",
 ]
@@ -128,4 +128,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "users.UserModel"
