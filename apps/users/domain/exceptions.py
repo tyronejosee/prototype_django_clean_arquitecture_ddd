@@ -1,13 +1,10 @@
-"""Exceptions for the users domain"""
-
-
-class DomainError(Exception):
+class UserDomainException(Exception):
     pass
 
 
-class UserNotFound(DomainError):
+class UserNotFoundException(Exception):
     pass
 
 
-class UserAlreadyExists(DomainError):
+class UserAlreadyExistsException(Exception):
     pass

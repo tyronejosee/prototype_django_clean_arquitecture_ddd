@@ -1,26 +1,23 @@
-"""Interfaces for the users domain"""
-
-from abc import ABC, abstractmethod
-from typing import Optional
 from uuid import UUID
+from abc import ABC, abstractmethod
 
-from apps.users.domain.entities import User
+from ..entities.user import User
 
 
 class UserRepositoryInterface(ABC):
     @abstractmethod
-    def get_by_id(self, user_id: UUID) -> Optional[User]:
+    def get_by_id(self, user_id: UUID) -> User | None:
         pass
 
     @abstractmethod
-    def get_by_email(self, email: str) -> Optional[User]:
+    def get_by_email(self, email: str) -> User | None:
         pass
 
     @abstractmethod
     def list_all(self) -> list[User]:
         pass
 
-    def create(self, user: User) -> User:
+    def create(self, user: User) -> User | None:
         pass
 
     def update(self, user_id: UUID, user: User) -> User | None:
