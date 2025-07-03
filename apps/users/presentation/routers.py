@@ -1,12 +1,12 @@
-"""Routers for the users presentation"""
-
 from django.urls import path
-
-# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from apps.users.presentation.views import (
-    UserListCreateView,
     UserDetailView,
+    UserListCreateView,
     UserLoginView,
 )
 
@@ -28,14 +28,14 @@ urlpatterns: list = [
         UserLoginView.as_view(),
         name="user-login",
     ),
-    # path(
-    #     "auth/token",
-    #     TokenObtainPairView.as_view(),
-    #     name="token_obtain_pair",
-    # ),
-    # path(
-    #     "auth/token/refresh",
-    #     TokenRefreshView.as_view(),
-    #     name="token_refresh",
-    # ),
+    path(
+        "auth/token",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        "auth/token/refresh",
+        TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
 ]

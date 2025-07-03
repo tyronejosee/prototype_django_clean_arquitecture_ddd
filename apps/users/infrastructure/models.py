@@ -1,5 +1,3 @@
-"""Models for the users infrastructure"""
-
 from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser

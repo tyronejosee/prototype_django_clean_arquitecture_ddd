@@ -1,9 +1,7 @@
-"""Admin for the users infrastructure"""
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from apps.users.infrastructure.models import UserModel
+from ..models import UserModel
 
 
 @admin.register(UserModel)
@@ -33,7 +31,7 @@ class UserAdmin(BaseUserAdmin):
                     "is_superuser",
                     "groups",
                     "user_permissions",
-                )
+                ),
             },
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),

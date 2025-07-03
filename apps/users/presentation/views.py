@@ -1,5 +1,3 @@
-"""Views for the users presentation"""
-
 from uuid import UUID
 
 from rest_framework import status
@@ -7,17 +5,20 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.users.application.use_cases.user_use_cases import (
-    AuthenticateUserUseCase,
-    CreateUserUseCase,
-    DeactivateUserUseCase,
-    GetUserUseCase,
-    ListUsersUseCase,
-    UpdateUserUseCase,
+from ..application.providers import (
+    get_authenticate_user_use_case,
+    get_create_user_use_case,
+    get_deactivate_user_use_case,
+    get_list_users_use_case,
+    get_update_user_use_case,
+    get_user_use_case,
 )
-from apps.users.domain.exceptions import UserAlreadyExists, UserNotFound
-from apps.users.infrastructure.repositories import UserRepository
-from apps.users.presentation.serializers import (
+from ..domain.exceptions import (
+    UserAlreadyExistsException,
+    UserDomainException,
+    UserNotFoundException,
+)
+from .serializers import (
     UserCreateSerializer,
     UserLoginSerializer,
     UserSerializer,
@@ -28,7 +29,7 @@ class UserListCreateView(APIView):
     permission_classes = [AllowAny]  # ! TODO: Add roles
 
     def get(self, request) -> Response:
-        use_case = ListUsersUseCase(repo=UserRepository())
+        use_case = get_list_users_use_case()
         users = use_case.execute()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -37,13 +38,15 @@ class UserListCreateView(APIView):
         serializer = UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            use_case = CreateUserUseCase(UserRepository())
+            use_case = get_create_user_use_case()
             user = use_case.execute(
                 user_data=serializer.validated_data,  # type: ignore[arg-type]
             )
             response_serializer = UserSerializer(user)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-        except UserAlreadyExists as e:
+        except UserDomainException as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except UserAlreadyExistsException as e:
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
 
@@ -51,7 +54,7 @@ class UserDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id: UUID) -> Response:
-        use_case = GetUserUseCase(repo=UserRepository())
+        use_case = get_user_use_case()
         user = use_case.execute(user_id=user_id)
         if not user:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -62,24 +65,24 @@ class UserDetailView(APIView):
         serializer = UserCreateSerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         try:
-            use_case = UpdateUserUseCase(repo=UserRepository())
+            use_case = get_update_user_use_case()
             user = use_case.execute(
                 user_id=user_id,
                 user_data=serializer.validated_data,  # type: ignore[arg-type]
             )
             response_serializer = UserSerializer(user)
             return Response(response_serializer.data, status=status.HTTP_200_OK)
-        except UserNotFound as e:
+        except UserNotFoundException as e:
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
-        except UserAlreadyExists as e:
+        except UserAlreadyExistsException as e:
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
     def delete(self, request, user_id: UUID) -> Response:
         try:
-            use_case = DeactivateUserUseCase(repo=UserRepository())
+            use_case = get_deactivate_user_use_case()
             use_case.execute(user_id=user_id)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except UserNotFound as e:
+        except UserNotFoundException as e:
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
@@ -93,7 +96,7 @@ class UserLoginView(APIView):
         email = serializer.validated_data["email"]
         password = serializer.validated_data["password"]
 
-        use_case = AuthenticateUserUseCase(repo=UserRepository())
+        use_case = get_authenticate_user_use_case()
         user = use_case.execute(email=email, password=password)
 
         if user:
@@ -104,5 +107,6 @@ class UserLoginView(APIView):
             )
         else:
             return Response(
-                {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+                {"detail": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED,
             )

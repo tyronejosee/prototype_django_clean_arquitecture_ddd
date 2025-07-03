@@ -1,23 +1,20 @@
-"""Repositories for the users infrastructure"""
-
-from typing import Optional
 from uuid import UUID
 
-from apps.users.domain.entities import User
-from apps.users.domain.interfaces import UserRepositoryInterface
-from apps.users.domain.factories.user_factory import UserFactory
-from apps.users.infrastructure.models import UserModel
+from .models import UserModel
+from ..domain.entities.user import User
+from ..domain.factories.user import UserFactory
+from ..domain.interfaces.repositories import UserRepositoryInterface
 
 
 class UserRepository(UserRepositoryInterface):
-    def get_by_id(self, user_id: UUID) -> Optional[User]:
+    def get_by_id(self, user_id: UUID) -> User | None:
         try:
             user_model = UserModel.objects.get(pk=user_id, is_active=True)
             return UserFactory.from_model(user_model)
         except UserModel.DoesNotExist:
             return None
 
-    def get_by_email(self, email: str) -> Optional[User]:
+    def get_by_email(self, email: str) -> User | None:
         try:
             user_model = UserModel.objects.get(email=email, is_active=True)
             return UserFactory.from_model(user_model)

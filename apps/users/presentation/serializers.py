@@ -1,5 +1,3 @@
-"""Serializers (DTOs) for the users presentation"""
-
 from rest_framework import serializers
 
 
