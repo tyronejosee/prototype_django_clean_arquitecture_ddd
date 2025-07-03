@@ -1,8 +1,8 @@
 """Entities for the catalog domain"""
 
-from uuid import UUID
-from decimal import Decimal
 from datetime import datetime
+from decimal import Decimal
+from uuid import UUID
 
 from apps.catalog.domain.exceptions import (
     CategoryDomainException,
@@ -38,7 +38,7 @@ class Category:
         for forbidden_word in self._forbidden_words:
             if forbidden_word in self.name.strip().lower():
                 raise CategoryDomainException(
-                    f"The name contains a forbidden word: '{forbidden_word}'."
+                    f"The name contains a forbidden word: '{forbidden_word}'.",
                 )
 
 
@@ -99,7 +99,7 @@ class Product:
 
         if self.stock > 100:
             raise ProductDomainException(
-                "Cannot create a product with more than 100 stock units."
+                "Cannot create a product with more than 100 stock units.",
             )
 
         if self.min_stock < 0:

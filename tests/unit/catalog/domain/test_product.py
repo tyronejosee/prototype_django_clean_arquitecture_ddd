@@ -1,9 +1,7 @@
-"""Product Domain Tests"""
-
 import pytest
 from uuid import UUID
-from decimal import Decimal
 from datetime import datetime
+from decimal import Decimal
 
 from apps.catalog.domain.entities import Product
 from apps.catalog.domain.exceptions import ProductDomainException
@@ -96,8 +94,9 @@ def test_product_discount_price_greater_than_price() -> None:
     with pytest.raises(ProductDomainException):
         Product(
             **valid_product_kwargs(
-                price=Decimal("10.0"), discount_price=Decimal("20.0")
-            )
+                price=Decimal("10.0"),
+                discount_price=Decimal("20.0"),
+            ),
         )
 
 

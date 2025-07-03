@@ -3,12 +3,12 @@
 from django.urls import path
 
 from apps.catalog.presentation.views import (
-    CategoryListCreateView,
     CategoryDetailView,
+    CategoryListCreateView,
     CategoryProductListView,
-    ProductListCreateView,
-    ProductDetailView,
     FeaturedProductsView,
+    ProductDetailView,
+    ProductListCreateView,
 )
 
 app_name = "catalog"

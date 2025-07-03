@@ -1,12 +1,11 @@
 """Category use cases for the catalog application"""
 
 from uuid import UUID
-from typing import Optional
 
 from apps.catalog.domain.entities import Category
-from apps.catalog.domain.interfaces import CategoryRepositoryInterface
 from apps.catalog.domain.exceptions import CategoryDomainException
 from apps.catalog.domain.factories.category_factory import CategoryFactory
+from apps.catalog.domain.interfaces import CategoryRepositoryInterface
 
 
 class ListCategoriesUseCase:
@@ -33,7 +32,7 @@ class GetCategoryUseCase:
     def __init__(self, repo: CategoryRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, category_id: UUID) -> Optional[Category]:
+    def execute(self, category_id: UUID) -> Category | None:
         return self.repo.get_by_id(category_id)
 
 

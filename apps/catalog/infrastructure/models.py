@@ -1,14 +1,13 @@
 """Models for the catalog infrastructure"""
 
-from uuid import uuid4
 from decimal import Decimal
+from uuid import uuid4
 
-from django.db import models
 from django.core.validators import MinValueValidator
+from django.db import models
 
 
 class CategoryModel(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -27,13 +26,14 @@ class CategoryModel(models.Model):
 
 
 class ProductModel(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=200)
     description = models.TextField()
     sku = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey(
-        CategoryModel, on_delete=models.CASCADE, related_name="products"
+        CategoryModel,
+        on_delete=models.CASCADE,
+        related_name="products",
     )
     price = models.DecimalField(
         max_digits=10,
@@ -43,7 +43,10 @@ class ProductModel(models.Model):
         ],
     )
     discount_price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
     )
     stock = models.PositiveIntegerField(default=0)
     min_stock = models.PositiveIntegerField(default=5)

@@ -1,7 +1,7 @@
 """Category factory for the catalog domain"""
 
-from uuid import uuid4
 from datetime import datetime
+from uuid import uuid4
 
 from apps.catalog.domain.entities import Category
 

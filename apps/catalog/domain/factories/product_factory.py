@@ -1,8 +1,8 @@
 """Product factory for the catalog domain"""
 
-from uuid import uuid4
-from decimal import Decimal
 from datetime import datetime
+from decimal import Decimal
+from uuid import uuid4
 
 from apps.catalog.domain.entities import Product
 

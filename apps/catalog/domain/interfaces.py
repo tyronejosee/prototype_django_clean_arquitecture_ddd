@@ -1,7 +1,7 @@
 """Interfaces for the catalog domain"""
 
-from uuid import UUID
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 from apps.catalog.domain.entities import Category, Product
 

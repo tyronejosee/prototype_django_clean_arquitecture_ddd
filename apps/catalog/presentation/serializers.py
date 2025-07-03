@@ -20,7 +20,10 @@ class ProductSerializer(serializers.Serializer):
     category_id = serializers.UUIDField()
     price = serializers.DecimalField(max_digits=10, decimal_places=2)
     discount_price = serializers.DecimalField(
-        max_digits=10, decimal_places=2, required=False, allow_null=True
+        max_digits=10,
+        decimal_places=2,
+        required=False,
+        allow_null=True,
     )
     stock = serializers.IntegerField()
     min_stock = serializers.IntegerField()
@@ -28,7 +31,10 @@ class ProductSerializer(serializers.Serializer):
     is_active = serializers.BooleanField()
     is_featured = serializers.BooleanField()
     weight = serializers.DecimalField(
-        max_digits=8, decimal_places=3, required=False, allow_null=True
+        max_digits=8,
+        decimal_places=3,
+        required=False,
+        allow_null=True,
     )
     unit = serializers.CharField(max_length=10)
     created_at = serializers.DateTimeField(read_only=True)

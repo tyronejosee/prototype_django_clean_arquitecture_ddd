@@ -1,11 +1,10 @@
 """Product use cases for the catalog application"""
 
 from uuid import UUID
-from typing import Optional
 
 from apps.catalog.domain.entities import Product
-from apps.catalog.domain.interfaces import ProductRepositoryInterface
 from apps.catalog.domain.factories.product_factory import ProductFactory
+from apps.catalog.domain.interfaces import ProductRepositoryInterface
 
 
 class ListAllProductsUseCase:
@@ -30,7 +29,7 @@ class GetProductUseCase:
     def __init__(self, repo: ProductRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, id: UUID) -> Optional[Product]:
+    def execute(self, id: UUID) -> Product | None:
         return self.repo.get_by_id(id)
 
 

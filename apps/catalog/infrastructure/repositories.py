@@ -1,22 +1,21 @@
 """Repositories for the catalog infrastructure"""
 
 from uuid import UUID
-from typing import Optional
 
 from django.db.models import Q
 
 from apps.catalog.domain.entities import Category, Product
+from apps.catalog.domain.factories.category_factory import CategoryFactory
+from apps.catalog.domain.factories.product_factory import ProductFactory
 from apps.catalog.domain.interfaces import (
     CategoryRepositoryInterface,
     ProductRepositoryInterface,
 )
-from apps.catalog.domain.factories.category_factory import CategoryFactory
-from apps.catalog.domain.factories.product_factory import ProductFactory
 from apps.catalog.infrastructure.models import CategoryModel, ProductModel
 
 
 class CategoryRepository(CategoryRepositoryInterface):
-    def get_by_id(self, category_id: UUID) -> Optional[Category]:
+    def get_by_id(self, category_id: UUID) -> Category | None:
         try:
             category_model = CategoryModel.objects.get(
                 pk=category_id,
@@ -67,7 +66,7 @@ class CategoryRepository(CategoryRepositoryInterface):
 
 
 class ProductRepository(ProductRepositoryInterface):
-    def get_by_id(self, product_id: UUID) -> Optional[Product]:
+    def get_by_id(self, product_id: UUID) -> Product | None:
         try:
             product_model = ProductModel.objects.get(
                 pk=product_id,
@@ -79,7 +78,8 @@ class ProductRepository(ProductRepositoryInterface):
 
     def list_all(self, filters: dict) -> list[Product]:
         queryset = self._apply_filters(
-            ProductModel.objects.filter(is_active=True), filters
+            ProductModel.objects.filter(is_active=True),
+            filters,
         )
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
@@ -150,10 +150,10 @@ class ProductRepository(ProductRepositoryInterface):
         ]
 
     def _apply_filters(self, queryset, filters: dict) -> list[Product]:
-        q = filters.get("q", None)
-        category_id = filters.get("category", None)
-        min_price = filters.get("min_price", None)
-        max_price = filters.get("max_price", None)
+        q = filters.get("q")
+        category_id = filters.get("category")
+        min_price = filters.get("min_price")
+        max_price = filters.get("max_price")
 
         if q:
             queryset = queryset.filter(Q(name__icontains=q))

@@ -1,8 +1,7 @@
-"""Product Category Domain Tests"""
+from datetime import datetime
+from uuid import UUID
 
 import pytest
-from uuid import UUID
-from datetime import datetime
 
 from apps.catalog.domain.entities import Category
 from apps.catalog.domain.exceptions import CategoryDomainException

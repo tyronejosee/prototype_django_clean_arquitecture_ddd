@@ -3,29 +3,29 @@
 from uuid import UUID
 
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.request import Request
 from rest_framework.permissions import AllowAny
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from apps.catalog.application.use_cases.category_use_cases import (
+    CreateCategoryUseCase,
+    DeleteCategoryUseCase,
+    ListCategoriesUseCase,
+    UpdateCategoryUseCase,
+)
+from apps.catalog.application.use_cases.product_use_cases import (
+    CreateProductUseCase,
+    DeleteProductUseCase,
+    GetProductUseCase,
+    ListAllProductsUseCase,
+    ListFeaturedProductsUseCase,
+    ListProductsByCategoryUseCase,
+    UpdateProductUseCase,
+)
 from apps.catalog.domain.exceptions import (
     CategoryDomainException,
     ProductDomainException,
-)
-from apps.catalog.application.use_cases.product_use_cases import (
-    ListAllProductsUseCase,
-    CreateProductUseCase,
-    UpdateProductUseCase,
-    DeleteProductUseCase,
-    GetProductUseCase,
-    ListFeaturedProductsUseCase,
-    ListProductsByCategoryUseCase,
-)
-from apps.catalog.application.use_cases.category_use_cases import (
-    ListCategoriesUseCase,
-    CreateCategoryUseCase,
-    UpdateCategoryUseCase,
-    DeleteCategoryUseCase,
 )
 from apps.catalog.infrastructure.repositories import (
     CategoryRepository,
@@ -55,7 +55,8 @@ class ProductListCreateView(APIView):
                 serializer.validated_data,  # type: ignore[arg-type]
             )
             return Response(
-                ProductSerializer(product).data, status=status.HTTP_201_CREATED
+                ProductSerializer(product).data,
+                status=status.HTTP_201_CREATED,
             )
         except ProductDomainException as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -119,7 +120,8 @@ class CategoryListCreateView(APIView):
                 serializer.validated_data,  # type: ignore[arg-type]
             )
             return Response(
-                CategorySerializer(category).data, status=status.HTTP_201_CREATED
+                CategorySerializer(category).data,
+                status=status.HTTP_201_CREATED,
             )
         except CategoryDomainException as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -138,7 +140,8 @@ class CategoryDetailView(APIView):
                 serializer.validated_data,  # type: ignore[arg-type]
             )
             return Response(
-                CategorySerializer(category).data, status=status.HTTP_200_OK
+                CategorySerializer(category).data,
+                status=status.HTTP_200_OK,
             )
         except CategoryDomainException as e:
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
