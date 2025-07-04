@@ -6,5 +6,5 @@ class CatalogConfig(AppConfig):
     name = "apps.catalog"
 
     def ready(self) -> None:
-        import apps.catalog.infrastructure.models  # noqa
-        import apps.catalog.infrastructure.admin  # noqa
+        import apps.catalog.infrastructure.admin
+        import apps.catalog.infrastructure.models  # noqa: F401

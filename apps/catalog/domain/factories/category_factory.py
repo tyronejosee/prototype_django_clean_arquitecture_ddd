@@ -1,6 +1,6 @@
 """Category factory for the catalog domain"""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from apps.catalog.domain.entities import Category
@@ -14,8 +14,8 @@ class CategoryFactory:
             name=data["name"],
             description=data.get("description", ""),
             is_active=data.get("is_active", True),
-            created_at=data.get("created_at", datetime.now()),
-            updated_at=data.get("updated_at", datetime.now()),
+            created_at=data.get("created_at", datetime.now(UTC)),
+            updated_at=data.get("updated_at", datetime.now(UTC)),
         )
 
     @staticmethod

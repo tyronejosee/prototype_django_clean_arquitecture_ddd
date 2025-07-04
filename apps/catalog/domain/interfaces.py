@@ -45,6 +45,7 @@ class ProductRepositoryInterface(ABC):
     def create(self, product: Product) -> Product:
         pass
 
+    @abstractmethod
     def update(self, product_id: UUID, product: Product) -> Product | None:
         pass
 

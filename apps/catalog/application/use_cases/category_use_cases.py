@@ -3,7 +3,7 @@
 from uuid import UUID
 
 from apps.catalog.domain.entities import Category
-from apps.catalog.domain.exceptions import CategoryDomainException
+from apps.catalog.domain.exceptions import CategoryDomainError
 from apps.catalog.domain.factories.category_factory import CategoryFactory
 from apps.catalog.domain.interfaces import CategoryRepositoryInterface
 
@@ -22,10 +22,9 @@ class CreateCategoryUseCase:
 
     def execute(self, data: dict) -> Category:
         if self.repo.exists_by_name(data["name"]):
-            raise CategoryDomainException("Category with that name already exists.")
+            raise CategoryDomainError("Category with that name already exists.")
         category = CategoryFactory.from_dict(data)
-        category_created = self.repo.create(category)
-        return category_created
+        return self.repo.create(category)
 
 
 class GetCategoryUseCase:
@@ -50,5 +49,5 @@ class DeleteCategoryUseCase:
     def __init__(self, repo: CategoryRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, id: UUID) -> None:
-        self.repo.delete(id)
+    def execute(self, category_id: UUID) -> None:
+        self.repo.delete(category_id)

@@ -24,8 +24,8 @@ from apps.catalog.application.use_cases.product_use_cases import (
     UpdateProductUseCase,
 )
 from apps.catalog.domain.exceptions import (
-    CategoryDomainException,
-    ProductDomainException,
+    CategoryDomainError,
+    ProductDomainError,
 )
 from apps.catalog.infrastructure.repositories import (
     CategoryRepository,
@@ -58,7 +58,7 @@ class ProductListCreateView(APIView):
                 ProductSerializer(product).data,
                 status=status.HTTP_201_CREATED,
             )
-        except ProductDomainException as e:
+        except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -83,7 +83,7 @@ class ProductDetailView(APIView):
                 serializer.validated_data,  # type: ignore[arg-type]
             )
             return Response(ProductSerializer(product).data, status=status.HTTP_200_OK)
-        except ProductDomainException as e:
+        except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request: Request, product_id: UUID) -> Response:
@@ -123,7 +123,7 @@ class CategoryListCreateView(APIView):
                 CategorySerializer(category).data,
                 status=status.HTTP_201_CREATED,
             )
-        except CategoryDomainException as e:
+        except CategoryDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -143,7 +143,7 @@ class CategoryDetailView(APIView):
                 CategorySerializer(category).data,
                 status=status.HTTP_200_OK,
             )
-        except CategoryDomainException as e:
+        except CategoryDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request: Request, category_id: UUID) -> Response:

@@ -1,6 +1,6 @@
 """Product factory for the catalog domain"""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 from uuid import uuid4
 
@@ -27,8 +27,8 @@ class ProductFactory:
             is_featured=data.get("is_featured", False),
             weight=Decimal(data["weight"]) if data.get("weight") else None,
             unit=data.get("unit", "kg"),
-            created_at=data.get("created_at", datetime.now()),
-            updated_at=data.get("updated_at", datetime.now()),
+            created_at=data.get("created_at", datetime.now(UTC)),
+            updated_at=data.get("updated_at", datetime.now(UTC)),
         )
 
     @staticmethod

@@ -1,5 +1,3 @@
-"""Product use cases for the catalog application"""
-
 from uuid import UUID
 
 from apps.catalog.domain.entities import Product
@@ -29,8 +27,8 @@ class GetProductUseCase:
     def __init__(self, repo: ProductRepositoryInterface) -> None:
         self.repo = repo
 
-    def execute(self, id: UUID) -> Product | None:
-        return self.repo.get_by_id(id)
+    def execute(self, product_id: UUID) -> Product | None:
+        return self.repo.get_by_id(product_id)
 
 
 class UpdateProductUseCase:

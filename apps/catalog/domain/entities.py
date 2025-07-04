@@ -5,8 +5,8 @@ from decimal import Decimal
 from uuid import UUID
 
 from apps.catalog.domain.exceptions import (
-    CategoryDomainException,
-    ProductDomainException,
+    CategoryDomainError,
+    ProductDomainError,
 )
 
 
@@ -33,13 +33,12 @@ class Category:
 
     def _validate(self) -> None:
         if not self.name:
-            raise CategoryDomainException("Name is required.")
+            raise CategoryDomainError("Name is required.")
 
         for forbidden_word in self._forbidden_words:
             if forbidden_word in self.name.strip().lower():
-                raise CategoryDomainException(
-                    f"The name contains a forbidden word: '{forbidden_word}'.",
-                )
+                message = f"Name contains a forbidden word: '{forbidden_word}'."
+                raise CategoryDomainError(message)
 
 
 class Product:
@@ -83,24 +82,22 @@ class Product:
 
     def _validate(self) -> None:
         if not self.name:
-            raise ProductDomainException("Name is required.")
+            raise ProductDomainError("Name is required.")
 
         if self.price < 0:
-            raise ProductDomainException("Price cannot be negative.")
+            raise ProductDomainError("Price cannot be negative.")
 
         if self.discount_price is not None and self.discount_price < 0:
-            raise ProductDomainException("Discount price cannot be negative.")
+            raise ProductDomainError("Discount price cannot be negative.")
 
         if self.discount_price is not None and self.discount_price > self.price:
-            raise ProductDomainException("Discount price cannot exceed price.")
+            raise ProductDomainError("Discount price cannot exceed price.")
 
         if self.stock < 0:
-            raise ProductDomainException("Stock cannot be negative.")
+            raise ProductDomainError("Stock cannot be negative.")
 
         if self.stock > 100:
-            raise ProductDomainException(
-                "Cannot create a product with more than 100 stock units.",
-            )
+            raise ProductDomainError("Stock cannot exceed 100 units.")
 
         if self.min_stock < 0:
-            raise ProductDomainException("Min stock cannot be negative.")
+            raise ProductDomainError("Min stock cannot be negative.")
