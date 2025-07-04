@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from ..models import UserModel
+from apps.users.models import UserModel
 
 
 @admin.register(UserModel)
 class UserAdmin(BaseUserAdmin):
     list_display = (
         "email",
+        "username",
         "first_name",
         "last_name",
         "is_staff",
@@ -19,8 +20,8 @@ class UserAdmin(BaseUserAdmin):
     ordering = ("email",)
     filter_horizontal = ()
 
-    fieldsets = (
-        (None, {"fields": ("email", "password")}),
+    fieldsets: tuple = (
+        (None, {"fields": ("email", "username", "password")}),
         ("Personal info", {"fields": ("first_name", "last_name")}),
         (
             "Permissions",

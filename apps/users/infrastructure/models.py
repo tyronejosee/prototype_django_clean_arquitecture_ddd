@@ -20,4 +20,4 @@ class UserModel(AbstractUser):
         ordering = ["email"]
 
     def __str__(self) -> str:
-        return self.email
+        return str(self.email)

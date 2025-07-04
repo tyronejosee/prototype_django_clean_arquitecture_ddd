@@ -1,41 +1,60 @@
 from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
-from apps.users.presentation.views import (
-    UserDetailView,
-    UserListCreateView,
-    UserLoginView,
+from apps.users.presentation.controllers.auth_controler import (
+    LoginController,
+    LogoutController,
+    RefreshController,
+    RegisterController,
+    TokenVerifyController,
+)
+from apps.users.presentation.controllers.user_controler import (
+    UserDetailController,
+    UserListCreateController,
 )
 
 app_name = "users"
 
 urlpatterns: list = [
+    # Users
     path(
         "users",
-        UserListCreateView.as_view(),
-        name="user-list",
+        UserListCreateController.as_view(),
+        name="user-list-create",
     ),
     path(
         "users/<uuid:user_id>",
-        UserDetailView.as_view(),
+        UserDetailController.as_view(),
         name="user-detail",
+    ),
+    # Auth
+    path(
+        "auth/register",
+        RegisterController.as_view(),
+        name="register",
     ),
     path(
         "auth/login",
-        UserLoginView.as_view(),
-        name="user-login",
+        LoginController.as_view(),
+        name="login",
     ),
     path(
-        "auth/token",
-        TokenObtainPairView.as_view(),
-        name="token_obtain_pair",
+        "auth/refresh",
+        RefreshController.as_view(),
+        name="refresh",
     ),
     path(
-        "auth/token/refresh",
-        TokenRefreshView.as_view(),
-        name="token_refresh",
+        "auth/verify",
+        TokenVerifyController.as_view(),
+        name="verify",
     ),
+    path(
+        "auth/logout",
+        LogoutController.as_view(),
+        name="logout",
+    ),
+    # TODO: Pending implementation
+    # "auth/me",
+    # "auth/password/change",
+    # "auth/password/reset",
+    # "auth/password/reset/confirm",
 ]

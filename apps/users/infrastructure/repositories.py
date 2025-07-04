@@ -1,9 +1,12 @@
 from uuid import UUID
 
+from django.db.models import Q
+
+from apps.users.domain.entities.user import User
+from apps.users.domain.factories.user import UserFactory
+from apps.users.domain.interfaces.repositories import UserRepositoryInterface
+
 from .models import UserModel
-from ..domain.entities.user import User
-from ..domain.factories.user import UserFactory
-from ..domain.interfaces.repositories import UserRepositoryInterface
 
 
 class UserRepository(UserRepositoryInterface):
@@ -14,9 +17,12 @@ class UserRepository(UserRepositoryInterface):
         except UserModel.DoesNotExist:
             return None
 
-    def get_by_email(self, email: str) -> User | None:
+    def get_by_email_or_username(self, email: str, username: str) -> User | None:
         try:
-            user_model = UserModel.objects.get(email=email, is_active=True)
+            user_model: UserModel = UserModel.objects.get(
+                Q(email=email) | Q(username=username),
+                is_active=True,
+            )
             return UserFactory.from_model(user_model)
         except UserModel.DoesNotExist:
             return None
@@ -30,7 +36,8 @@ class UserRepository(UserRepositoryInterface):
     def create(self, user: User) -> User:
         user_model = UserModel.objects.create(
             email=user.email,
-            password=user.password,  # This expects a hashed password
+            username=user.username,
+            password=user.password,
             first_name=user.first_name,
             last_name=user.last_name,
             is_active=user.is_active,
