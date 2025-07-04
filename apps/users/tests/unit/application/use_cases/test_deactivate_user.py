@@ -1,10 +1,11 @@
-import pytest
-from uuid import uuid4
 from unittest.mock import Mock
+from uuid import uuid4
 
-from .....domain.entities.user import User
-from .....domain.exceptions import UserNotFoundException
-from .....application.use_cases.deactivate_user import DeactivateUserUseCase
+import pytest
+
+from apps.users.application.use_cases.deactivate_user import DeactivateUserUseCase
+from apps.users.domain.entities.user import User
+from apps.users.domain.exceptions import UserNotFoundError
 
 
 def test_deactivate_user_successful() -> None:
@@ -36,7 +37,7 @@ def test_deactivate_user_not_found() -> None:
     use_case = DeactivateUserUseCase(repo=repo_mock)
 
     # Act & Assert
-    with pytest.raises(UserNotFoundException) as exc_info:
+    with pytest.raises(UserNotFoundError) as exc_info:
         use_case.execute(user_id)
 
     assert str(exc_info.value) == f"User with ID {user_id} not found."

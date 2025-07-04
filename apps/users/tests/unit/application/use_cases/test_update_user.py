@@ -1,9 +1,10 @@
-import pytest
-from uuid import uuid4
 from unittest.mock import Mock
+from uuid import uuid4
 
-from .....domain.exceptions import UserNotFoundException
-from .....application.use_cases.update_user import UpdateUserUseCase
+import pytest
+
+from apps.users.application.use_cases.update_user import UpdateUserUseCase
+from apps.users.domain.exceptions import UserNotFoundError
 
 
 def test_update_user_successful() -> None:
@@ -71,7 +72,7 @@ def test_update_user_not_found() -> None:
     }
 
     # Act & Assert
-    with pytest.raises(UserNotFoundException) as exc_info:
+    with pytest.raises(UserNotFoundError) as exc_info:
         use_case.execute(user_id=user_id, user_data=user_data)
 
     assert str(exc_info.value) == f"User with ID {user_id} not found."

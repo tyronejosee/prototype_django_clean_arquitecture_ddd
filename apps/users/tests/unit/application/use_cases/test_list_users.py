@@ -1,10 +1,11 @@
-from uuid import uuid4
+from datetime import UTC, datetime
 from unittest.mock import Mock
-from datetime import datetime
+from uuid import uuid4
 
-from .....domain.entities.user import User
-from .....domain.value_objects.email import Email
-from .....application.use_cases.list_users import ListUsersUseCase
+from apps.users.application.use_cases.list_users import ListUsersUseCase
+from apps.users.domain.entities.user import User
+from apps.users.domain.value_objects.email import Email
+from apps.users.domain.value_objects.username import Username
 
 
 def test_list_users_returns_users() -> None:
@@ -12,6 +13,7 @@ def test_list_users_returns_users() -> None:
     user_1 = User(
         id=uuid4(),
         email=Email("user1@example.com"),
+        username=Username("user1"),
         password="hashed_pass",
         first_name="Alice",
         last_name="Smith",
@@ -19,11 +21,12 @@ def test_list_users_returns_users() -> None:
         is_staff=False,
         is_superuser=False,
         last_login=None,
-        date_joined=datetime.now(),
+        date_joined=datetime.now(UTC),
     )
     user_2 = User(
         id=uuid4(),
         email=Email("user2@example.com"),
+        username=Username("user2"),
         password="hashed_pass",
         first_name="Chihiro",
         last_name="Yamada",
@@ -31,7 +34,7 @@ def test_list_users_returns_users() -> None:
         is_staff=True,
         is_superuser=False,
         last_login=None,
-        date_joined=datetime.now(),
+        date_joined=datetime.now(UTC),
     )
 
     repo_mock = Mock()

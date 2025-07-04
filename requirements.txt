@@ -1,9 +1,16 @@
+# Framework
 Django>=4.2,<5.0
 djangorestframework>=3.14.0
 django-cors-headers>=4.0.0
-psycopg2-binary>=2.9.0
+djangorestframework-simplejwt>=5.5.0
+
+# Utils
 python-decouple>=3.8
+bcrypt>=4.3.0
 Pillow>=9.0.0
+
+# Database
+psycopg2-binary>=2.9.0
 
 # Testing
 pytest>=8.3.4

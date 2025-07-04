@@ -6,5 +6,5 @@ class UsersConfig(AppConfig):
     name = "apps.users"
 
     def ready(self) -> None:
-        import apps.users.infrastructure.models  # noqa
-        import apps.users.infrastructure.admin  # noqa
+        import apps.users.infrastructure.admin  # noqa: F401
+        import apps.users.infrastructure.models  # noqa: F401
