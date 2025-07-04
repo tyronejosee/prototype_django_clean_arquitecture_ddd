@@ -1,5 +1,5 @@
-from ...domain.entities.user import User
-from ...domain.interfaces.repositories import UserRepositoryInterface
+from apps.users.domain.entities.user import User
+from apps.users.domain.interfaces.repositories import UserRepositoryInterface
 
 
 class ListUsersUseCase:

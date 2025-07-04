@@ -1,16 +1,21 @@
-from uuid import UUID
 from datetime import datetime
+from uuid import UUID
 
-from ..value_objects.email import Email
-from ..exceptions import UserDomainException
+from apps.users.domain.exceptions import UserDomainError
+from apps.users.domain.value_objects.email import Email
+from apps.users.domain.value_objects.username import Username
 
 
 class User:
+    MIN_FIRST_NAME_LENGTH = 2
+    MIN_LAST_NAME_LENGTH = 2
+
     def __init__(
         self,
         id: UUID,
         password: str,
         email: Email,
+        username: Username,
         first_name: str = "",
         last_name: str = "",
         is_active: bool = True,
@@ -22,6 +27,7 @@ class User:
         self.id = id
         self.password = password
         self.email = email
+        self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.is_staff = is_staff
@@ -34,20 +40,16 @@ class User:
 
     def _validate(self) -> None:
         if not self.first_name and not self.last_name:
-            raise UserDomainException(
-                "User must have at least a first name or last name."
-            )
+            raise UserDomainError("First or last name required.")
 
-        if self.first_name and len(self.first_name) < 5:
-            raise UserDomainException("First name is too short.")
+        if self.first_name and len(self.first_name) < self.MIN_FIRST_NAME_LENGTH:
+            raise UserDomainError("First name is too short.")
 
-        if self.last_name and len(self.last_name) < 5:
-            raise UserDomainException("Last name is too short.")
+        if self.last_name and len(self.last_name) < self.MIN_LAST_NAME_LENGTH:
+            raise UserDomainError("Last name is too short.")
 
         if self.is_superuser and not self.is_staff:
-            raise UserDomainException("A superuser must also be staff.")
+            raise UserDomainError("A superuser must also be staff.")
 
         if not self.is_active and self.last_login:
-            raise UserDomainException(
-                "Inactive user should not have a last login timestamp."
-            )
+            raise UserDomainError("Inactive user can't have last login.")

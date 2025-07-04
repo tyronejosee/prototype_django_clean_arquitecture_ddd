@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from ...domain.entities.user import User
-from ...domain.interfaces.repositories import UserRepositoryInterface
-from ...domain.interfaces.services import PasswordServiceInterface
-from ...domain.exceptions import UserNotFoundException
+from apps.users.domain.entities.user import User
+from apps.users.domain.exceptions import UserNotFoundError
+from apps.users.domain.interfaces.repositories import UserRepositoryInterface
+from apps.users.domain.interfaces.services import PasswordServiceInterface
 
 
 class UpdateUserUseCase:
@@ -18,7 +18,8 @@ class UpdateUserUseCase:
     def execute(self, user_id: UUID, user_data: dict) -> User:
         user = self.repo.get_by_id(user_id)
         if not user:
-            raise UserNotFoundException(f"User with ID {user_id} not found.")
+            message = f"User with ID {user_id} not found."
+            raise UserNotFoundError(message)
 
         user.first_name = user_data.get("first_name", user.first_name)
         user.last_name = user_data.get("last_name", user.last_name)
@@ -28,7 +29,7 @@ class UpdateUserUseCase:
         user.is_superuser = user_data.get("is_superuser", user.is_superuser)
 
         # Handle password change if provided
-        if "password" in user_data and user_data["password"]:
+        if user_data.get("password"):
             user.password = self.password_service.hash_password(user_data["password"])
 
         self.repo.update(user_id, user)

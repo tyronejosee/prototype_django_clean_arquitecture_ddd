@@ -1,25 +1,18 @@
 import re
+from dataclasses import dataclass
 
-from ..exceptions import UserDomainException
+from apps.users.domain.exceptions import UserDomainError
 
 
+@dataclass(frozen=True)
 class Email:
-    def __init__(self, value: str) -> None:
-        if not self._is_valid(value):
-            raise UserDomainException("Invalid email format")
-        self.value = value
+    value: str
 
-    def _is_valid(self, value: str) -> bool:
-        return re.match(r"[^@]+@[^@]+\.[^@]+", value) is not None
+    EMAIL_PATTERN = r"[^@]+@[^@]+\.[^@]+"
+
+    def __post_init__(self) -> None:
+        if not re.match(self.EMAIL_PATTERN, self.value):
+            raise UserDomainError("Invalid email format.")
 
     def __str__(self) -> str:
         return self.value
-
-    def __repr__(self) -> str:
-        return f"Email({self.value!r})"
-
-    def __eq__(self, other) -> bool:
-        return isinstance(other, Email) and self.value == other.value
-
-    def __hash__(self) -> int:
-        return hash(self.value)

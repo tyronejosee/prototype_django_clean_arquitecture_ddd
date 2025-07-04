@@ -1,10 +1,10 @@
-class UserDomainException(Exception):
+class UserDomainError(Exception):
     pass
 
 
-class UserNotFoundException(Exception):
+class UserNotFoundError(Exception):
     pass
 
 
-class UserAlreadyExistsException(Exception):
+class UserAlreadyExistsError(Exception):
     pass
