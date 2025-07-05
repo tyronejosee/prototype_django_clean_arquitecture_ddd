@@ -1,9 +1,8 @@
-"""Category factory for the catalog domain"""
-
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from apps.catalog.domain.entities import Category
+from apps.catalog.domain.entities.category import Category
+from apps.catalog.domain.value_objects.category_name import CategoryName
 
 
 class CategoryFactory:
@@ -11,7 +10,7 @@ class CategoryFactory:
     def from_dict(data) -> Category:
         return Category(
             id=data.get("id", uuid4()),
-            name=data["name"],
+            name=CategoryName(data["name"]),
             description=data.get("description", ""),
             is_active=data.get("is_active", True),
             created_at=data.get("created_at", datetime.now(UTC)),

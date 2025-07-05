@@ -1,10 +1,10 @@
-"""Product factory for the catalog domain"""
-
 from datetime import UTC, datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from apps.catalog.domain.entities import Product
+from apps.catalog.domain.entities.product import Product
+from apps.catalog.domain.value_objects.sku import SKU
+from apps.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
 class ProductFactory:
@@ -14,7 +14,7 @@ class ProductFactory:
             id=data.get("id", uuid4()),
             name=data["name"],
             description=data.get("description", ""),
-            sku=data["sku"],
+            sku=SKU(data["sku"]),
             category_id=data["category_id"],
             price=Decimal(data["price"]),
             discount_price=(
@@ -26,7 +26,7 @@ class ProductFactory:
             is_active=data.get("is_active", True),
             is_featured=data.get("is_featured", False),
             weight=Decimal(data["weight"]) if data.get("weight") else None,
-            unit=data.get("unit", "kg"),
+            unit=WeightUnit(data.get("unit", "kg")),
             created_at=data.get("created_at", datetime.now(UTC)),
             updated_at=data.get("updated_at", datetime.now(UTC)),
         )

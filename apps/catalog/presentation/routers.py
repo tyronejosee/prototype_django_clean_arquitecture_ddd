@@ -1,14 +1,14 @@
-"""Routers for the catalog presentation"""
-
 from django.urls import path
 
-from apps.catalog.presentation.views import (
-    CategoryDetailView,
-    CategoryListCreateView,
-    CategoryProductListView,
-    FeaturedProductsView,
-    ProductDetailView,
-    ProductListCreateView,
+from .controllers.category_controller import (
+    CategoryDetailController,
+    CategoryListCreateController,
+    CategoryProductListController,
+)
+from .controllers.product_controller import (
+    FeaturedProductsController,
+    ProductDetailController,
+    ProductListCreateController,
 )
 
 app_name = "catalog"
@@ -16,32 +16,32 @@ app_name = "catalog"
 urlpatterns: list = [
     path(
         "categories",
-        CategoryListCreateView.as_view(),
+        CategoryListCreateController.as_view(),
         name="category-list",
     ),
     path(
         "categories/<uuid:category_id>",
-        CategoryDetailView.as_view(),
+        CategoryDetailController.as_view(),
         name="category-detail",
     ),
     path(
         "categories/<uuid:category_id>/products",
-        CategoryProductListView.as_view(),
+        CategoryProductListController.as_view(),
         name="products-by-category",
     ),
     path(
         "products",
-        ProductListCreateView.as_view(),
+        ProductListCreateController.as_view(),
         name="product-list",
     ),
     path(
         "products/<uuid:product_id>",
-        ProductDetailView.as_view(),
+        ProductDetailController.as_view(),
         name="product-detail",
     ),
     path(
         "products/featured",
-        FeaturedProductsView.as_view(),
+        FeaturedProductsController.as_view(),
         name="featured-products",
     ),
 ]

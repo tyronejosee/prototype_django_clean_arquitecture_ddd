@@ -1,71 +1,20 @@
-"""Repositories for the catalog infrastructure"""
-
 from uuid import UUID
 
 from django.db.models import Q
 
-from apps.catalog.domain.entities import Category, Product
-from apps.catalog.domain.factories.category_factory import CategoryFactory
+from apps.catalog.domain.entities.product import Product
+from apps.catalog.domain.exceptions import ProductNotFoundError
 from apps.catalog.domain.factories.product_factory import ProductFactory
-from apps.catalog.domain.interfaces import (
-    CategoryRepositoryInterface,
+from apps.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
-from apps.catalog.infrastructure.models import CategoryModel, ProductModel
-
-
-class CategoryRepository(CategoryRepositoryInterface):
-    def get_by_id(self, category_id: UUID) -> Category | None:
-        try:
-            category_model = CategoryModel.objects.get(
-                pk=category_id,
-                is_active=True,
-            )
-            return CategoryFactory.from_model(category_model)
-        except CategoryModel.DoesNotExist:
-            return None
-
-    def list_all(self) -> list[Category]:
-        return [
-            CategoryFactory.from_model(category_model)
-            for category_model in CategoryModel.objects.filter(
-                is_active=True,
-            )
-        ]
-
-    def create(self, category: Category) -> Category:
-        category_model = CategoryModel.objects.create(
-            id=category.id,
-            name=category.name,
-            description=category.description,
-            is_active=category.is_active,
-        )
-        return CategoryFactory.from_model(category_model)
-
-    def update(self, category_id: UUID, category: Category) -> Category | None:
-        updated = CategoryModel.objects.filter(pk=category_id).update(
-            name=category.name,
-            description=category.description,
-            is_active=category.is_active,
-        )
-        if updated:
-            category_model = CategoryModel.objects.get(pk=category_id)
-            return CategoryFactory.from_model(category_model)
-        return None
-
-    def delete(self, category_id: UUID) -> None:
-        try:
-            category_model = CategoryModel.objects.get(pk=category_id)
-            category_model.is_active = False
-            category_model.save()
-        except CategoryModel.DoesNotExist:
-            pass
-
-    def exists_by_name(self, name: str) -> bool:
-        return CategoryModel.objects.filter(name=name, is_active=True).exists()
+from apps.catalog.infrastructure.models.product_model import ProductModel
 
 
 class ProductRepository(ProductRepositoryInterface):
+    # Messages
+    PRODUCT_NOT_FOUND_MSG: str = "Product not found."
+
     def get_by_id(self, product_id: UUID) -> Product | None:
         try:
             product_model = ProductModel.objects.get(
@@ -73,8 +22,8 @@ class ProductRepository(ProductRepositoryInterface):
                 is_active=True,
             )
             return ProductFactory.from_model(product_model)
-        except ProductModel.DoesNotExist:
-            return None
+        except ProductModel.DoesNotExist as error:
+            raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
     def list_all(self, filters: dict) -> list[Product]:
         queryset = self._apply_filters(
@@ -128,8 +77,8 @@ class ProductRepository(ProductRepositoryInterface):
             product_model = ProductModel.objects.get(pk=product_id)
             product_model.is_active = False
             product_model.save()
-        except ProductModel.DoesNotExist:
-            pass
+        except ProductModel.DoesNotExist as error:
+            raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
     def list_featured(self) -> list[Product]:
         return [

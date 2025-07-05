@@ -1,14 +1,18 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from decimal import Decimal
 from uuid import UUID
 
 import pytest
 
-from apps.catalog.domain.entities import Category, Product
+from apps.catalog.domain.entities.category import Category
+from apps.catalog.domain.entities.product import Product
 from apps.catalog.domain.exceptions import (
     CategoryDomainError,
     ProductDomainError,
 )
+from apps.catalog.domain.value_objects.category_name import CategoryName
+from apps.catalog.domain.value_objects.sku import SKU
+from apps.catalog.domain.value_objects.weight_unit import WeightUnit
 
 # --- Category tests ---
 
@@ -16,11 +20,11 @@ from apps.catalog.domain.exceptions import (
 def valid_category_kwargs(**overrides) -> dict:
     data = dict(
         id=UUID("1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d1a2b"),
-        name="Category 1",
+        name=CategoryName("Category 1"),
         description="Category 1 description",
         is_active=True,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
     data.update(overrides)
     return data
@@ -28,14 +32,20 @@ def valid_category_kwargs(**overrides) -> dict:
 
 def test_category_creation() -> None:
     category = Category(**valid_category_kwargs())
-    assert category.name == "Category 1"
+    assert category.name == CategoryName("Category 1")
     assert category.description == "Category 1 description"
     assert category.is_active is True
 
 
 def test_category_attributes() -> None:
     category = Category(**valid_category_kwargs())
-    for attr in ["name", "description", "is_active", "created_at", "updated_at"]:
+    for attr in [
+        "name",
+        "description",
+        "is_active",
+        "created_at",
+        "updated_at",
+    ]:
         assert hasattr(category, attr)
 
 
@@ -51,7 +61,7 @@ def test_category_attributes() -> None:
 )
 def test_category_creation_invalid_name(invalid_name: str) -> None:
     with pytest.raises(CategoryDomainError):
-        Category(**valid_category_kwargs(name=invalid_name))
+        Category(**valid_category_kwargs(name=CategoryName(invalid_name)))
 
 
 # --- Product tests ---
@@ -62,7 +72,7 @@ def valid_product_kwargs(**overrides) -> dict:
         id=UUID("2b3c4d5e-2b3c-2b3c-2b3c-2b3c4d5e2b3c"),
         name="Test Product",
         description="Test description",
-        sku="SKU123",
+        sku=SKU("SKU123"),
         category_id=UUID("1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d1a2b"),
         price=Decimal("10.0"),
         discount_price=None,
@@ -72,9 +82,9 @@ def valid_product_kwargs(**overrides) -> dict:
         is_active=True,
         is_featured=False,
         weight=None,
-        unit="kg",
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        unit=WeightUnit("kg"),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
     data.update(overrides)
     return data
@@ -84,10 +94,10 @@ def test_product_creation() -> None:
     product = Product(**valid_product_kwargs())
     assert product.name == "Test Product"
     assert product.price == Decimal("10.0")
-    assert product.sku == "SKU123"
+    assert product.sku == SKU("SKU123")
     assert product.stock == 10
     assert product.is_active is True
-    assert product.unit == "kg"
+    assert product.unit == WeightUnit("kg")
 
 
 def test_product_update_price() -> None:
