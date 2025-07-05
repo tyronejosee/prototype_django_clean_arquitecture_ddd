@@ -1,4 +1,4 @@
-# ==== Coverage ====
+# === Coverage ===
 [tool.coverage.run]
 omit = ["*/migrations/*", "*/tests/*"]
 plugins = ["django_coverage_plugin"]
@@ -8,7 +8,7 @@ source = ["apps"]
 show_missing = true
 skip_covered = true
 
-# ==== Ruff ====
+# === Ruff ===
 [tool.ruff]
 exclude = [
   ".bzr",
@@ -33,6 +33,7 @@ exclude = [
   "node_modules",
   "venv",
   "*/migrations/*.py",
+  "*/tests/*.py",
   "staticfiles/*",
 ]
 indent-width = 4
@@ -40,11 +41,7 @@ line-length = 88
 target-version = "py311"
 
 [tool.ruff.lint]
-ignore = [
-  "S101",
-  "RUF012",
-  "SIM102",
-]
+ignore = []
 select = [
   "F",
   "E",
@@ -95,7 +92,6 @@ select = [
   "PERF",
   "RUF",
 ]
-# Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"

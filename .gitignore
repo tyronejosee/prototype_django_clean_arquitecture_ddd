@@ -1,12 +1,8 @@
 # Project specific
-TODO.md
 .vscode
 README.md
-temp
 apps/cart
 apps/orders
-apps/users_delete
-apps/users_delete_0
 
 # Django
 *.log

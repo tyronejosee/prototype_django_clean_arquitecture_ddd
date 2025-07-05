@@ -14,7 +14,8 @@ def main() -> None:
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
-        raise ImportError("Can't import Django. Check PYTHONPATH or venv.") from exc
+        message = "Can't import Django. Check PYTHONPATH or venv."
+        raise ImportError(message) from exc
     execute_from_command_line(sys.argv)
 
 
