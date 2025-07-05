@@ -5,7 +5,7 @@ import pytest
 from apps.users.application.use_cases.create_user import CreateUserUseCase
 from apps.users.domain.entities.user import User
 from apps.users.domain.exceptions import UserAlreadyExistsError
-from apps.users.domain.factories.user import UserFactory
+from apps.users.domain.factories.user_factory import UserFactory
 
 from .utils import valid_user_dict
 

@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from apps.users.domain.entities.user import User
-from apps.users.domain.factories.user import UserFactory
+from apps.users.domain.factories.user_factory import UserFactory
 from apps.users.domain.value_objects.email import Email
 from apps.users.domain.value_objects.username import Username
 

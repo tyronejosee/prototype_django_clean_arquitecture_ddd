@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from apps.users.models import UserModel
+from apps.users.infrastructure.models.user_model import UserModel
 
 
 @admin.register(UserModel)

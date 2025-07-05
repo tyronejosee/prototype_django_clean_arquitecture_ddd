@@ -1,5 +1,7 @@
 from apps.users.domain.entities.user import User
-from apps.users.domain.interfaces.repositories import UserRepositoryInterface
+from apps.users.domain.interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
 
 
 class ListUsersUseCase:

@@ -1,3 +1,4 @@
+from typing import ClassVar
 from uuid import UUID
 
 from rest_framework import status
@@ -7,24 +8,24 @@ from rest_framework.views import APIView
 
 from apps.users.application.providers import (
     get_create_user_use_case,
-    get_list_users_use_case,
-    get_user_use_case,
-    get_update_user_use_case,
     get_deactivate_user_use_case,
+    get_list_users_use_case,
+    get_update_user_use_case,
+    get_user_use_case,
 )
 from apps.users.domain.exceptions import (
-    UserDomainError,
     UserAlreadyExistsError,
+    UserDomainError,
     UserNotFoundError,
 )
-from apps.users.presentation.serializers import (
+from apps.users.presentation.serializers.user_serializer import (
     UserCreateSerializer,
     UserSerializer,
 )
 
 
 class UserListCreateController(APIView):
-    permission_classes = [AllowAny]  # TODO: Add admin role
+    permission_classes: ClassVar[list] = [AllowAny]  # TODO: Add admin role
 
     def get(self, request) -> Response:
         use_case = get_list_users_use_case()
@@ -46,7 +47,7 @@ class UserListCreateController(APIView):
 
 
 class UserDetailController(APIView):
-    permission_classes = [AllowAny]  # TODO: Add admin role
+    permission_classes: ClassVar[list] = [AllowAny]  # TODO: Add admin role
 
     def get(self, request, user_id: UUID) -> Response:
         use_case = get_user_use_case()

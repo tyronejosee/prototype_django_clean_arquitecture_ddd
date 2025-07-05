@@ -3,10 +3,11 @@ from uuid import UUID
 from django.db.models import Q
 
 from apps.users.domain.entities.user import User
-from apps.users.domain.factories.user import UserFactory
-from apps.users.domain.interfaces.repositories import UserRepositoryInterface
-
-from .models import UserModel
+from apps.users.domain.factories.user_factory import UserFactory
+from apps.users.domain.interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
+from apps.users.infrastructure.models.user_model import UserModel
 
 
 class UserRepository(UserRepositoryInterface):

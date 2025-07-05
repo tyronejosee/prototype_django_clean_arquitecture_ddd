@@ -1,7 +1,9 @@
 from uuid import UUID
 
 from apps.users.domain.exceptions import UserNotFoundError
-from apps.users.domain.interfaces.repositories import UserRepositoryInterface
+from apps.users.domain.interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
 
 
 class DeactivateUserUseCase:

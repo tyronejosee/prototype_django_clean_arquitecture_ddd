@@ -3,7 +3,10 @@ from typing import Any
 import pytest
 from django.contrib.auth.hashers import identify_hasher
 
-from apps.users.infrastructure.services import PasswordService, UNUSABLE_PASSWORD_PREFIX
+from apps.users.infrastructure.services.password_service import (
+    UNUSABLE_PASSWORD_PREFIX,
+    PasswordService,
+)
 
 password_service = PasswordService()
 

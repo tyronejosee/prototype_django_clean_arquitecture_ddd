@@ -2,8 +2,12 @@ from uuid import UUID
 
 from apps.users.domain.entities.user import User
 from apps.users.domain.exceptions import UserNotFoundError
-from apps.users.domain.interfaces.repositories import UserRepositoryInterface
-from apps.users.domain.interfaces.services import PasswordServiceInterface
+from apps.users.domain.interfaces.password_service_interface import (
+    PasswordServiceInterface,
+)
+from apps.users.domain.interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
 
 
 class UpdateUserUseCase:

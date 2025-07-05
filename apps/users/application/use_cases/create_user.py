@@ -1,11 +1,18 @@
 from apps.users.domain.entities.user import User
 from apps.users.domain.exceptions import UserAlreadyExistsError
-from apps.users.domain.factories.user import UserFactory
-from apps.users.domain.interfaces.repositories import UserRepositoryInterface
-from apps.users.domain.interfaces.services import PasswordServiceInterface
+from apps.users.domain.factories.user_factory import UserFactory
+from apps.users.domain.interfaces.password_service_interface import (
+    PasswordServiceInterface,
+)
+from apps.users.domain.interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
 
 
 class CreateUserUseCase:
+    # Messages
+    USER_ALREADY_EXISTS_MSG: str = "Email or username already exists."
+
     def __init__(
         self,
         repo: UserRepositoryInterface,
@@ -19,7 +26,7 @@ class CreateUserUseCase:
             user_data["email"],
             user_data["username"],
         ):
-            raise UserAlreadyExistsError("Email or username already exists.")
+            raise UserAlreadyExistsError(self.USER_ALREADY_EXISTS_MSG)
 
         user_data["password"] = self.password_service.hash_password(
             user_data["password"],
