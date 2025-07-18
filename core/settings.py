@@ -80,7 +80,9 @@ TEMPLATES: list = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-if "test" in sys.argv:
+IS_RUNNING_PYTEST: bool = any("pytest" or "test" in arg for arg in sys.argv)
+
+if IS_RUNNING_PYTEST:
     DATABASES: dict = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
