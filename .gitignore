@@ -1,8 +1,10 @@
 # Project specific
-.vscode
 README.md
-apps/cart
+TODO.md
+.vscode
 apps/orders
+repomix-output.md
+
 
 # Django
 *.log

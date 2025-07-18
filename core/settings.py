@@ -33,15 +33,16 @@ THIRD_PARTY_APPS: list = [
 ]
 
 LOCAL_APPS: list = [
-    "apps.users",
+    "apps.cart",
     "apps.catalog",
-    # "apps.cart",
+    "apps.users",
     # "apps.orders",
 ]
 
 INSTALLED_APPS: list = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIGRATION_MODULES: dict = {
+    "cart": "apps.cart.infrastructure.migrations",
     "catalog": "apps.catalog.infrastructure.migrations",
     "users": "apps.users.infrastructure.migrations",
 }
@@ -98,10 +99,7 @@ else:
 
 AUTH_PASSWORD_VALIDATORS: list = [
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "UserAttributeSimilarityValidator",
-        ),
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

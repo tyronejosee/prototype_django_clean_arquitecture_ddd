@@ -7,8 +7,9 @@ from django.urls import include, path
 
 urlpatterns: list = [
     path("admin/", admin.site.urls),
-    path("api/", include("apps.users.presentation.routers")),
+    path("api/", include("apps.cart.presentation.routers")),
     path("api/", include("apps.catalog.presentation.routers")),
+    path("api/", include("apps.users.presentation.routers")),
 ]
 
 if settings.DEBUG:
