@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import override
 from uuid import UUID
 
 from apps.cart.domain.entities.cart import Cart
@@ -22,6 +23,7 @@ class CartRepository(CartRepositoryInterface):
     CART_ALREADY_EXISTS_MSG: str = "Cart already exists."
     ITEM_NOT_FOUND_MSG: str = "Item not found."
 
+    @override
     def get_by_user(self, user_id: UUID) -> Cart:
         cart_model = (
             CartModel.objects.filter(user_id=user_id).order_by("-updated_at").first()
@@ -30,6 +32,7 @@ class CartRepository(CartRepositoryInterface):
             raise CartNotFoundError(self.CART_NOT_FOUND_MSG)
         return CartFactory.from_model(cart_model)
 
+    @override
     def create(self, cart: Cart) -> Cart:
         if CartModel.objects.filter(user_id=cart.user_id).exists():
             raise CartDomainError(self.CART_ALREADY_EXISTS_MSG)
@@ -49,6 +52,7 @@ class CartRepository(CartRepositoryInterface):
             )
         return CartFactory.from_model(cart_model)
 
+    @override
     def update(self, cart: Cart) -> Cart:
         try:
             cart_model = CartModel.objects.get(user_id=cart.user_id)
@@ -58,6 +62,7 @@ class CartRepository(CartRepositoryInterface):
         CartBuilderService.update_cart(cart_model, cart)
         return self.get_by_user(cart.user_id)
 
+    @override
     def patch_item(self, user_id: UUID, item_id: UUID, quantity: int) -> Cart:
         try:
             item = CartItemModel.objects.get(id=item_id)
@@ -67,6 +72,7 @@ class CartRepository(CartRepositoryInterface):
             raise CartItemNotFoundError(self.ITEM_NOT_FOUND_MSG) from err
         return self.get_by_user(user_id=user_id)
 
+    @override
     def delete_item(self, user_id: UUID, item_id: UUID) -> Cart:
         cart_item = CartItemModel.objects.filter(id=item_id)
         if not cart_item:
@@ -74,6 +80,7 @@ class CartRepository(CartRepositoryInterface):
         cart_item.delete()
         return self.get_by_user(user_id=user_id)
 
+    @override
     def preview(self, cart: Cart) -> dict:
         # ! TODO: Implement preview logic and service
         tax = Decimal(0.19)

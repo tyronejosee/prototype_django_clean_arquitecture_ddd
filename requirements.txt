@@ -8,6 +8,7 @@ djangorestframework-simplejwt>=5.5.0
 python-decouple>=3.8
 bcrypt>=4.3.0
 Pillow>=9.0.0
+psutil>=7.0.0
 
 # Database
 psycopg2-binary>=2.9.0

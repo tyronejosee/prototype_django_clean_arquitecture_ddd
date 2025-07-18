@@ -1,4 +1,39 @@
-# === Coverage ===
+[project]
+name = "django-clean-arquitecture-ddd"
+version = "0.1.0"
+description = "This repository implements a Django application following the principles of Clean Architecture and Domain-Driven Design (DDD). It serves as a practical example of how to structure a robust and maintainable application."
+readme = "README.md"
+authors = [{ name = "Tyrone Jose" }]
+requires-python = ">=3.13"
+
+dependencies = [
+  # === Framework ===
+  "Django>=4.2,<5.0",
+  "djangorestframework>=3.14.0",
+  "django-cors-headers>=4.0.0",
+  "djangorestframework-simplejwt>=5.5.0",
+
+  # === Utils ===
+  "python-decouple>=3.8",
+  "bcrypt>=4.3.0",
+  "Pillow>=9.0.0",
+
+  # === Database ===
+  "psycopg2-binary>=2.9.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  # === Testing ===
+  "pytest>=8.3.4",
+  "pytest-django>=4.5.2",
+  "pytest-cov>=6.2.1",
+  "coverage==7.6.7",
+  "django-coverage-plugin==3.1.1",
+  "pytest-xdist==3.6.1",
+  "factory-boy==3.3.0"
+]
+
 [tool.coverage.run]
 omit = ["*/migrations/*", "*/tests/*"]
 plugins = ["django_coverage_plugin"]
@@ -8,7 +43,6 @@ source = ["apps"]
 show_missing = true
 skip_covered = true
 
-# === Ruff ===
 [tool.ruff]
 exclude = [
   ".bzr",

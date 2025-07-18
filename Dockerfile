@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.13.5-slim-bookworm
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONDONTWRITEBYTECODE=1 \
