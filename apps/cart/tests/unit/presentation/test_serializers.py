@@ -1,3 +1,4 @@
+from decimal import Decimal
 from uuid import uuid4
 
 from apps.cart.presentation.serializers.cart_serializer import (
@@ -12,6 +13,7 @@ def test_cart_item_serializer_valid_data() -> None:
     data = {
         "product_id": uuid4(),
         "quantity": 2,
+        "unit_price": Decimal("10.00"),
     }
     serializer = CartItemSerializer(data=data)
     assert serializer.is_valid(), serializer.errors
@@ -31,6 +33,7 @@ def test_cart_serializer_valid_data() -> None:
             {
                 "product_id": uuid4(),
                 "quantity": 1,
+                "unit_price": Decimal("5.00"),
             }
         ],
     }
@@ -61,7 +64,13 @@ def test_cart_item_patch_serializer_invalid() -> None:
 def test_cart_preview_serializer_valid() -> None:
     data = {
         "user_id": uuid4(),
-        "items": [{"product_id": uuid4(), "quantity": 2}],
+        "items": [
+            {
+                "product_id": uuid4(),
+                "quantity": 2,
+                "unit_price": Decimal("10.00"),
+            }
+        ],
     }
     serializer = CartPreviewSerializer(data=data)
     assert serializer.is_valid(), serializer.errors

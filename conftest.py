@@ -1,3 +1,6 @@
+from unittest.mock import Mock
+from uuid import uuid4
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
@@ -35,9 +38,18 @@ def superuser_client(superuser: AbstractUser) -> APIClient:
 def user_client(user: AbstractUser) -> APIClient:
     client = APIClient()
     client.force_authenticate(user=user)
+    client.user = user  # type: ignore
     return client
 
 
 @pytest.fixture()
 def anon_client() -> APIClient:
     return APIClient()
+
+
+@pytest.fixture()
+def fake_user() -> Mock:
+    user = Mock()
+    user.id = uuid4()
+    user.pk = str(user.id)
+    return user

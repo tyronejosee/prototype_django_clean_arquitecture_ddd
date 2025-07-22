@@ -5,11 +5,7 @@ class CartItemSerializer(serializers.Serializer):
     id = serializers.UUIDField(read_only=True)
     product_id = serializers.UUIDField()
     quantity = serializers.IntegerField(min_value=1)
-    unit_price = serializers.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        read_only=True,
-    )
+    unit_price = serializers.DecimalField(max_digits=10, decimal_places=2)
     total_price = serializers.DecimalField(
         max_digits=12,
         decimal_places=2,

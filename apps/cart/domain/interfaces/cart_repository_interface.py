@@ -22,3 +22,6 @@ class CartRepositoryInterface(ABC):
 
     @abstractmethod
     def preview(self, cart: Cart) -> dict: ...
+
+    @abstractmethod
+    def clear(self, user_id: UUID) -> None: ...

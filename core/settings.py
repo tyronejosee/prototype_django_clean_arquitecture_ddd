@@ -36,8 +36,8 @@ LOCAL_APPS: list = [
     "apps.cart",
     "apps.catalog",
     "apps.common",
+    "apps.orders",
     "apps.users",
-    # "apps.orders",
 ]
 
 INSTALLED_APPS: list = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -45,6 +45,7 @@ INSTALLED_APPS: list = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIGRATION_MODULES: dict = {
     "cart": "apps.cart.infrastructure.migrations",
     "catalog": "apps.catalog.infrastructure.migrations",
+    "orders": "apps.orders.infrastructure.migrations",
     "users": "apps.users.infrastructure.migrations",
 }
 
@@ -80,7 +81,7 @@ TEMPLATES: list = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-IS_RUNNING_PYTEST: bool = any("pytest" or "test" in arg for arg in sys.argv)
+IS_RUNNING_PYTEST: bool = any("pytest" in arg or "test" in arg for arg in sys.argv)
 
 if IS_RUNNING_PYTEST:
     DATABASES: dict = {
@@ -145,9 +146,12 @@ REST_FRAMEWORK: dict = {
         "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "5/second",
-        "user": "10/second",
-        "daily": "100/day",
+        "anon": "20/minute",
+        "user": "60/minute",
+        "create_order": "5/hour",
+        "list_orders": "5/minute",
+        "retrieve_order": "5/minute",
+        "cancel_order": "10/hour",
     },
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "NUM_PROXIES": None,

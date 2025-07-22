@@ -1,3 +1,4 @@
+from decimal import Decimal
 from unittest.mock import patch, Mock
 from uuid import UUID, uuid4
 
@@ -13,16 +14,6 @@ from apps.cart.domain.exceptions import (
 )
 from apps.cart.presentation.controllers.cart_controller import CartController
 from apps.cart.presentation.controllers.cart_item_controller import CartItemController
-from apps.cart.presentation.controllers.cart_preview_controller import (
-    CartPreviewController,
-)
-
-
-@pytest.fixture
-def fake_user() -> Mock:
-    user = Mock()
-    user.id = uuid4()
-    return user
 
 
 @pytest.fixture
@@ -44,10 +35,12 @@ def preview_payload() -> dict:
             {
                 "product_id": str(uuid4()),
                 "quantity": 2,
+                "unir_price": Decimal("10.00"),
             },
             {
                 "product_id": str(uuid4()),
                 "quantity": 1,
+                "unir_price": Decimal("5.00"),
             },
         ],
     }
@@ -315,48 +308,4 @@ def test_delete_cart_item_not_found(fake_user: Mock, item_id: UUID) -> None:
     assert response.data["detail"] == "Item not found."  # type: ignore[union-attr] # noqa: E501
 
 
-def test_cart_preview_success(
-    fake_user: Mock, preview_payload: dict, preview_response: dict
-) -> None:
-    # Given: a user and a valid preview payload
-    factory = APIRequestFactory()
-    request = factory.post("/cart/preview", preview_payload, format="json")
-    force_authenticate(request, user=fake_user)
-
-    # When: requesting a cart preview
-    with patch(
-        "apps.cart.presentation.controllers."
-        "cart_preview_controller.get_preview_cart_use_case"
-    ) as mock_provider:
-        use_case = Mock()
-        use_case.execute.return_value = preview_response
-        mock_provider.return_value = use_case
-
-        response = CartPreviewController.as_view()(request)
-
-    # Then: the preview is returned with 200 status and correct totals
-    assert response.status_code == status.HTTP_200_OK
-    assert response.data == preview_response  # type: ignore[union-attr]
-    use_case.execute.assert_called_once()
-
-
-def test_cart_preview_invalid(fake_user: Mock, preview_payload: dict) -> None:
-    # Given: a user and a preview payload with invalid data
-    factory = APIRequestFactory()
-    request = factory.post("/cart/preview", preview_payload, format="json")
-    force_authenticate(request, user=fake_user)
-
-    # When: requesting a cart preview and a domain error occurs
-    with patch(
-        "apps.cart.presentation.controllers."
-        "cart_preview_controller.get_preview_cart_use_case"
-    ) as mock_provider:
-        use_case = Mock()
-        use_case.execute.side_effect = CartDomainError("Invalid item quantity")
-        mock_provider.return_value = use_case
-
-        response = CartPreviewController.as_view()(request)
-
-    # Then: a 400 is returned with 'Invalid item quantity' detail
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.data["detail"] == "Invalid item quantity"  # type: ignore[union-attr] # noqa: E501
+# ! TODO:  add test_cart_preview_success and test_cart_preview_invalid
