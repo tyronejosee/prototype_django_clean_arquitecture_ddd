@@ -1,5 +1,5 @@
 [project]
-name = "django-clean-arquitecture-ddd"
+name = "project_marketly"
 version = "0.1.0"
 description = "This repository implements a Django application following the principles of Clean Architecture and Domain-Driven Design (DDD). It serves as a practical example of how to structure a robust and maintainable application."
 readme = "README.md"
@@ -33,6 +33,13 @@ dev = [
   "pytest-xdist==3.6.1",
   "factory-boy==3.3.0"
 ]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["apps", "core"]
 
 [tool.coverage.run]
 omit = ["*/migrations/*", "*/tests/*"]
