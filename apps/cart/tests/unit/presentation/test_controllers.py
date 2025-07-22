@@ -1,3 +1,4 @@
+from decimal import Decimal
 from unittest.mock import patch, Mock
 from uuid import UUID, uuid4
 
@@ -19,13 +20,6 @@ from apps.cart.presentation.controllers.cart_preview_controller import (
 
 
 @pytest.fixture
-def fake_user() -> Mock:
-    user = Mock()
-    user.id = uuid4()
-    return user
-
-
-@pytest.fixture
 def fake_cart(fake_user: Mock) -> Cart:
     return Cart(
         id=uuid4(),
@@ -44,10 +38,12 @@ def preview_payload() -> dict:
             {
                 "product_id": str(uuid4()),
                 "quantity": 2,
+                "unir_price": Decimal("10.00"),
             },
             {
                 "product_id": str(uuid4()),
                 "quantity": 1,
+                "unir_price": Decimal("5.00"),
             },
         ],
     }

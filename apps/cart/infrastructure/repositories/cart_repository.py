@@ -92,3 +92,11 @@ class CartRepository(CartRepositoryInterface):
             "taxes": taxes,
             "total": grand_total,
         }
+
+    @override
+    def clear(self, user_id: UUID) -> None:
+        try:
+            cart_model = CartModel.objects.get(user_id=user_id)
+            cart_model.items.all().delete()  # type: ignore
+        except CartModel.DoesNotExist as err:
+            raise CartNotFoundError(self.CART_NOT_FOUND_MSG) from err

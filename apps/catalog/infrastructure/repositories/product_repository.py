@@ -1,3 +1,4 @@
+from typing import override
 from uuid import UUID
 
 from django.db.models import Q
@@ -15,6 +16,7 @@ class ProductRepository(ProductRepositoryInterface):
     # Messages
     PRODUCT_NOT_FOUND_MSG: str = "Product not found."
 
+    @override
     def get_by_id(self, product_id: UUID) -> Product | None:
         try:
             product_model = ProductModel.objects.get(
@@ -25,6 +27,7 @@ class ProductRepository(ProductRepositoryInterface):
         except ProductModel.DoesNotExist as error:
             raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
+    @override
     def list_all(self, filters: dict) -> list[Product]:
         queryset = self._apply_filters(
             ProductModel.objects.filter(is_active=True),
@@ -32,6 +35,7 @@ class ProductRepository(ProductRepositoryInterface):
         )
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
+    @override
     def create(self, product: Product) -> Product:
         product_model = ProductModel.objects.create(
             id=product.id,
@@ -51,6 +55,7 @@ class ProductRepository(ProductRepositoryInterface):
         )
         return ProductFactory.from_model(product_model)
 
+    @override
     def update(self, product_id: UUID, product: Product) -> Product | None:
         updated = ProductModel.objects.filter(pk=product_id).update(
             name=product.name,
@@ -72,6 +77,7 @@ class ProductRepository(ProductRepositoryInterface):
             return ProductFactory.from_model(product_model)
         return None
 
+    @override
     def delete(self, product_id: UUID) -> None:
         try:
             product_model = ProductModel.objects.get(pk=product_id)
@@ -80,6 +86,11 @@ class ProductRepository(ProductRepositoryInterface):
         except ProductModel.DoesNotExist as error:
             raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
+    @override
+    def exists(self, product_id: UUID) -> bool:
+        return ProductModel.objects.filter(pk=product_id, is_active=True).exists()
+
+    @override
     def list_featured(self) -> list[Product]:
         return [
             ProductFactory.from_model(product_model)
@@ -89,6 +100,7 @@ class ProductRepository(ProductRepositoryInterface):
             )
         ]
 
+    @override
     def list_by_category(self, category_id: UUID) -> list[Product]:
         return [
             ProductFactory.from_model(product_model)

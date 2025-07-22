@@ -21,6 +21,9 @@ class ProductRepositoryInterface(ABC):
     def delete(self, product_id: UUID) -> None: ...
 
     @abstractmethod
+    def exists(self, product_id: UUID) -> bool: ...
+
+    @abstractmethod
     def list_featured(self) -> list[Product]: ...
 
     @abstractmethod
