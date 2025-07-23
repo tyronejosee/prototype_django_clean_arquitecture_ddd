@@ -40,7 +40,7 @@ class OrderRepository(OrderRepositoryInterface):
             model = OrderModel.objects.prefetch_related("items").get(id=order_id)
         except OrderModel.DoesNotExist as error:
             raise OrderNotFoundError(
-                self.ORDER_NOT_FOUND_MSG.format(order_id=order_id)
+                self.ORDER_NOT_FOUND_MSG.format(order_id=order_id),
             ) from error
 
         return OrderFactory.from_model(model)

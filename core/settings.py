@@ -37,6 +37,7 @@ LOCAL_APPS: list = [
     "apps.catalog",
     "apps.common",
     "apps.orders",
+    "apps.payments",
     "apps.users",
 ]
 
@@ -46,6 +47,7 @@ MIGRATION_MODULES: dict = {
     "cart": "apps.cart.infrastructure.migrations",
     "catalog": "apps.catalog.infrastructure.migrations",
     "orders": "apps.orders.infrastructure.migrations",
+    "payments": "apps.payments.infrastructure.migrations",
     "users": "apps.users.infrastructure.migrations",
 }
 
@@ -140,7 +142,7 @@ REST_FRAMEWORK: dict = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
     "DEFAULT_CONTENT_LANGUAGE": "en",
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
