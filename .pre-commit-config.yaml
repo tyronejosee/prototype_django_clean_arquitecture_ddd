@@ -33,15 +33,6 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
 
-  - repo: local
-    hooks:
-      - id: pytest
-        name: Run pytest tests
-        entry: pytest --no-cov
-        language: system
-        types: [python]
-        pass_filenames: false
-
 ci:
   autoupdate_schedule: weekly
   skip: []

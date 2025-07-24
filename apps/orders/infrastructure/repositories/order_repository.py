@@ -40,7 +40,7 @@ class OrderRepository(OrderRepositoryInterface):
             model = OrderModel.objects.prefetch_related("items").get(id=order_id)
         except OrderModel.DoesNotExist as error:
             raise OrderNotFoundError(
-                self.ORDER_NOT_FOUND_MSG.format(order_id=order_id)
+                self.ORDER_NOT_FOUND_MSG.format(order_id=order_id),
             ) from error
 
         return OrderFactory.from_model(model)
@@ -68,3 +68,9 @@ class OrderRepository(OrderRepositoryInterface):
         model.status = OrderStatus.CANCELLED.value
         model.save()
         return self.get_by_id(order_id)
+
+    @override
+    def update_status(self, order_id: UUID, status: str) -> None:
+        model = OrderModel.objects.get(id=order_id)
+        model.status = status
+        model.save()

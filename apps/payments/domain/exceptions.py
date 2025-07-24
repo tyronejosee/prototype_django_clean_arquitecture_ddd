@@ -1,0 +1,2 @@
+class PaymentDomainError(Exception):
+    pass
