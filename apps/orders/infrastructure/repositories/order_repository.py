@@ -68,3 +68,9 @@ class OrderRepository(OrderRepositoryInterface):
         model.status = OrderStatus.CANCELLED.value
         model.save()
         return self.get_by_id(order_id)
+
+    @override
+    def update_status(self, order_id: UUID, status: str) -> None:
+        model = OrderModel.objects.get(id=order_id)
+        model.status = status
+        model.save()

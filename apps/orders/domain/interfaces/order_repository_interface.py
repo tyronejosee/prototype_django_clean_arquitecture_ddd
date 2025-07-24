@@ -19,3 +19,6 @@ class OrderRepositoryInterface(ABC):
 
     @abstractmethod
     def cancel(self, order_id: UUID) -> Order: ...
+
+    @abstractmethod
+    def update_status(self, order_id: UUID, status: str) -> None: ...

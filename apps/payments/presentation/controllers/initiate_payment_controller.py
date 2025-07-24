@@ -1,5 +1,6 @@
 from typing import ClassVar
 
+from django.db import transaction
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -17,6 +18,7 @@ from apps.payments.presentation.serializers.initiate_payment_serializer import (
 class InitiatePaymentController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
 
+    @transaction.atomic
     def post(self, request: Request) -> Response:
         serializer = InitiatePaymentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -27,7 +29,7 @@ class InitiatePaymentController(BaseController):
             result = use_case.execute(
                 order_id=data["order_id"],  # type: ignore[arg-type]
                 payment_method=data["payment_method"],  # type: ignore[arg-type]
-                payment_data=data["payment_data"],  # type: ignore[arg-type]
+                email=request.user.email,
             )
             return Response(result, status=status.HTTP_200_OK)
         except OrderNotFoundError as e:

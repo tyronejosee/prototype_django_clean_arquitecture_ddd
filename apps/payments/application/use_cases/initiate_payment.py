@@ -28,7 +28,7 @@ class InitiatePaymentUseCase:
         self.order_repo = order_repo
         self.transaction_repo = transaction_repo
 
-    def execute(self, order_id: UUID, payment_method: str, payment_data: dict) -> dict:
+    def execute(self, order_id: UUID, payment_method: str, email: str) -> dict:
         order = self.order_repo.get_by_id(order_id)
         if not order:
             raise OrderNotFoundError(self.ORDER_NOT_FOUND_MSG.format(order_id=order_id))
@@ -44,11 +44,7 @@ class InitiatePaymentUseCase:
             )
 
         strategy = STRATEGY_MAP[payment_method]
-        result = strategy.initiate(
-            order_id=order_id,
-            amount=order.total(),
-            payment_data=payment_data,
-        )
+        result = strategy.initiate(order_id=order_id, amount=order.total())
         transaction = TransactionFactory.from_dict(
             {
                 "external_id": result["external_id"],
@@ -56,7 +52,7 @@ class InitiatePaymentUseCase:
                 "amount": order.total(),
                 "status": result["status"],
                 "payment_method": payment_method,
-                "payer_email": result.get("payer_email"),
+                "payer_email": email,
             },
         )
         self.transaction_repo.create(transaction)

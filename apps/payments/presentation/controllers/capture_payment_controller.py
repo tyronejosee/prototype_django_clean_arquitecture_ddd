@@ -1,5 +1,6 @@
 from typing import ClassVar
 
+from django.db import transaction
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
@@ -16,6 +17,7 @@ from apps.payments.presentation.serializers.capture_payment_serializer import (
 class CapturePaymentController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
 
+    @transaction.atomic
     def post(self, request: Request) -> Response:
         serializer = CapturePaymentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -1,5 +1,8 @@
 from functools import lru_cache
 
+from apps.catalog.infrastructure.repositories.product_repository import (
+    ProductRepository,
+)
 from apps.orders.infrastructure.repositories.order_repository import OrderRepository
 from apps.payments.application.use_cases.capture_payment import CapturePaymentUseCase
 from apps.payments.application.use_cases.initiate_payment import InitiatePaymentUseCase
@@ -11,6 +14,11 @@ from apps.payments.infrastructure.repositories.transaction_repository import (
 @lru_cache
 def get_order_repository() -> OrderRepository:
     return OrderRepository()
+
+
+@lru_cache
+def get_product_repository() -> ProductRepository:
+    return ProductRepository()
 
 
 @lru_cache
@@ -26,4 +34,8 @@ def get_initiate_payment_use_case() -> InitiatePaymentUseCase:
 
 
 def get_capture_payment_use_case() -> CapturePaymentUseCase:
-    return CapturePaymentUseCase()
+    return CapturePaymentUseCase(
+        transaction_repo=get_transaction_repository(),
+        order_repo=get_order_repository(),
+        product_repo=get_product_repository(),
+    )

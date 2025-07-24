@@ -1,6 +1,8 @@
 from typing import override
+from uuid import UUID
 
 from apps.payments.domain.entities.transaction import Transaction
+from apps.payments.domain.factories.transaction_factory import TransactionFactory
 from apps.payments.domain.interfaces.transaction_repository_interface import (
     TransactionRepositoryInterface,
 )
@@ -18,3 +20,15 @@ class TransactionRepository(TransactionRepositoryInterface):
             payer_email=transaction.payer_email,
             payment_method=transaction.payment_method,
         )
+
+    @override
+    def get_by_external_id(self, external_id: str) -> Transaction | None:
+        try:
+            model = TransactionModel.objects.get(external_id=external_id)
+        except TransactionModel.DoesNotExist:
+            return None
+        return TransactionFactory.from_model(model)
+
+    @override
+    def update_status(self, transaction_id: UUID, status: str) -> None:
+        TransactionModel.objects.filter(id=transaction_id).update(status=status)

@@ -8,7 +8,7 @@ from django.urls import include, path
 from .health_chech import health_check
 
 urlpatterns: list = [
-    path("/", health_check),
+    path("", health_check),
     path("admin/", admin.site.urls),
     path("api/", include("apps.cart.presentation.routers")),
     path("api/", include("apps.catalog.presentation.routers")),

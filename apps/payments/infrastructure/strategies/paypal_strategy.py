@@ -11,12 +11,7 @@ class PaypalStrategy(PaymentStrategy):
         self.gateway = PaypalGateway()
 
     @override
-    def initiate(
-        self,
-        order_id: UUID,
-        amount: Decimal,
-        payment_data: dict,
-    ) -> dict:
+    def initiate(self, order_id: UUID, amount: Decimal) -> dict:
         paypal_response = self.gateway.create_order(order_id, amount)
 
         approve_link = next(
@@ -26,17 +21,17 @@ class PaypalStrategy(PaymentStrategy):
         )
 
         return {
-            "payment_id": paypal_response["id"],
+            "external_id": paypal_response["id"],
             "status": "initiated",
             "redirect_url": approve_link,
         }
 
     @override
     def complete(self, data: dict) -> dict:
-        paypal_order_id = data["paypal_order_id"]
+        paypal_order_id = data["external_id"]
         capture_result = self.gateway.capture_order(paypal_order_id)
 
         return {
-            "payment_id": capture_result["id"],
+            "external_id": capture_result["id"],
             "status": capture_result["status"],
         }
