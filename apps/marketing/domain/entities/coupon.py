@@ -1,0 +1,33 @@
+from dataclasses import dataclass
+from datetime import UTC, datetime
+from uuid import UUID
+
+from apps.marketing.domain.exceptions import CouponDomainError
+from apps.marketing.domain.value_objects.coupon_code import CouponCode
+from apps.marketing.domain.value_objects.discount_percent import DiscountPercent
+
+
+@dataclass(kw_only=True, slots=True)
+class Coupon:
+    id: UUID
+    code: CouponCode
+    discount_percent: DiscountPercent
+    is_active: bool
+    max_uses: int | None = None
+    used_count: int = 0
+    user_id: UUID | None = None
+    expires_at: datetime
+
+    # Messages
+    COUPON_EXPIRED_MSG: str = "Coupon has expired."
+
+    def __post_init__(self) -> None:
+        self.validate()
+
+    def validate(self) -> None:
+        now: datetime = datetime.now(UTC)
+        if self.expires_at <= now:
+            raise CouponDomainError(self.COUPON_EXPIRED_MSG)
+
+    def is_valid(self, now: datetime) -> bool:
+        return self.is_active and now < self.expires_at
