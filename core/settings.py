@@ -136,6 +136,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 APPEND_SLASH = False
 
+THROTTLE_5_PER_MINUTE = "5/minute"
+THROTTLE_5_PER_HOUR = "5/hour"
+THROTTLE_10_PER_HOUR = "10/hour"
+
+MARKETING_THROTTLE_RATES: dict[str, str] = {
+    "create_coupon": THROTTLE_5_PER_HOUR,
+    "list_coupons": THROTTLE_5_PER_MINUTE,
+    "create_promotion": THROTTLE_5_PER_HOUR,
+    "list_promotions": THROTTLE_5_PER_MINUTE,
+}
+
+ORDERS_THROTTLE_RATES: dict[str, str] = {
+    "create_order": THROTTLE_5_PER_HOUR,
+    "list_orders": THROTTLE_5_PER_MINUTE,
+    "retrieve_order": THROTTLE_5_PER_MINUTE,
+    "cancel_order": THROTTLE_10_PER_HOUR,
+}
+
 REST_FRAMEWORK: dict = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -151,10 +169,8 @@ REST_FRAMEWORK: dict = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "20/minute",
         "user": "60/minute",
-        "create_order": "5/hour",
-        "list_orders": "5/minute",
-        "retrieve_order": "5/minute",
-        "cancel_order": "10/hour",
+        **ORDERS_THROTTLE_RATES,
+        **MARKETING_THROTTLE_RATES,
     },
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "NUM_PROXIES": None,

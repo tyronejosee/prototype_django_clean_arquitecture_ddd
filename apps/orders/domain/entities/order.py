@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
@@ -16,6 +16,11 @@ class Order:
     status: OrderStatus
     created_at: datetime | None = None
     updated_at: datetime | None = None
+
+    final_price: Decimal = Decimal("0.00")
+    applied_discounts: list[str] = field(default_factory=list)
+    coupon: dict | None = None
+    promotions: list[dict] = field(default_factory=list)
 
     # Messages
     CANNOT_CANCEL_ORDER_MESSAGE: str = "Cannot cancel a shipped or cancelled order."

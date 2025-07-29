@@ -4,6 +4,18 @@ from apps.cart.infrastructure.repositories.cart_repository import CartRepository
 from apps.catalog.infrastructure.repositories.product_repository import (
     ProductRepository,
 )
+from apps.marketing.application.providers import (
+    get_coupon_repository,
+    get_discount_handler_chain,
+    get_promotion_repository,
+)
+from apps.marketing.application.use_cases.apply_discounts import ApplyDiscountsUseCase
+from apps.marketing.application.use_cases.get_active_coupons import (
+    GetActiveCouponsUseCase,
+)
+from apps.marketing.application.use_cases.get_active_promotions import (
+    GetActivePromotionsUseCase,
+)
 from apps.orders.infrastructure.repositories.order_repository import OrderRepository
 
 from .use_cases.cancel_order import CancelOrderUseCase
@@ -28,11 +40,30 @@ def get_product_repository() -> ProductRepository:
     return ProductRepository()
 
 
+@lru_cache
+def get_apply_discounts_use_case() -> ApplyDiscountsUseCase:
+    return ApplyDiscountsUseCase(chain=get_discount_handler_chain())
+
+
+@lru_cache
+def get_get_active_coupons_use_case() -> GetActiveCouponsUseCase:
+    return GetActiveCouponsUseCase(coupon_repo=get_coupon_repository())
+
+
+@lru_cache
+def get_get_active_promotions_use_case() -> GetActivePromotionsUseCase:
+    return GetActivePromotionsUseCase(promotion_repo=get_promotion_repository())
+
+
 def get_create_order_use_case() -> CreateOrderUseCase:
+    # ! TODO: further separate bounded contexts
     return CreateOrderUseCase(
         order_repo=get_order_repository(),
         cart_repo=get_cart_repository(),
         product_repo=get_product_repository(),
+        discount_use_case=get_apply_discounts_use_case(),
+        coupon_use_case=get_get_active_coupons_use_case(),
+        promotions_use_case=get_get_active_promotions_use_case(),
     )
 
 
