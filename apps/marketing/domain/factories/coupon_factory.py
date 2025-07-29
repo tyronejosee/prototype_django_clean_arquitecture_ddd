@@ -11,7 +11,7 @@ class CouponFactory:
     def from_dict(data) -> Coupon:
         return Coupon(
             id=data.get("id", uuid4()),
-            code=CouponCode(data["coupon"]),
+            code=CouponCode(data["code"]),
             discount_percent=DiscountPercent(data["discount_percent"]),
             is_active=data.get("is_active", True),
             max_uses=data.get("max_uses", None),

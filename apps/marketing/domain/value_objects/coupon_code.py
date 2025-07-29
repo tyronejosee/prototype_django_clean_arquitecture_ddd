@@ -14,9 +14,11 @@ class CouponCode:
     COUPON_CODE_MIN_LENGTH: int = 4
 
     # Messages
-    COUPON_CODE_REQUIRED_MSG: str = "Coupon code is required."
-    COUPON_CODE_LENGTH_MSG: str = "Coupon code must be between 4 and 20 characters."
-    COUPON_CODE_INVALID_MSG: str = "Coupon code is invalid."
+    COUPON_CODE_REQUIRED_ERROR_MSG: str = "Coupon code is required."
+    COUPON_CODE_LENGTH_ERROR_MSG: str = (
+        "Coupon code must be between 4 and 20 characters."
+    )
+    COUPON_CODE_INVALID_ERROR_MSG: str = "Coupon code is invalid."
 
     def __str__(self) -> str:
         return self.value
@@ -26,11 +28,11 @@ class CouponCode:
 
     def _validate(self) -> None:
         if not self.value:
-            raise CouponDomainError(self.COUPON_CODE_REQUIRED_MSG)
+            raise CouponDomainError(self.COUPON_CODE_REQUIRED_ERROR_MSG)
         if (
             len(self.value) < self.COUPON_CODE_MIN_LENGTH
             or len(self.value) > self.COUPON_CODE_LENGTH
         ):
-            raise CouponDomainError(self.COUPON_CODE_LENGTH_MSG)
+            raise CouponDomainError(self.COUPON_CODE_LENGTH_ERROR_MSG)
         if not re.match(self.COUPON_CODE_REGEX, self.value):
-            raise CouponDomainError(self.COUPON_CODE_INVALID_MSG)
+            raise CouponDomainError(self.COUPON_CODE_INVALID_ERROR_MSG)

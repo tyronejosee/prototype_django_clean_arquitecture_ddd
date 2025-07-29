@@ -10,5 +10,5 @@ class CreatePromotionUseCase:
         self.promotion_repo = promotion_repo
 
     def execute(self, data: dict) -> Promotion:
-        coupon = PromotionFactory.from_dict(data)
-        return self.promotion_repo.create(coupon)
+        promotion = PromotionFactory.from_dict(data)
+        return self.promotion_repo.create(promotion)

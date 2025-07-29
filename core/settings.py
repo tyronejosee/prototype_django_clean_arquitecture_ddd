@@ -36,6 +36,7 @@ LOCAL_APPS: list = [
     "apps.cart",
     "apps.catalog",
     "apps.common",
+    "apps.marketing",
     "apps.orders",
     "apps.payments",
     "apps.users",
@@ -46,6 +47,7 @@ INSTALLED_APPS: list = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIGRATION_MODULES: dict = {
     "cart": "apps.cart.infrastructure.migrations",
     "catalog": "apps.catalog.infrastructure.migrations",
+    "marketing": "apps.marketing.infrastructure.migrations",
     "orders": "apps.orders.infrastructure.migrations",
     "payments": "apps.payments.infrastructure.migrations",
     "users": "apps.users.infrastructure.migrations",
@@ -142,7 +144,6 @@ REST_FRAMEWORK: dict = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
     "DEFAULT_CONTENT_LANGUAGE": "en",
-    # "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
@@ -200,23 +201,3 @@ PASSWORD_HASHERS: list = [
 ]
 
 AUTH_USER_MODEL = "users.UserModel"
-
-
-# STORAGES: dict = {
-#     "default": {
-#         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-#         "AWS_ACCESS_KEY_ID": config("AWS_ACCESS_KEY_ID", default=""),
-#         "AWS_SECRET_ACCESS_KEY": config("AWS_SECRET_ACCESS_KEY", default=""),
-#         "AWS_STORAGE_BUCKET_NAME": config("AWS_STORAGE_BUCKET_NAME", default=""),
-#         "AWS_S3_REGION_NAME": config("AWS_S3_REGION_NAME", default=""),
-#         "AWS_S3_ENDPOINT_URL": config("AWS_S3_ENDPOINT_URL", default=""),
-#         "AWS_S3_OBJECT_PARAMETERS": {
-#             "CacheControl": "max-age=86400",
-#         },
-#     },
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#         "LOCATION": "/static/",
-#         "ROOT_PATH": BASE_DIR,
-#     },
-# }

@@ -45,7 +45,7 @@ class CouponRepository(CouponRepositoryInterface):
         coupon_model = CouponModel.objects.create(
             id=coupon.id,
             code=coupon.code,
-            discount_percent=coupon.discount_percent,
+            discount_percent=coupon.discount_percent.value,
             is_active=coupon.is_active,
             max_uses=coupon.max_uses,
             used_count=coupon.used_count,

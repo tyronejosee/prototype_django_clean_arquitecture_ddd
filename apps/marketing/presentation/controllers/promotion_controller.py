@@ -17,8 +17,8 @@ from apps.marketing.presentation.serializers.promotion_serializer import (
 class PromotionListController(BaseController):
     def get_permissions(self) -> list:
         if self.request.method == "POST":
-            return [IsAdminUser]
-        return [IsAuthenticated]
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
     def get(self, request: Request) -> Response:
         use_case = get_get_active_promotions_use_case()

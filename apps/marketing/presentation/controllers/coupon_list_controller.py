@@ -15,15 +15,15 @@ from apps.marketing.presentation.serializers.coupon_serializer import CouponSeri
 class CouponListController(BaseController):
     def get_permissions(self) -> list:
         if self.request.method == "POST":
-            return [IsAdminUser]
-        return [IsAuthenticated]
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request, *args, **kwargs) -> Response:
         use_case = get_get_active_coupons_use_case()
         coupons = use_case.execute(user_id=request.user.id)
         return Response(CouponSerializer(coupons, many=True).data)
 
-    def post(self, request: Request) -> Response:
+    def post(self, request: Request, *args, **kwargs) -> Response:
         serializer = CouponSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

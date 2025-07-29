@@ -12,6 +12,7 @@ urlpatterns: list = [
     path("admin/", admin.site.urls),
     path("api/", include("apps.cart.presentation.routers")),
     path("api/", include("apps.catalog.presentation.routers")),
+    path("api/", include("apps.marketing.presentation.routers")),
     path("api/", include("apps.orders.presentation.routers")),
     path("api/", include("apps.payments.presentation.routers")),
     path("api/", include("apps.users.presentation.routers")),
