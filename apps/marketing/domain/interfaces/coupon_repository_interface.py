@@ -13,3 +13,6 @@ class CouponRepositoryInterface(ABC):
 
     @abstractmethod
     def create(self, coupon: Coupon) -> Coupon: ...
+
+    @abstractmethod
+    def exists_by_code(self, code: str) -> bool: ...

@@ -22,6 +22,7 @@ class PromotionRepository(PromotionRepositoryInterface):
             id=promotion.id,
             name=promotion.name,
             description=promotion.description,
+            discount_percent=promotion.discount_percent.value,
             is_active=promotion.is_active,
             starts_at=promotion.starts_at,
             ends_at=promotion.ends_at,

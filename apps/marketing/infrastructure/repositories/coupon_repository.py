@@ -53,3 +53,7 @@ class CouponRepository(CouponRepositoryInterface):
             expires_at=coupon.expires_at,
         )
         return CouponFactory.from_model(coupon_model)
+
+    @override
+    def exists_by_code(self, code: str) -> bool:
+        return CouponModel.objects.filter(code=code, is_active=True).exists()

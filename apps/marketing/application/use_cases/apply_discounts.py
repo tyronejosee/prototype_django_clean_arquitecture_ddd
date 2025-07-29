@@ -7,6 +7,7 @@ class ApplyDiscountsUseCase:
 
     def execute(self, order: dict) -> dict:
         result = self.chain.apply(order)
-        order["final_price"] = result.final_price
-        order["applied_discounts"] = result.applied_discounts
-        return order
+        return {
+            "final_price": result.final_price,
+            "applied_discounts": result.applied_discounts,
+        }

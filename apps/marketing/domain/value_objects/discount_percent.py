@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-from apps.marketing.domain.exceptions import CouponDomainError
+from apps.marketing.domain.exceptions import MarketingDomainError
 
 
 @dataclass(frozen=True, slots=True)
@@ -10,7 +10,7 @@ class DiscountPercent:
 
     # Constants
     MIN_DISCOUNT_PERCENT: Decimal = Decimal("0")
-    MAX_DISCOUNT_PERCENT: Decimal = Decimal("0.7")
+    MAX_DISCOUNT_PERCENT: Decimal = Decimal("0.5")
 
     # Messages
     DISCOUNT_PERCENT_INVALID_ERROR_MSG: str = (
@@ -25,7 +25,7 @@ class DiscountPercent:
 
     def _validate(self) -> None:
         if not self.MIN_DISCOUNT_PERCENT < self.value <= self.MAX_DISCOUNT_PERCENT:
-            raise CouponDomainError(
+            raise MarketingDomainError(
                 self.DISCOUNT_PERCENT_INVALID_ERROR_MSG.format(
                     min=self.MIN_DISCOUNT_PERCENT,
                     max=self.MAX_DISCOUNT_PERCENT,

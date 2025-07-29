@@ -1,3 +1,7 @@
+class MarketingDomainError(Exception):
+    pass
+
+
 class CouponDomainError(Exception):
     pass
 
