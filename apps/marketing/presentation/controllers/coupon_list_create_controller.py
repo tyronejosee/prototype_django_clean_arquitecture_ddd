@@ -1,3 +1,5 @@
+from typing import cast
+
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
@@ -17,7 +19,7 @@ from apps.marketing.presentation.throttles import (
 )
 
 
-class CouponListController(BaseController):
+class CouponListCreateController(BaseController):
     throttle_map: dict = {
         "GET": ListCouponsRateThrottle,
         "POST": CreateCouponRateThrottle,
@@ -41,9 +43,8 @@ class CouponListController(BaseController):
 
         use_case = get_create_coupon_use_case()
         try:
-            coupon = use_case.execute(
-                data=serializer.validated_data,  # type: ignore[arg-type]
-            )
+            data = cast(dict, serializer.validated_data)
+            coupon = use_case.execute(data=data)
             return Response(CouponSerializer(coupon).data, status=201)
         except (CouponDomainError, MarketingDomainError) as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)

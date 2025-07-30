@@ -19,7 +19,7 @@ class CouponRepository(CouponRepositoryInterface):
 
     @override
     def get_active_by_user(self, user_id: UUID) -> list[Coupon]:
-        queryset = CouponModel.objects.filter(
+        queryset: models.BaseManager[CouponModel] = CouponModel.objects.filter(
             is_active=True,
         ).filter(models.Q(user_id=user_id) | models.Q(user_id__isnull=True))
 

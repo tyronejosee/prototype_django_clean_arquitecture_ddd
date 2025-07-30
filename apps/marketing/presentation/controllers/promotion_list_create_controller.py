@@ -1,3 +1,5 @@
+from typing import cast
+
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
@@ -19,7 +21,7 @@ from apps.marketing.presentation.throttles import (
 )
 
 
-class PromotionListController(BaseController):
+class PromotionListCreateController(BaseController):
     throttle_map: dict = {
         "GET": ListPromotionsRateThrottle,
         "POST": CreatePromotionRateThrottle,
@@ -43,9 +45,8 @@ class PromotionListController(BaseController):
 
         use_case = get_create_promotion_use_case()
         try:
-            promotion = use_case.execute(
-                data=serializer.validated_data,  # type: ignore[arg-type]
-            )
+            data = cast(dict, serializer.validated_data)
+            promotion = use_case.execute(data=data)
             return Response(
                 PromotionSerializer(promotion).data,
                 status=status.HTTP_201_CREATED,

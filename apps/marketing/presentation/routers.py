@@ -1,10 +1,10 @@
 from django.urls import path
 
-from apps.marketing.presentation.controllers.coupon_list_controller import (
-    CouponListController,
+from apps.marketing.presentation.controllers.coupon_list_create_controller import (
+    CouponListCreateController,
 )
-from apps.marketing.presentation.controllers.promotion_controller import (
-    PromotionListController,
+from apps.marketing.presentation.controllers.promotion_list_create_controller import (
+    PromotionListCreateController,
 )
 
 app_name = "marketing"
@@ -12,12 +12,12 @@ app_name = "marketing"
 urlpatterns: list = [
     path(
         "coupons",
-        CouponListController.as_view(),
+        CouponListCreateController.as_view(),
         name="coupon-list",
     ),
     path(
         "promotions",
-        PromotionListController.as_view(),
+        PromotionListCreateController.as_view(),
         name="promotion-list",
     ),
 ]
