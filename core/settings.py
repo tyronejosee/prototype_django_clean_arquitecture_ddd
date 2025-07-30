@@ -36,6 +36,7 @@ LOCAL_APPS: list = [
     "apps.cart",
     "apps.catalog",
     "apps.common",
+    "apps.marketing",
     "apps.orders",
     "apps.payments",
     "apps.users",
@@ -46,6 +47,7 @@ INSTALLED_APPS: list = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIGRATION_MODULES: dict = {
     "cart": "apps.cart.infrastructure.migrations",
     "catalog": "apps.catalog.infrastructure.migrations",
+    "marketing": "apps.marketing.infrastructure.migrations",
     "orders": "apps.orders.infrastructure.migrations",
     "payments": "apps.payments.infrastructure.migrations",
     "users": "apps.users.infrastructure.migrations",
@@ -134,6 +136,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 APPEND_SLASH = False
 
+THROTTLE_5_PER_MINUTE = "5/minute"
+THROTTLE_5_PER_HOUR = "5/hour"
+THROTTLE_10_PER_HOUR = "10/hour"
+
+MARKETING_THROTTLE_RATES: dict[str, str] = {
+    "create_coupon": THROTTLE_5_PER_HOUR,
+    "list_coupons": THROTTLE_5_PER_MINUTE,
+    "create_promotion": THROTTLE_5_PER_HOUR,
+    "list_promotions": THROTTLE_5_PER_MINUTE,
+}
+
+ORDERS_THROTTLE_RATES: dict[str, str] = {
+    "create_order": THROTTLE_5_PER_HOUR,
+    "list_orders": THROTTLE_5_PER_MINUTE,
+    "retrieve_order": THROTTLE_5_PER_MINUTE,
+    "cancel_order": THROTTLE_10_PER_HOUR,
+}
+
 REST_FRAMEWORK: dict = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -142,7 +162,6 @@ REST_FRAMEWORK: dict = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
     "DEFAULT_CONTENT_LANGUAGE": "en",
-    # "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
@@ -150,10 +169,8 @@ REST_FRAMEWORK: dict = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "20/minute",
         "user": "60/minute",
-        "create_order": "5/hour",
-        "list_orders": "5/minute",
-        "retrieve_order": "5/minute",
-        "cancel_order": "10/hour",
+        **ORDERS_THROTTLE_RATES,
+        **MARKETING_THROTTLE_RATES,
     },
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "NUM_PROXIES": None,
@@ -200,23 +217,3 @@ PASSWORD_HASHERS: list = [
 ]
 
 AUTH_USER_MODEL = "users.UserModel"
-
-
-# STORAGES: dict = {
-#     "default": {
-#         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-#         "AWS_ACCESS_KEY_ID": config("AWS_ACCESS_KEY_ID", default=""),
-#         "AWS_SECRET_ACCESS_KEY": config("AWS_SECRET_ACCESS_KEY", default=""),
-#         "AWS_STORAGE_BUCKET_NAME": config("AWS_STORAGE_BUCKET_NAME", default=""),
-#         "AWS_S3_REGION_NAME": config("AWS_S3_REGION_NAME", default=""),
-#         "AWS_S3_ENDPOINT_URL": config("AWS_S3_ENDPOINT_URL", default=""),
-#         "AWS_S3_OBJECT_PARAMETERS": {
-#             "CacheControl": "max-age=86400",
-#         },
-#     },
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#         "LOCATION": "/static/",
-#         "ROOT_PATH": BASE_DIR,
-#     },
-# }

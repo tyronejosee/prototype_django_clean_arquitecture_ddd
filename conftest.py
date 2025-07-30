@@ -1,4 +1,5 @@
-from unittest.mock import Mock
+from collections.abc import Generator
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
@@ -53,3 +54,15 @@ def fake_user() -> Mock:
     user.id = uuid4()
     user.pk = str(user.id)
     return user
+
+
+@pytest.fixture(autouse=True)
+def mock_paypal_gateway() -> Generator:
+    with patch(
+        "apps.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
+    ) as mock_class:
+        mock_instance = Mock()
+        mock_instance.create_order.return_value = {"status": "MOCKED"}
+        mock_instance.capture_order.return_value = {"status": "MOCKED"}
+        mock_class.return_value = mock_instance
+        yield

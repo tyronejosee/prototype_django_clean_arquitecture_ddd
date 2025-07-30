@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from decimal import Decimal
 from uuid import uuid4
 
 from apps.orders.domain.entities.order import Order
@@ -26,6 +27,10 @@ class OrderFactory:
             ],
             created_at=data.get("created_at", datetime.now(UTC)),
             updated_at=data.get("updated_at", datetime.now(UTC)),
+            final_price=data.get("final_price", Decimal("0.00")),
+            applied_discounts=data.get("applied_discounts", []),
+            coupon=data.get("coupon"),
+            promotions=data.get("promotions", []),
         )
 
     @staticmethod

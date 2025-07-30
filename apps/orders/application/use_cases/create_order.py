@@ -6,6 +6,13 @@ from apps.cart.domain.interfaces.cart_repository_interface import (
 from apps.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
+from apps.marketing.application.use_cases.apply_discounts import ApplyDiscountsUseCase
+from apps.marketing.application.use_cases.get_active_coupons import (
+    GetActiveCouponsUseCase,
+)
+from apps.marketing.application.use_cases.get_active_promotions import (
+    GetActivePromotionsUseCase,
+)
 from apps.orders.domain.entities.order import Order
 from apps.orders.domain.exceptions import OrderDomainError
 from apps.orders.domain.factories.order_factory import OrderFactory
@@ -26,10 +33,16 @@ class CreateOrderUseCase:
         order_repo: OrderRepositoryInterface,
         cart_repo: CartRepositoryInterface,
         product_repo: ProductRepositoryInterface,
+        discount_use_case: ApplyDiscountsUseCase,
+        coupon_use_case: GetActiveCouponsUseCase,
+        promotions_use_case: GetActivePromotionsUseCase,
     ) -> None:
         self.order_repo = order_repo
         self.cart_repo = cart_repo
         self.product_repo = product_repo
+        self.discount_use_case = discount_use_case
+        self.coupon_use_case = coupon_use_case
+        self.promotions_use_case = promotions_use_case
 
     def execute(self, user_id: UUID) -> Order:
         cart = self.cart_repo.get_by_user(user_id)
@@ -42,6 +55,9 @@ class CreateOrderUseCase:
                     self.PRODUCT_DOES_NOT_EXIST_MSG.format(product_id=item.product_id),
                 )
 
+        coupon = self._get_coupon(user_id)
+        promotions = self._get_promotions()
+
         order = OrderFactory.from_dict(
             {
                 "user_id": user_id,
@@ -53,8 +69,24 @@ class CreateOrderUseCase:
                     }
                     for item in cart.items
                 ],
+                "coupon": coupon,
+                "promotions": promotions,
             },
         )
-        created_order = self.order_repo.create(order)
+        # Apply discounts
+        result = self.discount_use_case.execute(order)
+        order.final_price = result["final_price"]
+        order.applied_discounts = result["applied_discounts"]
+
+        # ! TODO: refactor this
+
+        created_order: Order = self.order_repo.create(order)
         self.cart_repo.clear(user_id)
         return created_order
+
+    def _get_coupon(self, user_id: UUID):
+        coupons = self.coupon_use_case.execute(user_id)
+        return coupons[0] if coupons else None
+
+    def _get_promotions(self):
+        return self.promotions_use_case.execute()
