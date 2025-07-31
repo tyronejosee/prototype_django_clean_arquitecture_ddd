@@ -1,0 +1,16 @@
+# Project
+
+/docs
+/logs
+/tests
+/venv
+/.venv
+/env
+/.git
+/.github
+/.vscode
+Dockerfile
+README.md
+conftest.py
+db.sqlite3
+__pycache__

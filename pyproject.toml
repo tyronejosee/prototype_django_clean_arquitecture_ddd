@@ -40,12 +40,12 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["apps", "core"]
+packages = ["src"]
 
 [tool.coverage.run]
 omit = ["*/migrations/*", "*/tests/*"]
 plugins = ["django_coverage_plugin"]
-source = ["apps"]
+source = ["src"]
 
 [tool.coverage.report]
 show_missing = true
@@ -79,11 +79,22 @@ exclude = [
   "staticfiles/*",
 ]
 indent-width = 4
-line-length = 88
+line-length = 120
 target-version = "py311"
 
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
 [tool.ruff.lint]
-ignore = ["RUF012"]
+ignore = [
+  "RUF012",
+  "PLR0913",
+  "TRY300",
+  "TRY301",
+  "COM812",
+  "ISC001",
+]
 select = [
   "F",
   "E",

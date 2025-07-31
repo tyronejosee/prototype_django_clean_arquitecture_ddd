@@ -10,12 +10,16 @@ from rest_framework.test import APIClient
 User = get_user_model()
 
 
+class TypedAPIClient(APIClient):
+    user: AbstractUser | None = None
+
+
 @pytest.fixture()
 def superuser() -> AbstractUser:
     return User.objects.create_superuser(
         email="test@example.com",
         username="testexample",
-        password="testexample124",
+        password="testexample124",  # noqa: S106
     )
 
 
@@ -24,7 +28,7 @@ def user() -> AbstractUser:
     return User.objects.create_user(
         email="another@example.com",
         username="anotherexample",
-        password="anotherexample124",
+        password="anotherexample124",  # noqa: S106
     )
 
 
@@ -36,10 +40,10 @@ def superuser_client(superuser: AbstractUser) -> APIClient:
 
 
 @pytest.fixture()
-def user_client(user: AbstractUser) -> APIClient:
-    client = APIClient()
+def user_client(user: AbstractUser) -> TypedAPIClient:
+    client = TypedAPIClient()
     client.force_authenticate(user=user)
-    client.user = user  # type: ignore
+    client.user = user
     return client
 
 
@@ -57,9 +61,9 @@ def fake_user() -> Mock:
 
 
 @pytest.fixture(autouse=True)
-def mock_paypal_gateway() -> Generator:
+def _mock_paypal_gateway() -> Generator:
     with patch(
-        "apps.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
+        "modules.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
     ) as mock_class:
         mock_instance = Mock()
         mock_instance.create_order.return_value = {"status": "MOCKED"}
