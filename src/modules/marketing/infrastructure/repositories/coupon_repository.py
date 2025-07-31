@@ -3,13 +3,14 @@ from typing import override
 from uuid import UUID
 
 from django.db import models
-from modules.marketing.domain.entities.coupon import Coupon
-from modules.marketing.domain.exceptions import CouponNotFoundError
-from modules.marketing.domain.factories.coupon_factory import CouponFactory
-from modules.marketing.domain.interfaces.coupon_repository_interface import (
+
+from src.modules.marketing.domain.entities.coupon import Coupon
+from src.modules.marketing.domain.exceptions import CouponNotFoundError
+from src.modules.marketing.domain.factories.coupon_factory import CouponFactory
+from src.modules.marketing.domain.interfaces.coupon_repository_interface import (
     CouponRepositoryInterface,
 )
-from modules.marketing.infrastructure.models.coupon_model import CouponModel
+from src.modules.marketing.infrastructure.models.coupon_model import CouponModel
 
 
 class CouponRepository(CouponRepositoryInterface):

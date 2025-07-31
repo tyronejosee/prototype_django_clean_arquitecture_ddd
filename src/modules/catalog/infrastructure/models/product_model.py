@@ -3,7 +3,8 @@ from uuid import uuid4
 
 from django.core.validators import MinValueValidator
 from django.db import models
-from modules.catalog.infrastructure.models.category_model import CategoryModel
+
+from src.modules.catalog.infrastructure.models.category_model import CategoryModel
 
 
 class ProductModel(models.Model):

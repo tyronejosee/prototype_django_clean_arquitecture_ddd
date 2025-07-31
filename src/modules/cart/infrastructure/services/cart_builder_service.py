@@ -1,5 +1,5 @@
-from modules.cart.domain.entities.cart import Cart
-from modules.cart.infrastructure.models import CartItemModel, CartModel
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.infrastructure.models import CartItemModel, CartModel
 
 
 class CartBuilderService:

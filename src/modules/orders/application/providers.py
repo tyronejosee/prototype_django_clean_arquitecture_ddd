@@ -1,30 +1,33 @@
 from functools import lru_cache
 
-from modules.cart.infrastructure.repositories.cart_repository import CartRepository
-from modules.catalog.infrastructure.repositories.product_repository import (
+from src.modules.cart.infrastructure.repositories.cart_repository import CartRepository
+from src.modules.catalog.infrastructure.repositories.product_repository import (
     ProductRepository,
 )
-from modules.marketing.application.providers import (
+from src.modules.marketing.application.providers import (
     get_coupon_repository,
     get_discount_handler_chain,
     get_promotion_repository,
 )
-from modules.marketing.application.use_cases.apply_discounts import (
+from src.modules.marketing.application.use_cases.apply_discounts import (
     ApplyDiscountsUseCase,
 )
-from modules.marketing.application.use_cases.get_active_coupons import (
+from src.modules.marketing.application.use_cases.get_active_coupons import (
     GetActiveCouponsUseCase,
 )
-from modules.marketing.application.use_cases.get_active_promotions import (
+from src.modules.marketing.application.use_cases.get_active_promotions import (
     GetActivePromotionsUseCase,
 )
-from modules.orders.infrastructure.repositories.order_repository import OrderRepository
-
-from .use_cases.cancel_order import CancelOrderUseCase
-from .use_cases.create_order import CreateOrderUseCase
-from .use_cases.get_order import GetOrderUseCase
-from .use_cases.list_orders import ListOrdersUseCase
-from .use_cases.update_order_status import UpdateOrderStatusUseCase
+from src.modules.orders.application.use_cases.cancel_order import CancelOrderUseCase
+from src.modules.orders.application.use_cases.create_order import CreateOrderUseCase
+from src.modules.orders.application.use_cases.get_order import GetOrderUseCase
+from src.modules.orders.application.use_cases.list_orders import ListOrdersUseCase
+from src.modules.orders.application.use_cases.update_order_status import (
+    UpdateOrderStatusUseCase,
+)
+from src.modules.orders.infrastructure.repositories.order_repository import (
+    OrderRepository,
+)
 
 
 @lru_cache

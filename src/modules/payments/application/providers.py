@@ -1,14 +1,18 @@
 from functools import lru_cache
 
-from modules.catalog.infrastructure.repositories.product_repository import (
+from src.modules.catalog.infrastructure.repositories.product_repository import (
     ProductRepository,
 )
-from modules.orders.infrastructure.repositories.order_repository import OrderRepository
-from modules.payments.application.use_cases.capture_payment import CapturePaymentUseCase
-from modules.payments.application.use_cases.initiate_payment import (
+from src.modules.orders.infrastructure.repositories.order_repository import (
+    OrderRepository,
+)
+from src.modules.payments.application.use_cases.capture_payment import (
+    CapturePaymentUseCase,
+)
+from src.modules.payments.application.use_cases.initiate_payment import (
     InitiatePaymentUseCase,
 )
-from modules.payments.infrastructure.repositories.transaction_repository import (
+from src.modules.payments.infrastructure.repositories.transaction_repository import (
     TransactionRepository,
 )
 

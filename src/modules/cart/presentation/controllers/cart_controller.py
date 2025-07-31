@@ -1,17 +1,18 @@
 from typing import ClassVar
 
-from modules.cart.application.providers import (
-    get_create_cart_use_case,
-    get_get_cart_use_case,
-    get_update_cart_use_case,
-)
-from modules.cart.domain.exceptions import CartDomainError, CartNotFoundError
-from modules.cart.presentation.serializers.cart_serializer import CartSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from src.modules.cart.application.providers import (
+    get_create_cart_use_case,
+    get_get_cart_use_case,
+    get_update_cart_use_case,
+)
+from src.modules.cart.domain.exceptions import CartDomainError, CartNotFoundError
+from src.modules.cart.presentation.serializers.cart_serializer import CartSerializer
 
 
 class CartController(APIView):

@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from modules.cart.domain.entities.cart import Cart
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
-from modules.cart.domain.value_objects.item_quantity import ItemQuantity
+from src.modules.cart.domain.value_objects.item_quantity import ItemQuantity
 
 
 class PatchCartItemUseCase:

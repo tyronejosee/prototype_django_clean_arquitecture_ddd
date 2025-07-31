@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from django.db import models
 
-from .cart_model import CartModel
+from src.modules.cart.infrastructure.models.cart_model import CartModel
 
 
 class CartItemModel(models.Model):

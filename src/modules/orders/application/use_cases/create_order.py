@@ -1,24 +1,24 @@
 from uuid import UUID
 
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
-from modules.catalog.domain.interfaces.product_repository_interface import (
+from src.modules.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
-from modules.marketing.application.use_cases.apply_discounts import (
+from src.modules.marketing.application.use_cases.apply_discounts import (
     ApplyDiscountsUseCase,
 )
-from modules.marketing.application.use_cases.get_active_coupons import (
+from src.modules.marketing.application.use_cases.get_active_coupons import (
     GetActiveCouponsUseCase,
 )
-from modules.marketing.application.use_cases.get_active_promotions import (
+from src.modules.marketing.application.use_cases.get_active_promotions import (
     GetActivePromotionsUseCase,
 )
-from modules.orders.domain.entities.order import Order
-from modules.orders.domain.exceptions import OrderDomainError
-from modules.orders.domain.factories.order_factory import OrderFactory
-from modules.orders.domain.interfaces.order_repository_interface import (
+from src.modules.orders.domain.entities.order import Order
+from src.modules.orders.domain.exceptions import OrderDomainError
+from src.modules.orders.domain.factories.order_factory import OrderFactory
+from src.modules.orders.domain.interfaces.order_repository_interface import (
     OrderRepositoryInterface,
 )
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.exceptions import ProductDomainError
 
 
 @dataclass(frozen=True)

@@ -4,12 +4,14 @@ from pathlib import Path
 
 from decouple import config
 
-BASE_DIR: Path = Path(__file__).resolve().parent
-sys.path.insert(0, str(BASE_DIR / "src"))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(BASE_DIR / "src"))
 
 SECRET_KEY: bool = config("SECRET_KEY", default="change-me")
 
 DEBUG: bool = config("DEBUG", default=True, cast=bool)
+
+IS_RUNNING_PYTEST: bool = any("pytest" in arg or "test" in arg for arg in sys.argv)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
@@ -34,29 +36,29 @@ THIRD_PARTY_MODULES: list = [
 ]
 
 LOCAL_MODULES: list = [
-    "modules.cart",
-    "modules.catalog",
-    "modules.common",
-    "modules.marketing",
-    "modules.orders",
-    "modules.payments",
-    "modules.users",
+    "src.modules.cart",
+    "src.modules.catalog",
+    "src.modules.common",
+    "src.modules.marketing",
+    "src.modules.orders",
+    "src.modules.payments",
+    "src.modules.users",
 ]
 
 INSTALLED_APPS: list = DJANGO_MODULES + THIRD_PARTY_MODULES + LOCAL_MODULES
 
 MIGRATION_MODULES: dict = {
-    "cart": "modules.cart.infrastructure.migrations",
-    "catalog": "modules.catalog.infrastructure.migrations",
-    "marketing": "modules.marketing.infrastructure.migrations",
-    "orders": "modules.orders.infrastructure.migrations",
-    "payments": "modules.payments.infrastructure.migrations",
-    "users": "modules.users.infrastructure.migrations",
+    "cart": "src.modules.cart.infrastructure.migrations",
+    "catalog": "src.modules.catalog.infrastructure.migrations",
+    "marketing": "src.modules.marketing.infrastructure.migrations",
+    "orders": "src.modules.orders.infrastructure.migrations",
+    "payments": "src.modules.payments.infrastructure.migrations",
+    "users": "src.modules.users.infrastructure.migrations",
 }
 
 MIDDLEWARE: list = [
     "corsheaders.middleware.CorsMiddleware",
-    "modules.common.infrastructure.middleware.backpressure.BackpressureMiddleware",
+    "src.modules.common.infrastructure.middleware.backpressure.BackpressureMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -85,8 +87,6 @@ TEMPLATES: list = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
-IS_RUNNING_PYTEST: bool = any("pytest" in arg or "test" in arg for arg in sys.argv)
 
 if IS_RUNNING_PYTEST:
     DATABASES: dict = {

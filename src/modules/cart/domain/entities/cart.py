@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
-from .cart_item import CartItem
+from src.modules.cart.domain.entities.cart_item import CartItem
 
 
 @dataclass(kw_only=True, slots=True)

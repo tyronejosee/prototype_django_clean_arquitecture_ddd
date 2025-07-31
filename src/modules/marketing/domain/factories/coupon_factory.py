@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from modules.marketing.domain.entities.coupon import Coupon
-from modules.marketing.domain.value_objects.coupon_code import CouponCode
-from modules.marketing.domain.value_objects.discount_percent import DiscountPercent
+from src.modules.marketing.domain.entities.coupon import Coupon
+from src.modules.marketing.domain.value_objects.coupon_code import CouponCode
+from src.modules.marketing.domain.value_objects.discount_percent import DiscountPercent
 
 
 class CouponFactory:

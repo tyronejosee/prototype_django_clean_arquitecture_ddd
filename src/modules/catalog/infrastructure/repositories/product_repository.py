@@ -2,13 +2,14 @@ from typing import override
 from uuid import UUID
 
 from django.db.models import Q
-from modules.catalog.domain.entities.product import Product
-from modules.catalog.domain.exceptions import ProductNotFoundError
-from modules.catalog.domain.factories.product_factory import ProductFactory
-from modules.catalog.domain.interfaces.product_repository_interface import (
+
+from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.exceptions import ProductNotFoundError
+from src.modules.catalog.domain.factories.product_factory import ProductFactory
+from src.modules.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
-from modules.catalog.infrastructure.models.product_model import ProductModel
+from src.modules.catalog.infrastructure.models.product_model import ProductModel
 
 
 class ProductRepository(ProductRepositoryInterface):

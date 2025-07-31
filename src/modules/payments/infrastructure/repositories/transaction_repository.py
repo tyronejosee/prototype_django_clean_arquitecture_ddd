@@ -1,12 +1,14 @@
 from typing import override
 from uuid import UUID
 
-from modules.payments.domain.entities.transaction import Transaction
-from modules.payments.domain.factories.transaction_factory import TransactionFactory
-from modules.payments.domain.interfaces.transaction_repository_interface import (
+from src.modules.payments.domain.entities.transaction import Transaction
+from src.modules.payments.domain.factories.transaction_factory import TransactionFactory
+from src.modules.payments.domain.interfaces.transaction_repository_interface import (
     TransactionRepositoryInterface,
 )
-from modules.payments.infrastructure.models.transaction_model import TransactionModel
+from src.modules.payments.infrastructure.models.transaction_model import (
+    TransactionModel,
+)
 
 
 class TransactionRepository(TransactionRepositoryInterface):

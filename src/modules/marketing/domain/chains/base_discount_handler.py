@@ -1,7 +1,7 @@
-from modules.marketing.domain.interfaces.discount_handler_interface import (
+from src.modules.marketing.domain.interfaces.discount_handler_interface import (
     DiscountHandlerInterface,
 )
-from modules.marketing.domain.value_objects.discount_result import DiscountResult
+from src.modules.marketing.domain.value_objects.discount_result import DiscountResult
 
 
 class BaseDiscountHandler(DiscountHandlerInterface):

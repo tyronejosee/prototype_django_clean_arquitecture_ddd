@@ -1,7 +1,7 @@
-from modules.marketing.domain.chains.coupon_discount_handler import (
+from src.modules.marketing.domain.chains.coupon_discount_handler import (
     CouponDiscountHandler,
 )
-from modules.marketing.domain.chains.promotion_discount_handler import (
+from src.modules.marketing.domain.chains.promotion_discount_handler import (
     PromotionDiscountHandler,
 )
 

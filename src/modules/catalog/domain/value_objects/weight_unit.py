@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-from modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.exceptions import ProductDomainError
 
 
 @dataclass(frozen=True)

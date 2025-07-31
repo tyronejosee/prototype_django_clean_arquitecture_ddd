@@ -1,10 +1,10 @@
-from modules.users.domain.entities.user import User
-from modules.users.domain.exceptions import UserAlreadyExistsError
-from modules.users.domain.factories.user_factory import UserFactory
-from modules.users.domain.interfaces.password_service_interface import (
+from src.modules.users.domain.entities.user import User
+from src.modules.users.domain.exceptions import UserAlreadyExistsError
+from src.modules.users.domain.factories.user_factory import UserFactory
+from src.modules.users.domain.interfaces.password_service_interface import (
     PasswordServiceInterface,
 )
-from modules.users.domain.interfaces.user_repository_interface import (
+from src.modules.users.domain.interfaces.user_repository_interface import (
     UserRepositoryInterface,
 )
 

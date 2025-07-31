@@ -1,15 +1,16 @@
 from functools import lru_cache
 
-from modules.users.application.use_cases.logout_user import LogoutUserUseCase
-from modules.users.infrastructure.repositories.user_repository import UserRepository
-from modules.users.infrastructure.services.password_service import PasswordService
-from modules.users.infrastructure.services.token_service import TokenService
-
-from .use_cases.create_user import CreateUserUseCase
-from .use_cases.deactivate_user import DeactivateUserUseCase
-from .use_cases.get_user import GetUserUseCase
-from .use_cases.list_users import ListUsersUseCase
-from .use_cases.update_user import UpdateUserUseCase
+from src.modules.users.application.use_cases.create_user import CreateUserUseCase
+from src.modules.users.application.use_cases.deactivate_user import (
+    DeactivateUserUseCase,
+)
+from src.modules.users.application.use_cases.get_user import GetUserUseCase
+from src.modules.users.application.use_cases.list_users import ListUsersUseCase
+from src.modules.users.application.use_cases.logout_user import LogoutUserUseCase
+from src.modules.users.application.use_cases.update_user import UpdateUserUseCase
+from src.modules.users.infrastructure.repositories.user_repository import UserRepository
+from src.modules.users.infrastructure.services.password_service import PasswordService
+from src.modules.users.infrastructure.services.token_service import TokenService
 
 
 @lru_cache

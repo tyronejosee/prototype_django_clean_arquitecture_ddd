@@ -1,12 +1,13 @@
 from django.urls import path
-from modules.users.presentation.controllers.auth_controler import (
+
+from src.modules.users.presentation.controllers.auth_controler import (
     LoginController,
     LogoutController,
     RefreshController,
     RegisterController,
     TokenVerifyController,
 )
-from modules.users.presentation.controllers.user_controler import (
+from src.modules.users.presentation.controllers.user_controler import (
     UserDetailController,
     UserListCreateController,
 )

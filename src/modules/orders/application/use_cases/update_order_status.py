@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from modules.orders.domain.entities.order import Order
-from modules.orders.domain.interfaces.order_repository_interface import (
+from src.modules.orders.domain.entities.order import Order
+from src.modules.orders.domain.interfaces.order_repository_interface import (
     OrderRepositoryInterface,
 )
-from modules.orders.domain.value_objects.order_status import OrderStatus
+from src.modules.orders.domain.value_objects.order_status import OrderStatus
 
 
 class UpdateOrderStatusUseCase:

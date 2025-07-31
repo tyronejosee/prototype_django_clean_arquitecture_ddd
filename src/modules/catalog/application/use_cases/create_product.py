@@ -1,6 +1,6 @@
-from modules.catalog.domain.entities.product import Product
-from modules.catalog.domain.factories.product_factory import ProductFactory
-from modules.catalog.domain.interfaces.product_repository_interface import (
+from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.factories.product_factory import ProductFactory
+from src.modules.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
 

@@ -1,4 +1,4 @@
-from modules.users.domain.interfaces.token_service_interface import (
+from src.modules.users.domain.interfaces.token_service_interface import (
     TokenServiceInterface,
 )
 

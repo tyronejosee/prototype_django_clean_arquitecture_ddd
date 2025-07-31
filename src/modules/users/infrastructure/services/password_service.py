@@ -1,6 +1,7 @@
 from django.contrib.auth.hashers import check_password, make_password
 from django.utils.crypto import get_random_string
-from modules.users.domain.interfaces.password_service_interface import (
+
+from src.modules.users.domain.interfaces.password_service_interface import (
     PasswordServiceInterface,
 )
 

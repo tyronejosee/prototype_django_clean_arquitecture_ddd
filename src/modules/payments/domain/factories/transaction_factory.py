@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from modules.payments.domain.entities.transaction import Transaction
+from src.modules.payments.domain.entities.transaction import Transaction
 
 
 class TransactionFactory:

@@ -1,9 +1,10 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern
-from modules.orders.presentation.controllers.order_detail_controller import (
+
+from src.modules.orders.presentation.controllers.order_detail_controller import (
     OrderDetailController,
 )
-from modules.orders.presentation.controllers.order_list_create_controller import (
+from src.modules.orders.presentation.controllers.order_list_create_controller import (
     OrderListCreateController,
 )
 

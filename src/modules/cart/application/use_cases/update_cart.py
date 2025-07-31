@@ -1,6 +1,6 @@
-from modules.cart.domain.entities.cart import Cart
-from modules.cart.domain.factories.cart_factory import CartFactory
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.factories.cart_factory import CartFactory
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
 

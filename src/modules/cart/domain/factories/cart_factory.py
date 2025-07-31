@@ -1,9 +1,8 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from modules.cart.domain.entities.cart import Cart
-
-from .cart_item_factory import CartItemFactory
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.factories.cart_item_factory import CartItemFactory
 
 
 class CartFactory:

@@ -1,8 +1,8 @@
 from decimal import Decimal
 from uuid import UUID, uuid4
 
-from modules.cart.domain.entities.cart_item import CartItem
-from modules.cart.domain.value_objects.item_quantity import ItemQuantity
+from src.modules.cart.domain.entities.cart_item import CartItem
+from src.modules.cart.domain.value_objects.item_quantity import ItemQuantity
 
 
 class CartItemFactory:

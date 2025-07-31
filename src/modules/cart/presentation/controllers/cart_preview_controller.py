@@ -1,13 +1,16 @@
 from typing import ClassVar
 
-from modules.cart.application.providers import get_preview_cart_use_case
-from modules.cart.domain.exceptions import CartDomainError
-from modules.cart.presentation.serializers.cart_serializer import CartPreviewSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from src.modules.cart.application.providers import get_preview_cart_use_case
+from src.modules.cart.domain.exceptions import CartDomainError
+from src.modules.cart.presentation.serializers.cart_serializer import (
+    CartPreviewSerializer,
+)
 
 
 class CartPreviewController(APIView):

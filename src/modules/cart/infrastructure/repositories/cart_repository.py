@@ -2,19 +2,21 @@ from decimal import Decimal
 from typing import override
 from uuid import UUID
 
-from modules.cart.domain.entities.cart import Cart
-from modules.cart.domain.exceptions import (
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.exceptions import (
     CartDomainError,
     CartItemNotFoundError,
     CartNotFoundError,
 )
-from modules.cart.domain.factories.cart_factory import CartFactory
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.factories.cart_factory import CartFactory
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
-from modules.cart.infrastructure.models.cart_item_model import CartItemModel
-from modules.cart.infrastructure.models.cart_model import CartModel
-from modules.cart.infrastructure.services.cart_builder_service import CartBuilderService
+from src.modules.cart.infrastructure.models.cart_item_model import CartItemModel
+from src.modules.cart.infrastructure.models.cart_model import CartModel
+from src.modules.cart.infrastructure.services.cart_builder_service import (
+    CartBuilderService,
+)
 
 
 class CartRepository(CartRepositoryInterface):

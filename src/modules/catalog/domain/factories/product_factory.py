@@ -2,9 +2,9 @@ from datetime import UTC, datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from modules.catalog.domain.entities.product import Product
-from modules.catalog.domain.value_objects.sku import SKU
-from modules.catalog.domain.value_objects.weight_unit import WeightUnit
+from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.value_objects.sku import SKU
+from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
 class ProductFactory:

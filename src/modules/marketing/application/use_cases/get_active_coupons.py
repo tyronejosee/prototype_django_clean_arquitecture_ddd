@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from modules.marketing.domain.entities.coupon import Coupon
-from modules.marketing.domain.interfaces.coupon_repository_interface import (
+from src.modules.marketing.domain.entities.coupon import Coupon
+from src.modules.marketing.domain.interfaces.coupon_repository_interface import (
     CouponRepositoryInterface,
 )
 

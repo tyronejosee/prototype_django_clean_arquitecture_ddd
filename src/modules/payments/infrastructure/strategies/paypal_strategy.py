@@ -2,8 +2,8 @@ from decimal import Decimal
 from typing import override
 from uuid import UUID
 
-from modules.payments.domain.strategies.payment_strategy import PaymentStrategy
-from modules.payments.infrastructure.gateways.paypal_gateway import PaypalGateway
+from src.modules.payments.domain.strategies.payment_strategy import PaymentStrategy
+from src.modules.payments.infrastructure.gateways.paypal_gateway import PaypalGateway
 
 
 class PaypalStrategy(PaymentStrategy):

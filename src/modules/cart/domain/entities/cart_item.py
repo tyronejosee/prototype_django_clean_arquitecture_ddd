@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from uuid import UUID
 
-from modules.cart.domain.value_objects.item_quantity import ItemQuantity
+from src.modules.cart.domain.value_objects.item_quantity import ItemQuantity
 
 
 @dataclass(kw_only=True, slots=True)

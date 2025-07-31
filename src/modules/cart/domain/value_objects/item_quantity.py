@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from modules.cart.domain.exceptions import CartDomainError
+from src.modules.cart.domain.exceptions import CartDomainError
 
 
 @dataclass(frozen=True)

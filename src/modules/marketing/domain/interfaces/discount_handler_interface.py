@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from modules.marketing.domain.value_objects.discount_result import DiscountResult
+from src.modules.marketing.domain.value_objects.discount_result import DiscountResult
 
 
 class DiscountHandlerInterface(ABC):

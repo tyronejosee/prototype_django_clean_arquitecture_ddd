@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from modules.payments.domain.entities.transaction import Transaction
+from src.modules.payments.domain.entities.transaction import Transaction
 
 
 class TransactionRepositoryInterface(ABC):

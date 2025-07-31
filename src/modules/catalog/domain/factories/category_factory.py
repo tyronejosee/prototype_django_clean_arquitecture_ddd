@@ -1,8 +1,8 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from modules.catalog.domain.entities.category import Category
-from modules.catalog.domain.value_objects.category_name import CategoryName
+from src.modules.catalog.domain.entities.category import Category
+from src.modules.catalog.domain.value_objects.category_name import CategoryName
 
 
 class CategoryFactory:

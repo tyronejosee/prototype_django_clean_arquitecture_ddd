@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from modules.marketing.domain.entities.coupon import Coupon
+from src.modules.marketing.domain.entities.coupon import Coupon
 
 
 class CouponRepositoryInterface(ABC):

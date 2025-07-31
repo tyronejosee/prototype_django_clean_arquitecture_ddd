@@ -1,4 +1,6 @@
-from modules.marketing.domain.chains.base_discount_handler import BaseDiscountHandler
+from src.modules.marketing.domain.chains.base_discount_handler import (
+    BaseDiscountHandler,
+)
 
 
 class ApplyDiscountsUseCase:

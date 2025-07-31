@@ -1,8 +1,10 @@
 from decimal import Decimal
 from typing import override
 
-from modules.marketing.domain.chains.base_discount_handler import BaseDiscountHandler
-from modules.marketing.domain.value_objects.discount_result import DiscountResult
+from src.modules.marketing.domain.chains.base_discount_handler import (
+    BaseDiscountHandler,
+)
+from src.modules.marketing.domain.value_objects.discount_result import DiscountResult
 
 
 class PromotionDiscountHandler(BaseDiscountHandler):

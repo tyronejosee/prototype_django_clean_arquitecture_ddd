@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from modules.catalog.domain.entities.category import Category
-from modules.catalog.domain.factories.category_factory import CategoryFactory
-from modules.catalog.domain.interfaces.category_repository_interface import (
+from src.modules.catalog.domain.entities.category import Category
+from src.modules.catalog.domain.factories.category_factory import CategoryFactory
+from src.modules.catalog.domain.interfaces.category_repository_interface import (
     CategoryRepositoryInterface,
 )
 

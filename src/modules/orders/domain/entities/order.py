@@ -3,9 +3,9 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
-from modules.orders.domain.entities.order_item import OrderItem
-from modules.orders.domain.exceptions import OrderDomainError
-from modules.orders.domain.value_objects.order_status import OrderStatus
+from src.modules.orders.domain.entities.order_item import OrderItem
+from src.modules.orders.domain.exceptions import OrderDomainError
+from src.modules.orders.domain.value_objects.order_status import OrderStatus
 
 
 @dataclass(kw_only=True, slots=True)

@@ -1,5 +1,5 @@
-from modules.users.domain.entities.user import User
-from modules.users.domain.interfaces.user_repository_interface import (
+from src.modules.users.domain.entities.user import User
+from src.modules.users.domain.interfaces.user_repository_interface import (
     UserRepositoryInterface,
 )
 

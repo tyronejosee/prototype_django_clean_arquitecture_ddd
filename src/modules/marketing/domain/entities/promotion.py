@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from uuid import UUID
 
-from modules.marketing.domain.exceptions import PromotionDomainError
-from modules.marketing.domain.value_objects.discount_percent import DiscountPercent
+from src.modules.marketing.domain.exceptions import PromotionDomainError
+from src.modules.marketing.domain.value_objects.discount_percent import DiscountPercent
 
 
 @dataclass(kw_only=True, slots=True)

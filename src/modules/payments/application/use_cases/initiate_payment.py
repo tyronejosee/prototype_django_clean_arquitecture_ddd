@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from modules.orders.domain.exceptions import OrderNotFoundError
-from modules.orders.domain.interfaces.order_repository_interface import (
+from src.modules.orders.domain.exceptions import OrderNotFoundError
+from src.modules.orders.domain.interfaces.order_repository_interface import (
     OrderRepositoryInterface,
 )
-from modules.payments.application.strategy_resolver import STRATEGY_MAP
-from modules.payments.domain.exceptions import PaymentDomainError
-from modules.payments.domain.factories.transaction_factory import TransactionFactory
-from modules.payments.domain.interfaces.transaction_repository_interface import (
+from src.modules.payments.application.strategy_resolver import STRATEGY_MAP
+from src.modules.payments.domain.exceptions import PaymentDomainError
+from src.modules.payments.domain.factories.transaction_factory import TransactionFactory
+from src.modules.payments.domain.interfaces.transaction_repository_interface import (
     TransactionRepositoryInterface,
 )
 

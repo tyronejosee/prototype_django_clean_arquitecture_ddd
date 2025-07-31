@@ -2,9 +2,9 @@ from datetime import UTC, datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from modules.orders.domain.entities.order import Order
-from modules.orders.domain.entities.order_item import OrderItem
-from modules.orders.domain.value_objects.order_status import OrderStatus
+from src.modules.orders.domain.entities.order import Order
+from src.modules.orders.domain.entities.order_item import OrderItem
+from src.modules.orders.domain.value_objects.order_status import OrderStatus
 
 
 class OrderFactory:

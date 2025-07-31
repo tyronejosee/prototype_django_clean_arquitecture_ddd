@@ -1,7 +1,8 @@
 from typing import ClassVar
 
 from django.contrib import admin
-from modules.cart.infrastructure.models import CartModel
+
+from src.modules.cart.infrastructure.models import CartModel
 
 
 @admin.register(CartModel)

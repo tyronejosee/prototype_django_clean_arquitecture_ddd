@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from modules.marketing.domain.entities.promotion import Promotion
+from src.modules.marketing.domain.entities.promotion import Promotion
 
 
 class PromotionRepositoryInterface(ABC):

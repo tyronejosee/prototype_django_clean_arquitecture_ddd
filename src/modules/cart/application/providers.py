@@ -1,13 +1,14 @@
 from functools import lru_cache
 
-from modules.cart.infrastructure.repositories.cart_repository import CartRepository
-
-from .use_cases.create_cart import CreateCartUseCase
-from .use_cases.delete_cart_item import DeleteCartItemUseCase
-from .use_cases.get_cart import GetCartUseCase
-from .use_cases.patch_cart_item import PatchCartItemUseCase
-from .use_cases.preview_cart import PreviewCartUseCase
-from .use_cases.update_cart import UpdateCartUseCase
+from src.modules.cart.application.use_cases.create_cart import CreateCartUseCase
+from src.modules.cart.application.use_cases.delete_cart_item import (
+    DeleteCartItemUseCase,
+)
+from src.modules.cart.application.use_cases.get_cart import GetCartUseCase
+from src.modules.cart.application.use_cases.patch_cart_item import PatchCartItemUseCase
+from src.modules.cart.application.use_cases.preview_cart import PreviewCartUseCase
+from src.modules.cart.application.use_cases.update_cart import UpdateCartUseCase
+from src.modules.cart.infrastructure.repositories.cart_repository import CartRepository
 
 
 @lru_cache

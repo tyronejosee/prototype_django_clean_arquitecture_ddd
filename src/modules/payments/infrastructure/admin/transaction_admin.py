@@ -1,7 +1,8 @@
 from typing import ClassVar
 
 from django.contrib import admin
-from modules.payments.infrastructure.models import TransactionModel
+
+from src.modules.payments.infrastructure.models import TransactionModel
 
 
 @admin.register(TransactionModel)

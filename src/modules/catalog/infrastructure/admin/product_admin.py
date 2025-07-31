@@ -1,7 +1,8 @@
 from typing import ClassVar
 
 from django.contrib import admin
-from modules.catalog.infrastructure.models import ProductModel
+
+from src.modules.catalog.infrastructure.models import ProductModel
 
 
 @admin.register(ProductModel)

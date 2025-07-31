@@ -1,22 +1,23 @@
 from typing import ClassVar
 
 from django.db import transaction
-from modules.common.presentation.controllers.base_controller import BaseController
-from modules.common.presentation.pagination import paginate_queryset
-from modules.orders.application.providers import (
-    get_create_order_use_case,
-    get_list_orders_use_case,
-)
-from modules.orders.domain.exceptions import OrderDomainError
-from modules.orders.presentation.serializers.order_serializer import OrderSerializer
-from modules.orders.presentation.throttles import (
-    CreateOrderRateThrottle,
-    ListOrdersRateThrottle,
-)
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+from src.modules.common.presentation.controllers.base_controller import BaseController
+from src.modules.common.presentation.pagination import paginate_queryset
+from src.modules.orders.application.providers import (
+    get_create_order_use_case,
+    get_list_orders_use_case,
+)
+from src.modules.orders.domain.exceptions import OrderDomainError
+from src.modules.orders.presentation.serializers.order_serializer import OrderSerializer
+from src.modules.orders.presentation.throttles import (
+    CreateOrderRateThrottle,
+    ListOrdersRateThrottle,
+)
 
 
 class OrderListCreateController(BaseController):

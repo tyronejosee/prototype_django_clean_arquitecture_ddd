@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from modules.catalog.domain.entities.category import Category
+from src.modules.catalog.domain.entities.category import Category
 
 
 class CategoryRepositoryInterface(ABC):

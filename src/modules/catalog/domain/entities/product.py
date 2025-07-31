@@ -3,9 +3,9 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
-from modules.catalog.domain.exceptions import ProductDomainError
-from modules.catalog.domain.value_objects.sku import SKU
-from modules.catalog.domain.value_objects.weight_unit import WeightUnit
+from src.modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.value_objects.sku import SKU
+from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
 @dataclass(kw_only=True, slots=True)

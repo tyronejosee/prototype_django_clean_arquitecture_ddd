@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-from modules.users.domain.exceptions import UserDomainError
+from src.modules.users.domain.exceptions import UserDomainError
 
 
 @dataclass(frozen=True)

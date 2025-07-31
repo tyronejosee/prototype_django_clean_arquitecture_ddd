@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class CommonConfig(AppConfig):
     default_auto_field: str = "django.db.models.BigAutoField"
-    name = "modules.common"
+    name = "src.modules.common"

@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from django.db import models
 
-from .order_model import OrderModel
+from src.modules.orders.infrastructure.models.order_model import OrderModel
 
 
 class OrderItemModel(models.Model):

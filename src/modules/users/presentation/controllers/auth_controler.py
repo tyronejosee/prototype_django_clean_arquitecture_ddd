@@ -1,18 +1,5 @@
 from typing import ClassVar
 
-from modules.users.application.providers import (
-    get_create_user_use_case,
-    get_logout_user_use_case,
-)
-from modules.users.domain.exceptions import (
-    LogoutError,
-    UserAlreadyExistsError,
-    UserDomainError,
-)
-from modules.users.presentation.serializers.user_serializer import (
-    UserCreateSerializer,
-    UserSerializer,
-)
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -21,6 +8,20 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
+)
+
+from src.modules.users.application.providers import (
+    get_create_user_use_case,
+    get_logout_user_use_case,
+)
+from src.modules.users.domain.exceptions import (
+    LogoutError,
+    UserAlreadyExistsError,
+    UserDomainError,
+)
+from src.modules.users.presentation.serializers.user_serializer import (
+    UserCreateSerializer,
+    UserSerializer,
 )
 
 

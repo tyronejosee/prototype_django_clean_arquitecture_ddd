@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from modules.marketing.domain.entities.promotion import Promotion
-from modules.marketing.domain.value_objects.discount_percent import DiscountPercent
+from src.modules.marketing.domain.entities.promotion import Promotion
+from src.modules.marketing.domain.value_objects.discount_percent import DiscountPercent
 
 
 class PromotionFactory:

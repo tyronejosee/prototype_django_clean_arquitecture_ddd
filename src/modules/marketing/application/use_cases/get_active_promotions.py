@@ -1,5 +1,5 @@
-from modules.marketing.domain.entities.promotion import Promotion
-from modules.marketing.domain.interfaces.promotion_repository_interface import (
+from src.modules.marketing.domain.entities.promotion import Promotion
+from src.modules.marketing.domain.interfaces.promotion_repository_interface import (
     PromotionRepositoryInterface,
 )
 

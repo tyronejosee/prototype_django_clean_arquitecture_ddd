@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from modules.catalog.domain.entities.product import Product
-from modules.catalog.domain.interfaces.product_repository_interface import (
+from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
 

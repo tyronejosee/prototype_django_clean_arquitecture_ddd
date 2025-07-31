@@ -1,16 +1,17 @@
 from typing import ClassVar
 
 from django.db import transaction
-from modules.common.presentation.controllers.base_controller import BaseController
-from modules.payments.application.providers import get_capture_payment_use_case
-from modules.payments.domain.exceptions import PaymentDomainError
-from modules.payments.presentation.serializers.capture_payment_serializer import (
-    CapturePaymentSerializer,
-)
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+from src.modules.common.presentation.controllers.base_controller import BaseController
+from src.modules.payments.application.providers import get_capture_payment_use_case
+from src.modules.payments.domain.exceptions import PaymentDomainError
+from src.modules.payments.presentation.serializers.capture_payment_serializer import (
+    CapturePaymentSerializer,
+)
 
 
 class CapturePaymentController(BaseController):

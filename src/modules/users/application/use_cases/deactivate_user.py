@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from modules.users.domain.exceptions import UserNotFoundError
-from modules.users.domain.interfaces.user_repository_interface import (
+from src.modules.users.domain.exceptions import UserNotFoundError
+from src.modules.users.domain.interfaces.user_repository_interface import (
     UserRepositoryInterface,
 )
 

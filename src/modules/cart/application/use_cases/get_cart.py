@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from modules.cart.domain.entities.cart import Cart
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
 

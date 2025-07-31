@@ -1,4 +1,4 @@
-from modules.cart.domain.interfaces.cart_repository_interface import (
+from src.modules.cart.domain.interfaces.cart_repository_interface import (
     CartRepositoryInterface,
 )
 

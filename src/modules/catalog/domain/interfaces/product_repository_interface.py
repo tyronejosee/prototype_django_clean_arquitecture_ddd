@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.entities.product import Product
 
 
 class ProductRepositoryInterface(ABC):

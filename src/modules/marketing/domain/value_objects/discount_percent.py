@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-from modules.marketing.domain.exceptions import MarketingDomainError
+from src.modules.marketing.domain.exceptions import MarketingDomainError
 
 
 @dataclass(frozen=True, slots=True)

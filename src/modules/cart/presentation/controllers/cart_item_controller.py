@@ -1,21 +1,22 @@
 from typing import ClassVar
 from uuid import UUID
 
-from modules.cart.application.providers import (
-    get_delete_cart_item_use_case,
-    get_patch_cart_item_use_case,
-)
-from modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError
-from modules.cart.domain.value_objects.item_quantity import ItemQuantity
-from modules.cart.presentation.serializers.cart_serializer import (
-    CartItemPatchSerializer,
-    CartSerializer,
-)
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from src.modules.cart.application.providers import (
+    get_delete_cart_item_use_case,
+    get_patch_cart_item_use_case,
+)
+from src.modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError
+from src.modules.cart.domain.value_objects.item_quantity import ItemQuantity
+from src.modules.cart.presentation.serializers.cart_serializer import (
+    CartItemPatchSerializer,
+    CartSerializer,
+)
 
 
 class CartItemController(APIView):

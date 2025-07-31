@@ -1,14 +1,16 @@
-from modules.catalog.domain.interfaces.product_repository_interface import (
+from src.modules.catalog.domain.interfaces.product_repository_interface import (
     ProductRepositoryInterface,
 )
-from modules.orders.domain.interfaces.order_repository_interface import (
+from src.modules.orders.domain.interfaces.order_repository_interface import (
     OrderRepositoryInterface,
 )
-from modules.payments.domain.exceptions import PaymentDomainError
-from modules.payments.domain.interfaces.transaction_repository_interface import (
+from src.modules.payments.domain.exceptions import PaymentDomainError
+from src.modules.payments.domain.interfaces.transaction_repository_interface import (
     TransactionRepositoryInterface,
 )
-from modules.payments.infrastructure.strategies.paypal_strategy import PaypalStrategy
+from src.modules.payments.infrastructure.strategies.paypal_strategy import (
+    PaypalStrategy,
+)
 
 
 class CapturePaymentUseCase:

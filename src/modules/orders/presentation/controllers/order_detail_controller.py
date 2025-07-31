@@ -1,21 +1,22 @@
 from typing import ClassVar
 from uuid import UUID
 
-from modules.common.presentation.controllers.base_controller import BaseController
-from modules.orders.application.providers import (
-    get_cancel_order_use_case,
-    get_get_order_use_case,
-)
-from modules.orders.domain.exceptions import OrderDomainError, OrderNotFoundError
-from modules.orders.presentation.serializers.order_serializer import OrderSerializer
-from modules.orders.presentation.throttles import (
-    CancelOrderRateThrottle,
-    RetrieveOrderRateThrottle,
-)
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+from src.modules.common.presentation.controllers.base_controller import BaseController
+from src.modules.orders.application.providers import (
+    get_cancel_order_use_case,
+    get_get_order_use_case,
+)
+from src.modules.orders.domain.exceptions import OrderDomainError, OrderNotFoundError
+from src.modules.orders.presentation.serializers.order_serializer import OrderSerializer
+from src.modules.orders.presentation.throttles import (
+    CancelOrderRateThrottle,
+    RetrieveOrderRateThrottle,
+)
 
 
 class OrderDetailController(BaseController):

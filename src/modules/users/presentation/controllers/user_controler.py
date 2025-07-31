@@ -1,26 +1,27 @@
 from typing import ClassVar
 from uuid import UUID
 
-from modules.users.application.providers import (
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from src.modules.users.application.providers import (
     get_create_user_use_case,
     get_deactivate_user_use_case,
     get_list_users_use_case,
     get_update_user_use_case,
     get_user_use_case,
 )
-from modules.users.domain.exceptions import (
+from src.modules.users.domain.exceptions import (
     UserAlreadyExistsError,
     UserDomainError,
     UserNotFoundError,
 )
-from modules.users.presentation.serializers.user_serializer import (
+from src.modules.users.presentation.serializers.user_serializer import (
     UserCreateSerializer,
     UserSerializer,
 )
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 class UserListCreateController(APIView):

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
 
-from modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.entities.product import Product
 
 
 class ProductServiceInterface(ABC):

@@ -1,12 +1,13 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern
-from modules.cart.presentation.controllers.cart_controller import (
+
+from src.modules.cart.presentation.controllers.cart_controller import (
     CartController,
 )
-from modules.cart.presentation.controllers.cart_item_controller import (
+from src.modules.cart.presentation.controllers.cart_item_controller import (
     CartItemController,
 )
-from modules.cart.presentation.controllers.cart_preview_controller import (
+from src.modules.cart.presentation.controllers.cart_preview_controller import (
     CartPreviewController,
 )
 

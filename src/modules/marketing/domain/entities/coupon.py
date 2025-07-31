@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from uuid import UUID
 
-from modules.marketing.domain.exceptions import CouponDomainError
-from modules.marketing.domain.value_objects.coupon_code import CouponCode
-from modules.marketing.domain.value_objects.discount_percent import DiscountPercent
+from src.modules.marketing.domain.exceptions import CouponDomainError
+from src.modules.marketing.domain.value_objects.coupon_code import CouponCode
+from src.modules.marketing.domain.value_objects.discount_percent import DiscountPercent
 
 
 @dataclass(kw_only=True, slots=True)

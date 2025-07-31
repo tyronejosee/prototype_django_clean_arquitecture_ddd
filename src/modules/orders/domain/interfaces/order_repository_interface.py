@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from modules.orders.domain.entities.order import Order
+from src.modules.orders.domain.entities.order import Order
 
 
 class OrderRepositoryInterface(ABC):

@@ -4,7 +4,8 @@ from uuid import UUID
 import requests
 from decouple import config
 from django.conf import settings
-from modules.payments.domain.exceptions import PaymentDomainError
+
+from src.modules.payments.domain.exceptions import PaymentDomainError
 
 
 class PaypalGateway:

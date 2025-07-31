@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from modules.users.domain.entities.user import User
-from modules.users.domain.value_objects.email import Email
-from modules.users.domain.value_objects.username import Username
+from src.modules.users.domain.entities.user import User
+from src.modules.users.domain.value_objects.email import Email
+from src.modules.users.domain.value_objects.username import Username
 
 
 class UserFactory:

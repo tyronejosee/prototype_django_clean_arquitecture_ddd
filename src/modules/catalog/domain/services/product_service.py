@@ -1,8 +1,8 @@
 from decimal import Decimal
 
-from modules.catalog.domain.entities.product import Product
-from modules.catalog.domain.exceptions import ProductDomainError
-from modules.catalog.domain.interfaces.product_service_interface import (
+from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.interfaces.product_service_interface import (
     ProductServiceInterface,
 )
 

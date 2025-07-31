@@ -1,5 +1,6 @@
 from django.contrib import admin
-from modules.marketing.infrastructure.models.promotion_model import PromotionModel
+
+from src.modules.marketing.infrastructure.models.promotion_model import PromotionModel
 
 
 @admin.register(PromotionModel)

@@ -1,23 +1,27 @@
 from functools import lru_cache
 
-from modules.marketing.application.use_cases.apply_discounts import (
+from src.modules.marketing.application.use_cases.apply_discounts import (
     ApplyDiscountsUseCase,
 )
-from modules.marketing.application.use_cases.create_coupon import CreateCouponUseCase
-from modules.marketing.application.use_cases.create_promotion import (
+from src.modules.marketing.application.use_cases.create_coupon import (
+    CreateCouponUseCase,
+)
+from src.modules.marketing.application.use_cases.create_promotion import (
     CreatePromotionUseCase,
 )
-from modules.marketing.application.use_cases.get_active_coupons import (
+from src.modules.marketing.application.use_cases.get_active_coupons import (
     GetActiveCouponsUseCase,
 )
-from modules.marketing.application.use_cases.get_active_promotions import (
+from src.modules.marketing.application.use_cases.get_active_promotions import (
     GetActivePromotionsUseCase,
 )
-from modules.marketing.domain.chains.discount_handler_chain import DiscountHandlerChain
-from modules.marketing.infrastructure.repositories.coupon_repository import (
+from src.modules.marketing.domain.chains.discount_handler_chain import (
+    DiscountHandlerChain,
+)
+from src.modules.marketing.infrastructure.repositories.coupon_repository import (
     CouponRepository,
 )
-from modules.marketing.infrastructure.repositories.promotion_repository import (
+from src.modules.marketing.infrastructure.repositories.promotion_repository import (
     PromotionRepository,
 )
 

@@ -1,14 +1,14 @@
 from typing import override
 from uuid import UUID
 
-from modules.orders.domain.entities.order import Order
-from modules.orders.domain.exceptions import OrderNotFoundError
-from modules.orders.domain.factories.order_factory import OrderFactory
-from modules.orders.domain.interfaces.order_repository_interface import (
+from src.modules.orders.domain.entities.order import Order
+from src.modules.orders.domain.exceptions import OrderNotFoundError
+from src.modules.orders.domain.factories.order_factory import OrderFactory
+from src.modules.orders.domain.interfaces.order_repository_interface import (
     OrderRepositoryInterface,
 )
-from modules.orders.domain.value_objects.order_status import OrderStatus
-from modules.orders.infrastructure.models import OrderItemModel, OrderModel
+from src.modules.orders.domain.value_objects.order_status import OrderStatus
+from src.modules.orders.infrastructure.models import OrderItemModel, OrderModel
 
 
 class OrderRepository(OrderRepositoryInterface):

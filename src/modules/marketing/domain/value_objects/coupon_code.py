@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-from modules.marketing.domain.exceptions import CouponDomainError
+from src.modules.marketing.domain.exceptions import CouponDomainError
 
 
 @dataclass(frozen=True, slots=True)

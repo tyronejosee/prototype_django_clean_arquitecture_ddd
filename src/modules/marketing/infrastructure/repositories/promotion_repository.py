@@ -1,11 +1,11 @@
 from typing import override
 
-from modules.marketing.domain.entities.promotion import Promotion
-from modules.marketing.domain.factories.promotion_factory import PromotionFactory
-from modules.marketing.domain.interfaces.promotion_repository_interface import (
+from src.modules.marketing.domain.entities.promotion import Promotion
+from src.modules.marketing.domain.factories.promotion_factory import PromotionFactory
+from src.modules.marketing.domain.interfaces.promotion_repository_interface import (
     PromotionRepositoryInterface,
 )
-from modules.marketing.infrastructure.models.promotion_model import PromotionModel
+from src.modules.marketing.infrastructure.models.promotion_model import PromotionModel
 
 
 class PromotionRepository(PromotionRepositoryInterface):

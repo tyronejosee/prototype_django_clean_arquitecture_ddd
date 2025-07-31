@@ -1,5 +1,6 @@
 from django.contrib import admin
-from modules.marketing.infrastructure.models.coupon_model import CouponModel
+
+from src.modules.marketing.infrastructure.models.coupon_model import CouponModel
 
 
 @admin.register(CouponModel)

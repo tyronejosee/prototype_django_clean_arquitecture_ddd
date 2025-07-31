@@ -1,7 +1,8 @@
 from typing import ClassVar
 
 from django.contrib import admin
-from modules.orders.infrastructure.models.order_model import OrderModel
+
+from src.modules.orders.infrastructure.models.order_model import OrderModel
 
 
 @admin.register(OrderModel)

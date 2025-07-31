@@ -9,12 +9,12 @@ from django.urls import include, path
 urlpatterns: list = [
     path("", health_check),
     path("admin/", admin.site.urls),
-    path("api/", include("modules.cart.presentation.routers")),
-    path("api/", include("modules.catalog.presentation.routers")),
-    path("api/", include("modules.marketing.presentation.routers")),
-    path("api/", include("modules.orders.presentation.routers")),
-    path("api/", include("modules.payments.presentation.routers")),
-    path("api/", include("modules.users.presentation.routers")),
+    path("api/", include("src.modules.cart.presentation.routers")),
+    path("api/", include("src.modules.catalog.presentation.routers")),
+    path("api/", include("src.modules.marketing.presentation.routers")),
+    path("api/", include("src.modules.orders.presentation.routers")),
+    path("api/", include("src.modules.payments.presentation.routers")),
+    path("api/", include("src.modules.users.presentation.routers")),
 ]
 
 if settings.DEBUG:

@@ -1,3 +1,3 @@
-from modules.users.infrastructure.models import UserModel
+from src.modules.users.infrastructure.models import UserModel
 
 __all__: list = ["UserModel"]
