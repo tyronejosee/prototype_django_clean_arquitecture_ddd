@@ -24,8 +24,3 @@ class CartSerializer(serializers.Serializer):
 
 class CartItemPatchSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(min_value=1)
-
-
-class CartPreviewSerializer(serializers.Serializer):
-    user_id = serializers.UUIDField(required=False, allow_null=True)
-    items = CartItemSerializer(many=True)

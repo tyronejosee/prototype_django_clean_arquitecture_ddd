@@ -5,7 +5,7 @@ from src.modules.cart.infrastructure.models import CartItemModel, CartModel
 class CartBuilderService:
     @staticmethod
     def update_cart(cart_model: CartModel, new_cart: Cart) -> None:
-        current_items = {item.product_id: item for item in cart_model.items.all()}
+        current_items = {item.product_id: item for item in cart_model.items.all()}  # type: ignore[union-attr]
         incoming_items = {item.product_id: item for item in new_cart.items}
 
         # Create or update items

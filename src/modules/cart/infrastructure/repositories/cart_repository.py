@@ -1,4 +1,3 @@
-from decimal import Decimal
 from typing import override
 from uuid import UUID
 
@@ -79,19 +78,6 @@ class CartRepository(CartRepositoryInterface):
             raise CartItemNotFoundError(self.ITEM_NOT_FOUND_MSG)
         cart_item.delete()
         return self.get_by_user(user_id=user_id)
-
-    @override
-    def preview(self, cart: Cart) -> dict:
-        # ! TODO: Implement preview logic and service
-        tax = Decimal(0.19)
-        total = cart.total()
-        taxes = total * tax
-        grand_total = total + taxes
-        return {
-            "subtotal": total,
-            "taxes": taxes,
-            "total": grand_total,
-        }
 
     @override
     def clear(self, user_id: UUID) -> None:

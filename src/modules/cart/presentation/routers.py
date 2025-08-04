@@ -7,9 +7,6 @@ from src.modules.cart.presentation.controllers.cart_controller import (
 from src.modules.cart.presentation.controllers.cart_item_controller import (
     CartItemController,
 )
-from src.modules.cart.presentation.controllers.cart_preview_controller import (
-    CartPreviewController,
-)
 
 app_name = "cart"
 
@@ -23,10 +20,5 @@ urlpatterns: list[URLPattern] = [
         "cart/items/<uuid:item_id>",
         CartItemController.as_view(),
         name="cart-item",
-    ),
-    path(
-        "cart/preview",
-        CartPreviewController.as_view(),
-        name="cart-preview",
     ),
 ]
