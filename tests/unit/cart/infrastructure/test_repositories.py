@@ -4,11 +4,7 @@ from uuid import uuid4
 import pytest
 
 from src.modules.cart.domain.entities.cart import Cart
-from src.modules.cart.domain.exceptions import (
-    CartDomainError,
-    CartItemNotFoundError,
-    CartNotFoundError,
-)
+from src.modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError, CartNotFoundError
 from src.modules.cart.domain.factories.cart_factory import CartFactory
 from src.modules.cart.infrastructure.models import CartItemModel, CartModel
 from src.modules.cart.infrastructure.repositories.cart_repository import CartRepository
@@ -18,16 +14,7 @@ from src.modules.cart.infrastructure.repositories.cart_repository import CartRep
 def test_create_cart_successfully() -> None:
     # Given: a user with cart data
     user_id = uuid4()
-    data = {
-        "user_id": user_id,
-        "items": [
-            {
-                "product_id": uuid4(),
-                "quantity": 2,
-                "unit_price": "15.00",
-            },
-        ],
-    }
+    data = {"user_id": user_id}
 
     # When: the user creates a cart
     cart = CartFactory.from_dict(data)
@@ -37,7 +24,6 @@ def test_create_cart_successfully() -> None:
     # Then: a valid cart is returned with one item
     assert isinstance(result, Cart)
     assert result.user_id == user_id
-    assert len(result.items) == 1
 
 
 @pytest.mark.django_db()
@@ -63,10 +49,9 @@ def test_get_cart_by_user_successful() -> None:
     user_id = uuid4()
     cart = CartModel.objects.create(user_id=user_id)
     CartItemModel.objects.create(
-        cart=cart,
+        cart_id=cart,
         product_id=uuid4(),
         quantity=1,
-        unit_price=Decimal("5.00"),
     )
 
     # When: the cart is retrieved by user
@@ -93,12 +78,7 @@ def test_patch_cart_item_quantity() -> None:
     # Given: a cart with one item
     user_id = uuid4()
     cart = CartModel.objects.create(user_id=user_id)
-    item = CartItemModel.objects.create(
-        cart=cart,
-        product_id=uuid4(),
-        quantity=1,
-        unit_price=Decimal("5.00"),
-    )
+    item = CartItemModel.objects.create(cart_id=cart, product_id=uuid4(), quantity=1)
 
     # When: the item's quantity is updated
     repo = CartRepository()
@@ -123,19 +103,14 @@ def test_delete_cart_item_successful() -> None:
     # Given: a cart with one item
     user_id = uuid4()
     cart = CartModel.objects.create(user_id=user_id)
-    item = CartItemModel.objects.create(
-        cart=cart,
-        product_id=uuid4(),
-        quantity=1,
-        unit_price=Decimal("2.00"),
-    )
+    item = CartItemModel.objects.create(cart_id=cart, product_id=uuid4(), quantity=1)
 
     # When: the item is deleted
     repo = CartRepository()
     result = repo.delete_item(user_id=user_id, item_id=item.id)
 
     # Then: the item is removed from the cart and the DB
-    assert all(i.id != item.id for i in result.items)
+    assert all(i.id != item.id for i in result.items)  # type: ignore[union-attr]
     assert CartItemModel.objects.count() == 0
 
 

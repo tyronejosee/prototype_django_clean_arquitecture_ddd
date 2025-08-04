@@ -26,16 +26,14 @@ def test_cart_model_str() -> None:
 def test_create_cart_item_model() -> None:
     cart = CartModel.objects.create(user_id=uuid4())
     item = CartItemModel.objects.create(
-        cart=cart,
+        cart_id=cart,
         product_id=uuid4(),
         quantity=3,
-        unit_price=Decimal("19.99"),
     )
 
     assert item.id is not None
-    assert item.cart == cart
+    assert item.cart_id == cart
     assert item.quantity == 3
-    assert item.unit_price == Decimal("19.99")
 
 
 @pytest.mark.django_db()
@@ -43,10 +41,9 @@ def test_cart_item_model_str() -> None:
     cart = CartModel.objects.create(user_id=uuid4())
     product_id = uuid4()
     item = CartItemModel.objects.create(
-        cart=cart,
+        cart_id=cart,
         product_id=product_id,
         quantity=2,
-        unit_price=Decimal("5.00"),
     )
 
     assert str(item) == f"{product_id} x2"

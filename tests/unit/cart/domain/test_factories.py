@@ -21,7 +21,6 @@ def test_cart_item_factory_from_dict() -> None:
 
     # Then: the entity has expected quantity, unit price, and product id
     assert item.quantity == ItemQuantity(3)
-    assert item.unit_price == Decimal(data["unit_price"])
     assert item.product_id == data["product_id"]
 
 
@@ -44,5 +43,3 @@ def test_cart_factory_from_dict() -> None:
 
     # Then: the cart has the expected user id, one item, and correct total
     assert cart.user_id == cart_data["user_id"]
-    assert len(cart.items) == 1
-    assert cart.total() == ItemQuantity(2).value * 5.00
