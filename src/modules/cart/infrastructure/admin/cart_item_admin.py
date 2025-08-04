@@ -7,11 +7,5 @@ from src.modules.cart.infrastructure.models import CartItemModel
 
 @admin.register(CartItemModel)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display: ClassVar[tuple] = (
-        "id",
-        "cart",
-        "product_id",
-        "quantity",
-        "unit_price",
-    )
+    list_display: ClassVar[tuple] = ("id", "cart_id", "product_id", "quantity")
     ordering: ClassVar[tuple] = ("-id",)

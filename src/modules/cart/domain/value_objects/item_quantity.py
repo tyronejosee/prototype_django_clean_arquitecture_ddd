@@ -22,6 +22,4 @@ class ItemQuantity:
 
     def _validate(self) -> None:
         if not (self.value >= self.MIN and self.value <= self.MAX):
-            raise CartDomainError(
-                self.QUANTITY_OUT_OF_RANGE_MSG.format(min=self.MIN, max=self.MAX),
-            )
+            raise CartDomainError(self.QUANTITY_OUT_OF_RANGE_MSG.format(min=self.MIN, max=self.MAX))

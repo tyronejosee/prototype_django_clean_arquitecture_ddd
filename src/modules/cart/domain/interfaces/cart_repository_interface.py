@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from uuid import UUID
 
 from src.modules.cart.domain.entities.cart import Cart
+from src.modules.cart.domain.entities.cart_item import CartItem
 
 
 class CartRepositoryInterface(ABC):
@@ -12,7 +13,7 @@ class CartRepositoryInterface(ABC):
     def create(self, cart: Cart) -> Cart: ...
 
     @abstractmethod
-    def update(self, cart: Cart) -> Cart: ...
+    def add_items(self, user_id: UUID, items: list[CartItem]) -> Cart: ...
 
     @abstractmethod
     def patch_item(self, user_id: UUID, item_id: UUID, quantity: int) -> Cart: ...
