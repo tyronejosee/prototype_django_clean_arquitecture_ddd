@@ -107,15 +107,23 @@ else:
         },
     }
 
-CACHES: dict = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": config("CACHE_LOCATION"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+if IS_RUNNING_PYTEST:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "test-cache",
+        }
+    }
+else:
+    CACHES: dict = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": config("CACHE_LOCATION"),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
         },
-    },
-}
+    }
 
 
 AUTH_PASSWORD_VALIDATORS: list = [
