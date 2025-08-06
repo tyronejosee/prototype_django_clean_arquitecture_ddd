@@ -4,19 +4,17 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from src.modules.cart.application.providers import (
-    get_create_cart_use_case,
-    get_get_cart_use_case,
-    get_update_cart_use_case,
-)
+from src.modules.cart.application.providers import get_create_cart_use_case, get_get_cart_use_case
 from src.modules.cart.domain.exceptions import CartDomainError, CartNotFoundError
 from src.modules.cart.presentation.serializers.cart_serializer import CartSerializer
+from src.modules.cart.presentation.throttles import CreateCartRateThrottle, ListCartRateThrottle
+from src.modules.common.presentation.controllers.base_controller import BaseController
 
 
-class CartController(APIView):
+class CartController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
+    throttle_map: dict = {"GET": ListCartRateThrottle, "POST": CreateCartRateThrottle}
 
     def get(self, request: Request) -> Response:
         user_id = request.user.id
@@ -43,20 +41,5 @@ class CartController(APIView):
             data["user_id"] = request.user.id
             cart = use_case.execute(data)
             return Response(CartSerializer(cart).data, status=status.HTTP_201_CREATED)
-        except CartDomainError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request: Request) -> Response:
-        serializer = CartSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        use_case = get_update_cart_use_case()
-        try:
-            data: dict = serializer.validated_data  # type: ignore[arg-type]
-            data["user_id"] = request.user.id
-            cart = use_case.execute(data)
-            return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
-        except CartNotFoundError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
         except CartDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)

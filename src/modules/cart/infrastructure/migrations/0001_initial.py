@@ -56,9 +56,7 @@ class Migration(migrations.Migration):
                 ("quantity", models.PositiveIntegerField(default=1)),
                 (
                     "unit_price",
-                    models.DecimalField(
-                        decimal_places=2, default=Decimal("0.00"), max_digits=10
-                    ),
+                    models.DecimalField(decimal_places=2, default=Decimal("0.00"), max_digits=10),
                 ),
                 (
                     "cart",
@@ -76,9 +74,7 @@ class Migration(migrations.Migration):
                 "ordering": ["-id"],
                 "indexes": [
                     models.Index(fields=["cart"], name="cart_item_cart_id_305f60_idx"),
-                    models.Index(
-                        fields=["product_id"], name="cart_item_product_d993b4_idx"
-                    ),
+                    models.Index(fields=["product_id"], name="cart_item_product_d993b4_idx"),
                 ],
                 "unique_together": {("cart", "product_id")},
             },

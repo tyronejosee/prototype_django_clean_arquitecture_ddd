@@ -1,22 +1,14 @@
-from decimal import Decimal
 from typing import override
 from uuid import UUID
 
 from src.modules.cart.domain.entities.cart import Cart
-from src.modules.cart.domain.exceptions import (
-    CartDomainError,
-    CartItemNotFoundError,
-    CartNotFoundError,
-)
+from src.modules.cart.domain.entities.cart_item import CartItem
+from src.modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError, CartNotFoundError
 from src.modules.cart.domain.factories.cart_factory import CartFactory
-from src.modules.cart.domain.interfaces.cart_repository_interface import (
-    CartRepositoryInterface,
-)
+from src.modules.cart.domain.interfaces.cart_repository_interface import CartRepositoryInterface
 from src.modules.cart.infrastructure.models.cart_item_model import CartItemModel
 from src.modules.cart.infrastructure.models.cart_model import CartModel
-from src.modules.cart.infrastructure.services.cart_builder_service import (
-    CartBuilderService,
-)
+from src.modules.cart.infrastructure.services.cart_item_merge_service import CartItemMergerService
 
 
 class CartRepository(CartRepositoryInterface):
@@ -41,26 +33,13 @@ class CartRepository(CartRepositoryInterface):
             id=cart.id,
             user_id=cart.user_id,
         )
-
-        for item in cart.items:
-            CartItemModel.objects.create(
-                id=item.id,
-                cart=cart_model,
-                product_id=item.product_id,
-                quantity=item.quantity,
-                unit_price=item.unit_price,
-            )
         return CartFactory.from_model(cart_model)
 
     @override
-    def update(self, cart: Cart) -> Cart:
-        try:
-            cart_model = CartModel.objects.get(user_id=cart.user_id)
-        except CartModel.DoesNotExist as err:
-            raise CartNotFoundError(self.CART_NOT_FOUND_MSG) from err
-
-        CartBuilderService.update_cart(cart_model, cart)
-        return self.get_by_user(cart.user_id)
+    def add_items(self, user_id: UUID, items: list[CartItem]) -> Cart:
+        cart_model, _ = CartModel.objects.get_or_create(user_id=user_id)
+        CartItemMergerService.add_or_merge_items(cart_model, items)
+        return self.get_by_user(user_id)
 
     @override
     def patch_item(self, user_id: UUID, item_id: UUID, quantity: int) -> Cart:
@@ -79,19 +58,6 @@ class CartRepository(CartRepositoryInterface):
             raise CartItemNotFoundError(self.ITEM_NOT_FOUND_MSG)
         cart_item.delete()
         return self.get_by_user(user_id=user_id)
-
-    @override
-    def preview(self, cart: Cart) -> dict:
-        # ! TODO: Implement preview logic and service
-        tax = Decimal(0.19)
-        total = cart.total()
-        taxes = total * tax
-        grand_total = total + taxes
-        return {
-            "subtotal": total,
-            "taxes": taxes,
-            "total": grand_total,
-        }
 
     @override
     def clear(self, user_id: UUID) -> None:
