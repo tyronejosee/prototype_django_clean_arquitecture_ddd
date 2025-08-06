@@ -107,6 +107,17 @@ else:
         },
     }
 
+CACHES: dict = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": config("CACHE_LOCATION"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
+
+
 AUTH_PASSWORD_VALIDATORS: list = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -138,8 +149,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 APPEND_SLASH = False
 
 THROTTLE_5_PER_MINUTE = "5/minute"
+THROTTLE_10_PER_MINUTE = "10/minute"
 THROTTLE_5_PER_HOUR = "5/hour"
 THROTTLE_10_PER_HOUR = "10/hour"
+THROTTLE_2_PER_DAY = "2/day"
 
 MARKETING_THROTTLE_RATES: dict[str, str] = {
     "create_coupon": THROTTLE_5_PER_HOUR,

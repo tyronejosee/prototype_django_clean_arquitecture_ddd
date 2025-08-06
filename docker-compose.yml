@@ -10,6 +10,12 @@ services:
     ports:
       - "5500:5432"
 
+  redis:
+    image: redis:8.2.0
+    container_name: grocery_redis
+    ports:
+      - 6400:6379
+
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -19,6 +25,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - redis
     environment:
       - DEBUG=1
       - DB_HOST=db
