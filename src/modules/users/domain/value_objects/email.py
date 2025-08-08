@@ -15,8 +15,11 @@ class Email:
     EMAIL_INVALID_FORMAT_MSG = "Invalid email format."
 
     def __post_init__(self) -> None:
-        if not re.match(self.EMAIL_PATTERN, self.value):
-            raise UserDomainError(self.EMAIL_INVALID_FORMAT_MSG)
+        self._validate()
 
     def __str__(self) -> str:
         return self.value
+
+    def _validate(self) -> None:
+        if not re.match(self.EMAIL_PATTERN, self.value):
+            raise UserDomainError(self.EMAIL_INVALID_FORMAT_MSG)

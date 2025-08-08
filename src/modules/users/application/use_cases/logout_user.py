@@ -1,6 +1,4 @@
-from src.modules.users.domain.interfaces.token_service_interface import (
-    TokenServiceInterface,
-)
+from src.modules.users.domain.interfaces.token_service_interface import TokenServiceInterface
 
 
 class LogoutUserUseCase:

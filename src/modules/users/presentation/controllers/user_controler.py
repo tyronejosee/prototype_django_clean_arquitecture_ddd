@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import ClassVar, cast
 from uuid import UUID
 
 from rest_framework import status
@@ -13,15 +13,8 @@ from src.modules.users.application.providers import (
     get_update_user_use_case,
     get_user_use_case,
 )
-from src.modules.users.domain.exceptions import (
-    UserAlreadyExistsError,
-    UserDomainError,
-    UserNotFoundError,
-)
-from src.modules.users.presentation.serializers.user_serializer import (
-    UserCreateSerializer,
-    UserSerializer,
-)
+from src.modules.users.domain.exceptions import UserAlreadyExistsError, UserDomainError, UserNotFoundError
+from src.modules.users.presentation.serializers.user_serializer import UserCreateSerializer, UserSerializer
 
 
 class UserListCreateController(APIView):
@@ -36,9 +29,11 @@ class UserListCreateController(APIView):
     def post(self, request) -> Response:
         serializer = UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        data = cast(dict, serializer.validated_data)
+        use_case = get_create_user_use_case()
+
         try:
-            use_case = get_create_user_use_case()
-            user = use_case.execute(serializer.validated_data)  # type: ignore[arg-type]
+            user = use_case.execute(data)
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         except UserDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -59,12 +54,11 @@ class UserDetailController(APIView):
     def put(self, request, user_id: UUID) -> Response:
         serializer = UserCreateSerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+        data = cast(dict, serializer.validated_data)
+        use_case = get_update_user_use_case()
+
         try:
-            use_case = get_update_user_use_case()
-            user = use_case.execute(
-                user_id,
-                serializer.validated_data,  # type: ignore[arg-type]
-            )
+            user = use_case.execute(user_id, data)
             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         except UserNotFoundError as e:
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
@@ -72,8 +66,9 @@ class UserDetailController(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
     def delete(self, request, user_id: UUID) -> Response:
+        use_case = get_deactivate_user_use_case()
+
         try:
-            use_case = get_deactivate_user_use_case()
             use_case.execute(user_id)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except UserNotFoundError as e:

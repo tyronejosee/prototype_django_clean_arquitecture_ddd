@@ -1,9 +1,7 @@
 from uuid import UUID
 
 from src.modules.users.domain.entities.user import User
-from src.modules.users.domain.interfaces.user_repository_interface import (
-    UserRepositoryInterface,
-)
+from src.modules.users.domain.interfaces.user_repository_interface import UserRepositoryInterface
 
 
 class GetUserUseCase:

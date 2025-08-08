@@ -1,9 +1,7 @@
 from django.contrib.auth.hashers import check_password, make_password
 from django.utils.crypto import get_random_string
 
-from src.modules.users.domain.interfaces.password_service_interface import (
-    PasswordServiceInterface,
-)
+from src.modules.users.domain.interfaces.password_service_interface import PasswordServiceInterface
 
 
 class PasswordService(PasswordServiceInterface):
@@ -16,9 +14,7 @@ class PasswordService(PasswordServiceInterface):
 
     def hash_password(self, raw_password: str | None) -> str:
         if raw_password is None:
-            return self.UNUSABLE_CREDENTIAL_PREFIX + get_random_string(
-                self.UNUSABLE_CREDENTIAL_SUFFIX_LENGTH,
-            )
+            return self.UNUSABLE_CREDENTIAL_PREFIX + get_random_string(self.UNUSABLE_CREDENTIAL_SUFFIX_LENGTH)
         if not isinstance(raw_password, str | bytes):
             raise TypeError(self.TYPE_ERROR_MSG)
         return make_password(raw_password)
