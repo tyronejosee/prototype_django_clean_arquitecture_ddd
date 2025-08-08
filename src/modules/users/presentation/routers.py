@@ -8,6 +8,7 @@ from src.modules.users.presentation.controllers.auth_controler import (
     TokenVerifyController,
 )
 from src.modules.users.presentation.controllers.user_controler import UserDetailController, UserListCreateController
+from src.modules.users.presentation.controllers.wishlist_controller import WishlistController, WishlistDetailController
 
 app_name = "users"
 
@@ -21,6 +22,9 @@ urlpatterns: list = [
     path("auth/refresh", RefreshController.as_view(), name="refresh"),
     path("auth/verify", TokenVerifyController.as_view(), name="verify"),
     path("auth/logout", LogoutController.as_view(), name="logout"),
+    # Wishlist
+    path("wishlist", WishlistController.as_view(), name="wishlist-list-create"),
+    path("wishlist/<uuid:product_id>", WishlistDetailController.as_view(), name="wishlist-detail"),
     # TODO: Pending implementation
     # "auth/me",
     # "auth/password/change",
