@@ -1,8 +1,9 @@
 from typing import ClassVar, cast
 from uuid import UUID
 
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -15,6 +16,7 @@ from src.modules.users.application.providers import (
     get_user_use_case,
 )
 from src.modules.users.domain.exceptions import UserAlreadyExistsError, UserDomainError, UserNotFoundError
+from src.modules.users.presentation.schemas.user_schemas import user_detail_schema, user_list_create_schema
 from src.modules.users.presentation.serializers.user_serializer import UserCreateSerializer, UserSerializer
 from src.modules.users.presentation.throttles import (
     CreateUserRateThrottle,
@@ -25,13 +27,10 @@ from src.modules.users.presentation.throttles import (
 )
 
 
+@extend_schema_view(**user_list_create_schema)
 class UserListCreateController(BaseController):
+    permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {"GET": ListUsersRateThrottle, "POST": CreateUserRateThrottle}
-
-    def get_permissions(self) -> list:
-        if self.request.method == "GET":
-            return [IsAdminUser()]
-        return [IsAuthenticated()]
 
     def get(self, request: Request) -> Response:
         use_case = get_list_users_use_case()
@@ -54,8 +53,9 @@ class UserListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
 
+@extend_schema_view(**user_detail_schema)
 class UserDetailController(BaseController):
-    permission_classes: ClassVar[list] = [IsAuthenticated]
+    permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {
         "GET": GetUserRateThrottle,
         "PUT": UpdateUserRateThrottle,
