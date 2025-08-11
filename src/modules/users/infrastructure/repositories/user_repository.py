@@ -42,6 +42,8 @@ class UserRepository(UserRepositoryInterface):
     def update(self, user_id: UUID, user: User) -> User | None:
         updated = UserModel.objects.filter(pk=user_id).update(
             email=user.email,
+            username=user.username,
+            password=user.password,
             first_name=user.first_name,
             last_name=user.last_name,
             is_active=user.is_active,

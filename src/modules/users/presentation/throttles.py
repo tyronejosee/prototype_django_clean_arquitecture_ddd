@@ -19,6 +19,10 @@ class TokenVerifyRateThrottle(UserRateThrottle):
     rate: str = THROTTLE_5_PER_HOUR
 
 
+class ChangePasswordRateThrottle(UserRateThrottle):
+    rate: str = THROTTLE_5_PER_HOUR
+
+
 class LogoutRateThrottle(UserRateThrottle):
     rate: str = THROTTLE_5_PER_HOUR
 

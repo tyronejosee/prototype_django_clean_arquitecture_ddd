@@ -2,23 +2,33 @@ from typing import ClassVar, cast
 
 from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
-from src.modules.users.application.providers import get_create_user_use_case, get_logout_user_use_case
-from src.modules.users.domain.exceptions import LogoutError, UserAlreadyExistsError, UserDomainError
+from src.modules.users.application.providers import (
+    get_change_password_use_case,
+    get_create_user_use_case,
+    get_logout_user_use_case,
+)
+from src.modules.users.domain.exceptions import LogoutError, UserAlreadyExistsError, UserDomainError, UserNotFoundError
 from src.modules.users.presentation.schemas.auth_schemas import (
+    change_password_schema,
     login_schema,
     logout_schema,
     refresh_schema,
     register_schema,
     token_verify_schema,
 )
-from src.modules.users.presentation.serializers.auth_serializer import LogoutSerializer, RegisterSerializer
+from src.modules.users.presentation.serializers.auth_serializer import (
+    ChangePasswordSerializer,
+    LogoutSerializer,
+    RegisterSerializer,
+)
 from src.modules.users.presentation.throttles import (
+    ChangePasswordRateThrottle,
     LoginRateThrottle,
     LogoutRateThrottle,
     RefreshRateThrottle,
@@ -81,6 +91,30 @@ class TokenVerifyController(TokenVerifyView, BaseController):
     """
 
     throttle_map: dict = {"POST": TokenVerifyRateThrottle}
+
+
+@extend_schema_view(**change_password_schema)
+class ChangePasswordController(BaseController):
+    permission_classes: ClassVar[list] = [IsAuthenticated]
+    throttle_map: dict = {"PATCH": ChangePasswordRateThrottle}
+
+    def patch(self, request: Request) -> Response:
+        serializer = ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = cast(dict, serializer.validated_data)
+        use_case = get_change_password_use_case()
+
+        try:
+            message = use_case.execute(
+                user_id=request.user.id,
+                current_password=data["current_password"],
+                new_password=data["new_password"],
+            )
+            return Response({"detail": message}, status=status.HTTP_200_OK)
+        except UserDomainError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except UserNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
 @extend_schema_view(**logout_schema)

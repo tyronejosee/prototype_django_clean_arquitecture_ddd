@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 from src.modules.users.application.use_cases.add_to_wishlist import AddToWishlistUseCase
+from src.modules.users.application.use_cases.change_password import ChangePasswordUseCase
 from src.modules.users.application.use_cases.create_user import CreateUserUseCase
 from src.modules.users.application.use_cases.deactivate_user import DeactivateUserUseCase
 from src.modules.users.application.use_cases.get_user import GetUserUseCase
@@ -53,6 +54,10 @@ def get_update_user_use_case() -> UpdateUserUseCase:
 
 def get_deactivate_user_use_case() -> DeactivateUserUseCase:
     return DeactivateUserUseCase(repo=get_user_repository())
+
+
+def get_change_password_use_case() -> ChangePasswordUseCase:
+    return ChangePasswordUseCase(repo=get_user_repository(), password_service=get_password_service())
 
 
 def get_logout_user_use_case() -> LogoutUserUseCase:

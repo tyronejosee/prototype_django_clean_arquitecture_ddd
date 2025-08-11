@@ -2,7 +2,11 @@ from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer, TokenVerifySerializer
 
 from src.modules.common.presentation.api_messages import API_MESSAGES
-from src.modules.users.presentation.serializers.auth_serializer import LoginSerializer, RegisterSerializer
+from src.modules.users.presentation.serializers.auth_serializer import (
+    ChangePasswordSerializer,
+    LoginSerializer,
+    RegisterSerializer,
+)
 
 register_schema: dict = {
     "post": extend_schema(
@@ -47,6 +51,20 @@ token_verify_schema: dict = {
         request=TokenVerifySerializer,
         responses={
             200: OpenApiResponse(description=API_MESSAGES["OK"]),
+            401: OpenApiResponse(description=API_MESSAGES["UNAUTHORIZED"]),
+        },
+        tags=["users"],
+    ),
+}
+
+change_password_schema: dict = {
+    "patch": extend_schema(
+        summary="Change user password",
+        description="Change the authenticated user's password",
+        request=ChangePasswordSerializer,
+        responses={
+            200: OpenApiResponse(description=API_MESSAGES["OK"]),
+            400: OpenApiResponse(description=API_MESSAGES["BAD_REQUEST"]),
             401: OpenApiResponse(description=API_MESSAGES["UNAUTHORIZED"]),
         },
         tags=["users"],
