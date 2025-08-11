@@ -5,7 +5,6 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
 from src.modules.users.application.providers import (
@@ -23,15 +22,15 @@ from src.modules.users.presentation.serializers.wishlist_serializer import (
     WishlistListSerializer,
 )
 from src.modules.users.presentation.throttles import (
-    AddWhishlistItemRateThrottle,
-    DeleteWhishlistItemRateThrottle,
+    AddWishlistItemRateThrottle,
+    DeleteWishlistItemRateThrottle,
     ListWishlistRateThrottle,
 )
 
 
 class WishlistController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
-    throttle_map: dict = {"GET": ListWishlistRateThrottle, "POST": AddWhishlistItemRateThrottle}
+    throttle_map: dict = {"GET": ListWishlistRateThrottle, "POST": AddWishlistItemRateThrottle}
 
     def get(self, request: Request) -> Response:
         use_case = get_list_wishlist_use_case()
@@ -52,9 +51,9 @@ class WishlistController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class WishlistDetailController(APIView):
+class WishlistDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
-    throttle_map: dict = {"DELETE": DeleteWhishlistItemRateThrottle}
+    throttle_map: dict = {"DELETE": DeleteWishlistItemRateThrottle}
 
     def delete(self, request: Request, product_id: UUID) -> Response:
         use_case = get_remove_from_wishlist_use_case()
