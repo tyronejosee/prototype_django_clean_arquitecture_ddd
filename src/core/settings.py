@@ -33,6 +33,8 @@ THIRD_PARTY_MODULES: list = [
     "corsheaders",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
 LOCAL_MODULES: list = [
@@ -177,12 +179,8 @@ ORDERS_THROTTLE_RATES: dict[str, str] = {
 }
 
 REST_FRAMEWORK: dict = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_CONTENT_LANGUAGE": "en",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
@@ -194,6 +192,7 @@ REST_FRAMEWORK: dict = {
         **ORDERS_THROTTLE_RATES,
         **MARKETING_THROTTLE_RATES,
     },
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "NUM_PROXIES": None,
     "PAGE_SIZE": 25,
@@ -239,3 +238,16 @@ PASSWORD_HASHERS: list = [
 ]
 
 AUTH_USER_MODEL = "users.UserModel"
+
+SPECTACULAR_SETTINGS: dict = {
+    "TITLE": config("PROJECT_NAME", default="Grocery Store"),
+    "VERSION": config("PROJECT_VERSION", default="1.0.0"),
+    "DESCRIPTION": config("PROJECT_DESCRIPTION", default="Grocery Store API"),
+    "LICENSE": {"name": config("LICENCE_NAME", default="None"), "url": config("LICENCE_URL", default="None")},
+    "CONTACT": {"name": config("CONTACT_NAME", default="None"), "url": config("CONTACT_URL", default="None")},
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
+    "REDOC_UI_SETTINGS": {"hideHostname": True, "theme": {"colors": {"primary": {"main": "#FF135B"}}}},
+    "TAGS": [{"name": "users", "description": "Operations related to users"}],
+}
