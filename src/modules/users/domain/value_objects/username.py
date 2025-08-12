@@ -20,6 +20,12 @@ class Username:
     USERNAME_INVALID_FORMAT_MSG = "Invalid username format."
 
     def __post_init__(self) -> None:
+        self._validate()
+
+    def __str__(self) -> str:
+        return self.value
+
+    def _validate(self) -> None:
         if not self.value:
             raise UserDomainError(self.USERNAME_REQUIRED_MSG)
 
@@ -31,6 +37,3 @@ class Username:
 
         if not re.match(self.VALID_PATTERN, self.value):
             raise UserDomainError(self.USERNAME_INVALID_FORMAT_MSG)
-
-    def __str__(self) -> str:
-        return self.value

@@ -4,9 +4,7 @@ from django.db.models import Q
 
 from src.modules.users.domain.entities.user import User
 from src.modules.users.domain.factories.user_factory import UserFactory
-from src.modules.users.domain.interfaces.user_repository_interface import (
-    UserRepositoryInterface,
-)
+from src.modules.users.domain.interfaces.user_repository_interface import UserRepositoryInterface
 from src.modules.users.infrastructure.models.user_model import UserModel
 
 
@@ -20,10 +18,7 @@ class UserRepository(UserRepositoryInterface):
 
     def get_by_email_or_username(self, email: str, username: str) -> User | None:
         try:
-            user_model: UserModel = UserModel.objects.get(
-                Q(email=email) | Q(username=username),
-                is_active=True,
-            )
+            user_model: UserModel = UserModel.objects.get(Q(email=email) | Q(username=username), is_active=True)
             return UserFactory.from_model(user_model)
         except UserModel.DoesNotExist:
             return None
@@ -47,6 +42,8 @@ class UserRepository(UserRepositoryInterface):
     def update(self, user_id: UUID, user: User) -> User | None:
         updated = UserModel.objects.filter(pk=user_id).update(
             email=user.email,
+            username=user.username,
+            password=user.password,
             first_name=user.first_name,
             last_name=user.last_name,
             is_active=user.is_active,

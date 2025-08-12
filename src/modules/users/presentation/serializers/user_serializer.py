@@ -21,8 +21,3 @@ class UserCreateSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=150, required=True)
     last_name = serializers.CharField(max_length=150, required=True)
     is_active = serializers.BooleanField(required=False, default=True)
-
-
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(write_only=True, required=True)

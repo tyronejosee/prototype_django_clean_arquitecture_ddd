@@ -2,20 +2,12 @@ from uuid import UUID
 
 from src.modules.users.domain.entities.user import User
 from src.modules.users.domain.exceptions import UserNotFoundError
-from src.modules.users.domain.interfaces.password_service_interface import (
-    PasswordServiceInterface,
-)
-from src.modules.users.domain.interfaces.user_repository_interface import (
-    UserRepositoryInterface,
-)
+from src.modules.users.domain.interfaces.password_service_interface import PasswordServiceInterface
+from src.modules.users.domain.interfaces.user_repository_interface import UserRepositoryInterface
 
 
 class UpdateUserUseCase:
-    def __init__(
-        self,
-        repo: UserRepositoryInterface,
-        password_service: PasswordServiceInterface,
-    ) -> None:
+    def __init__(self, repo: UserRepositoryInterface, password_service: PasswordServiceInterface) -> None:
         self.repo = repo
         self.password_service = password_service
 

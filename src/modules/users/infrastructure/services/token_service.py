@@ -2,9 +2,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from src.modules.users.domain.exceptions import LogoutError
-from src.modules.users.domain.interfaces.token_service_interface import (
-    TokenServiceInterface,
-)
+from src.modules.users.domain.interfaces.token_service_interface import TokenServiceInterface
 
 
 class TokenService(TokenServiceInterface):
