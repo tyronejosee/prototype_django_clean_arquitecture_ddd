@@ -10,6 +10,7 @@ from src.modules.users.application.use_cases.list_wishlist import ListWishlistUs
 from src.modules.users.application.use_cases.logout_user import LogoutUserUseCase
 from src.modules.users.application.use_cases.remove_from_wishlist import RemoveFromWishlistUseCase
 from src.modules.users.application.use_cases.update_user import UpdateUserUseCase
+from src.modules.users.infrastructure.adapters.product_adapter import ProductAdapter
 from src.modules.users.infrastructure.repositories.user_repository import UserRepository
 from src.modules.users.infrastructure.repositories.wishlist_repository import WishlistRepository
 from src.modules.users.infrastructure.services.password_service import PasswordService
@@ -34,6 +35,11 @@ def get_user_repository() -> UserRepository:
 @lru_cache
 def get_wishlist_repository() -> WishlistRepository:
     return WishlistRepository()
+
+
+@lru_cache
+def get_product_adapter() -> ProductAdapter:
+    return ProductAdapter()
 
 
 def get_list_users_use_case() -> ListUsersUseCase:
@@ -65,7 +71,7 @@ def get_logout_user_use_case() -> LogoutUserUseCase:
 
 
 def get_add_to_wishlist_use_case() -> AddToWishlistUseCase:
-    return AddToWishlistUseCase(repo=get_wishlist_repository())
+    return AddToWishlistUseCase(repo=get_wishlist_repository(), product_adapter=get_product_adapter())
 
 
 def get_remove_from_wishlist_use_case() -> RemoveFromWishlistUseCase:
