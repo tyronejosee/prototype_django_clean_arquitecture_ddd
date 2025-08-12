@@ -75,7 +75,7 @@ exclude = [
   "node_modules",
   "venv",
   "*/migrations/*.py",
-  "*/tests/*.py",
+  "tests/*.py",
   "staticfiles/*",
 ]
 indent-width = 4
