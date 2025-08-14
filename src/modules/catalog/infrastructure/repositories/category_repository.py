@@ -22,10 +22,8 @@ class CategoryRepository(CategoryRepositoryInterface):
 
     @override
     def list_all(self) -> list[Category]:
-        return [
-            CategoryFactory.from_model(category_model)
-            for category_model in CategoryModel.objects.filter(is_active=True)
-        ]
+        queryset = CategoryModel.objects.filter(is_active=True)
+        return [CategoryFactory.from_model(category_model) for category_model in queryset]
 
     @override
     def create(self, category: Category) -> Category:

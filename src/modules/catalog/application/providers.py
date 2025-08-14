@@ -12,6 +12,7 @@ from src.modules.catalog.application.use_cases.list_products import ListProducts
 from src.modules.catalog.application.use_cases.list_products_by_category import ListProductsByCategoryUseCase
 from src.modules.catalog.application.use_cases.update_category import UpdateCategoryUseCase
 from src.modules.catalog.application.use_cases.update_product import UpdateProductUseCase
+from src.modules.catalog.infrastructure.cache.category_cache_service import CategoryCacheService
 from src.modules.catalog.infrastructure.repositories.category_repository import CategoryRepository
 from src.modules.catalog.infrastructure.repositories.product_repository import ProductRepository
 
@@ -22,16 +23,21 @@ def get_category_repository() -> CategoryRepository:
 
 
 @lru_cache
+def get_category_cache() -> CategoryCacheService:
+    return CategoryCacheService()
+
+
+@lru_cache
 def get_product_repository() -> ProductRepository:
     return ProductRepository()
 
 
 def get_list_categories_use_case() -> ListCategoriesUseCase:
-    return ListCategoriesUseCase(repo=get_category_repository())
+    return ListCategoriesUseCase(repo=get_category_repository(), cache=get_category_cache())
 
 
 def get_create_category_use_case() -> CreateCategoryUseCase:
-    return CreateCategoryUseCase(repo=get_category_repository())
+    return CreateCategoryUseCase(repo=get_category_repository(), cache=get_category_cache())
 
 
 def get_get_category_use_case() -> GetCategoryUseCase:
@@ -39,11 +45,11 @@ def get_get_category_use_case() -> GetCategoryUseCase:
 
 
 def get_update_category_use_case() -> UpdateCategoryUseCase:
-    return UpdateCategoryUseCase(repo=get_category_repository())
+    return UpdateCategoryUseCase(repo=get_category_repository(), cache=get_category_cache())
 
 
 def get_delete_category_use_case() -> DeleteCategoryUseCase:
-    return DeleteCategoryUseCase(repo=get_category_repository())
+    return DeleteCategoryUseCase(repo=get_category_repository(), cache=get_category_cache())
 
 
 def get_list_products_use_case() -> ListProductsUseCase:
