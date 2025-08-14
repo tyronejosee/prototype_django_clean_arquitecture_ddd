@@ -13,6 +13,6 @@ class UpdateCategoryUseCase:
         self.cache = cache
 
     def execute(self, category_id: UUID, data: dict) -> Category:
-        category = self.repo.update(category_id, CategoryFactory.from_dict(data))
+        category = self.repo.update(category_id=category_id, category=CategoryFactory.from_dict(data))
         self.cache.delete(CategoryCacheKeys.category_list_key())
         return category

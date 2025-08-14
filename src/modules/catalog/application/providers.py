@@ -13,6 +13,7 @@ from src.modules.catalog.application.use_cases.list_products_by_category import 
 from src.modules.catalog.application.use_cases.update_category import UpdateCategoryUseCase
 from src.modules.catalog.application.use_cases.update_product import UpdateProductUseCase
 from src.modules.catalog.infrastructure.cache.category_cache_service import CategoryCacheService
+from src.modules.catalog.infrastructure.cache.product_cache_service import ProductCacheService
 from src.modules.catalog.infrastructure.repositories.category_repository import CategoryRepository
 from src.modules.catalog.infrastructure.repositories.product_repository import ProductRepository
 
@@ -30,6 +31,11 @@ def get_category_cache() -> CategoryCacheService:
 @lru_cache
 def get_product_repository() -> ProductRepository:
     return ProductRepository()
+
+
+@lru_cache
+def get_product_cache() -> ProductCacheService:
+    return ProductCacheService()
 
 
 def get_list_categories_use_case() -> ListCategoriesUseCase:
@@ -53,11 +59,11 @@ def get_delete_category_use_case() -> DeleteCategoryUseCase:
 
 
 def get_list_products_use_case() -> ListProductsUseCase:
-    return ListProductsUseCase(repo=get_product_repository())
+    return ListProductsUseCase(repo=get_product_repository(), cache=get_product_cache())
 
 
 def get_create_product_use_case() -> CreateProductUseCase:
-    return CreateProductUseCase(repo=get_product_repository())
+    return CreateProductUseCase(repo=get_product_repository(), cache=get_product_cache())
 
 
 def get_get_product_use_case() -> GetProductUseCase:
@@ -65,16 +71,16 @@ def get_get_product_use_case() -> GetProductUseCase:
 
 
 def get_update_product_use_case() -> UpdateProductUseCase:
-    return UpdateProductUseCase(repo=get_product_repository())
+    return UpdateProductUseCase(repo=get_product_repository(), cache=get_product_cache())
 
 
 def get_delete_product_use_case() -> DeleteProductUseCase:
-    return DeleteProductUseCase(repo=get_product_repository())
+    return DeleteProductUseCase(repo=get_product_repository(), cache=get_product_cache())
 
 
 def get_list_featured_products_use_case() -> ListFeaturedProductsUseCase:
-    return ListFeaturedProductsUseCase(repo=get_product_repository())
+    return ListFeaturedProductsUseCase(repo=get_product_repository(), cache=get_product_cache())
 
 
 def get_list_products_by_category_use_case() -> ListProductsByCategoryUseCase:
-    return ListProductsByCategoryUseCase(repo=get_product_repository())
+    return ListProductsByCategoryUseCase(repo=get_product_repository(), cache=get_product_cache())
