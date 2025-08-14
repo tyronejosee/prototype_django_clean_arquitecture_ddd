@@ -2,9 +2,7 @@ from decimal import Decimal
 
 from src.modules.catalog.domain.entities.product import Product
 from src.modules.catalog.domain.exceptions import ProductDomainError
-from src.modules.catalog.domain.interfaces.product_service_interface import (
-    ProductServiceInterface,
-)
+from src.modules.catalog.domain.interfaces.product_service_interface import ProductServiceInterface
 
 
 class ProductService(ProductServiceInterface):
@@ -36,10 +34,7 @@ class ProductService(ProductServiceInterface):
 
     def apply_discount(self, product: Product, discount_percentage: float) -> Decimal:
         if not (self.MIN_DISCOUNT <= discount_percentage <= self.MAX_DISCOUNT):
-            message = self.INVALID_DISCOUNT_MSG.format(
-                min_=self.MIN_DISCOUNT,
-                max_=self.MAX_DISCOUNT,
-            )
+            message = self.INVALID_DISCOUNT_MSG.format(min_=self.MIN_DISCOUNT, max_=self.MAX_DISCOUNT)
             raise ProductDomainError(message)
         discount = Decimal(discount_percentage) / Decimal("100")
         return product.price * (Decimal("1") - discount)

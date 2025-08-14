@@ -1,8 +1,8 @@
-from typing import ClassVar
+from typing import ClassVar, cast
 from uuid import UUID
 
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,13 +16,14 @@ from src.modules.catalog.application.providers import (
     get_update_product_use_case,
 )
 from src.modules.catalog.domain.exceptions import ProductDomainError
-from src.modules.catalog.presentation.serializers.product_serializer import (
-    ProductSerializer,
-)
+from src.modules.catalog.presentation.serializers.product_serializer import ProductSerializer
 
 
 class ProductListCreateController(APIView):
-    permission_classes: ClassVar[list] = [AllowAny]  # ! TODO: Add roles
+    def get_permissions(self) -> list:
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def get(self, request: Request) -> Response:
         use_case = get_list_products_use_case()
@@ -33,21 +34,21 @@ class ProductListCreateController(APIView):
     def post(self, request: Request) -> Response:
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        validated_data = cast(dict, serializer.validated_data)
+        use_case = get_create_product_use_case()
+
         try:
-            use_case = get_create_product_use_case()
-            product = use_case.execute(
-                serializer.validated_data,  # type: ignore[arg-type]
-            )
-            return Response(
-                ProductSerializer(product).data,
-                status=status.HTTP_201_CREATED,
-            )
+            product = use_case.execute(validated_data)
+            return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
         except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductDetailController(APIView):
-    permission_classes: ClassVar[list] = [AllowAny]  # ! TODO: Add roles
+    def get_permissions(self) -> list:
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def get(self, request: Request, product_id: UUID) -> Response:
         use_case = get_get_product_use_case()
@@ -60,12 +61,11 @@ class ProductDetailController(APIView):
     def put(self, request: Request, product_id: UUID) -> Response:
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        validated_data = cast(dict, serializer.validated_data)
+        use_case = get_update_product_use_case()
+
         try:
-            use_case = get_update_product_use_case()
-            product = use_case.execute(
-                product_id,
-                serializer.validated_data,  # type: ignore[arg-type]
-            )
+            product = use_case.execute(product_id, validated_data)
             return Response(ProductSerializer(product).data, status=status.HTTP_200_OK)
         except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -77,7 +77,7 @@ class ProductDetailController(APIView):
 
 
 class FeaturedProductsController(APIView):
-    permission_classes: ClassVar[list] = [AllowAny]  # ! TODO: Add roles
+    permission_classes: ClassVar[list] = [AllowAny]
 
     def get(self, request: Request) -> Response:
         use_case = get_list_featured_products_use_case()

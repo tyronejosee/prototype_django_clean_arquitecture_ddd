@@ -1,41 +1,19 @@
 from functools import lru_cache
 
-from src.modules.catalog.application.use_cases.create_category import (
-    CreateCategoryUseCase,
-)
-from src.modules.catalog.application.use_cases.create_product import (
-    CreateProductUseCase,
-)
-from src.modules.catalog.application.use_cases.delete_category import (
-    DeleteCategoryUseCase,
-)
-from src.modules.catalog.application.use_cases.delete_product import (
-    DeleteProductUseCase,
-)
+from src.modules.catalog.application.use_cases.create_category import CreateCategoryUseCase
+from src.modules.catalog.application.use_cases.create_product import CreateProductUseCase
+from src.modules.catalog.application.use_cases.delete_category import DeleteCategoryUseCase
+from src.modules.catalog.application.use_cases.delete_product import DeleteProductUseCase
 from src.modules.catalog.application.use_cases.get_category import GetCategoryUseCase
 from src.modules.catalog.application.use_cases.get_product import GetProductUseCase
-from src.modules.catalog.application.use_cases.list_categories import (
-    ListCategoriesUseCase,
-)
-from src.modules.catalog.application.use_cases.list_featured_products import (
-    ListFeaturedProductsUseCase,
-)
+from src.modules.catalog.application.use_cases.list_categories import ListCategoriesUseCase
+from src.modules.catalog.application.use_cases.list_featured_products import ListFeaturedProductsUseCase
 from src.modules.catalog.application.use_cases.list_products import ListProductsUseCase
-from src.modules.catalog.application.use_cases.list_products_by_category import (
-    ListProductsByCategoryUseCase,
-)
-from src.modules.catalog.application.use_cases.update_category import (
-    UpdateCategoryUseCase,
-)
-from src.modules.catalog.application.use_cases.update_product import (
-    UpdateProductUseCase,
-)
-from src.modules.catalog.infrastructure.repositories.category_repository import (
-    CategoryRepository,
-)
-from src.modules.catalog.infrastructure.repositories.product_repository import (
-    ProductRepository,
-)
+from src.modules.catalog.application.use_cases.list_products_by_category import ListProductsByCategoryUseCase
+from src.modules.catalog.application.use_cases.update_category import UpdateCategoryUseCase
+from src.modules.catalog.application.use_cases.update_product import UpdateProductUseCase
+from src.modules.catalog.infrastructure.repositories.category_repository import CategoryRepository
+from src.modules.catalog.infrastructure.repositories.product_repository import ProductRepository
 
 
 @lru_cache

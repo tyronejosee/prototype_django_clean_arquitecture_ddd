@@ -18,8 +18,4 @@ class ProductServiceInterface(ABC):
     def restock(self, product: Product, quantity: int) -> None: ...
 
     @abstractmethod
-    def apply_discount(
-        self,
-        product: Product,
-        discount_percentage: float,
-    ) -> Decimal: ...
+    def apply_discount(self, product: Product, discount_percentage: float) -> Decimal: ...

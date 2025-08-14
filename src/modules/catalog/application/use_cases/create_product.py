@@ -1,8 +1,6 @@
 from src.modules.catalog.domain.entities.product import Product
 from src.modules.catalog.domain.factories.product_factory import ProductFactory
-from src.modules.catalog.domain.interfaces.product_repository_interface import (
-    ProductRepositoryInterface,
-)
+from src.modules.catalog.domain.interfaces.product_repository_interface import ProductRepositoryInterface
 
 
 class CreateProductUseCase:

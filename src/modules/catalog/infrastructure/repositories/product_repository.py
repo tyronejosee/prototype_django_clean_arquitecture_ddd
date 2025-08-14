@@ -6,9 +6,7 @@ from django.db.models import Q
 from src.modules.catalog.domain.entities.product import Product
 from src.modules.catalog.domain.exceptions import ProductNotFoundError
 from src.modules.catalog.domain.factories.product_factory import ProductFactory
-from src.modules.catalog.domain.interfaces.product_repository_interface import (
-    ProductRepositoryInterface,
-)
+from src.modules.catalog.domain.interfaces.product_repository_interface import ProductRepositoryInterface
 from src.modules.catalog.infrastructure.models.product_model import ProductModel
 
 
@@ -25,11 +23,8 @@ class ProductRepository(ProductRepositoryInterface):
             raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
     @override
-    def list_all(self, filters: dict) -> list[Product]:
-        queryset = self._apply_filters(
-            ProductModel.objects.filter(is_active=True),
-            filters,
-        )
+    def list_all(self, query_params: dict) -> list[Product]:
+        queryset = self._apply_filters(ProductModel.objects.filter(is_active=True), query_params)
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
     @override
@@ -91,20 +86,14 @@ class ProductRepository(ProductRepositoryInterface):
     def list_featured(self) -> list[Product]:
         return [
             ProductFactory.from_model(product_model)
-            for product_model in ProductModel.objects.filter(
-                is_featured=True,
-                is_active=True,
-            )
+            for product_model in ProductModel.objects.filter(is_featured=True, is_active=True)
         ]
 
     @override
     def list_by_category(self, category_id: UUID) -> list[Product]:
         return [
             ProductFactory.from_model(product_model)
-            for product_model in ProductModel.objects.filter(
-                category_id=category_id,
-                is_active=True,
-            )
+            for product_model in ProductModel.objects.filter(category_id=category_id, is_active=True)
         ]
 
     def _apply_filters(self, queryset, filters: dict) -> list[Product]:

@@ -70,16 +70,12 @@ class Migration(migrations.Migration):
                     models.DecimalField(
                         decimal_places=2,
                         max_digits=10,
-                        validators=[
-                            django.core.validators.MinValueValidator(Decimal("0.01"))
-                        ],
+                        validators=[django.core.validators.MinValueValidator(Decimal("0.01"))],
                     ),
                 ),
                 (
                     "discount_price",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=10, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True),
                 ),
                 ("stock", models.PositiveIntegerField(default=0)),
                 ("min_stock", models.PositiveIntegerField(default=5)),
@@ -88,9 +84,7 @@ class Migration(migrations.Migration):
                 ("is_featured", models.BooleanField(default=False)),
                 (
                     "weight",
-                    models.DecimalField(
-                        blank=True, decimal_places=3, max_digits=8, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=3, max_digits=8, null=True),
                 ),
                 ("unit", models.CharField(default="kg", max_length=10)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
