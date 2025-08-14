@@ -48,26 +48,26 @@ class ProductRepository(ProductRepositoryInterface):
         return ProductFactory.from_model(product_model)
 
     @override
-    def update(self, product_id: UUID, product: Product) -> Product | None:
-        updated = ProductModel.objects.filter(pk=product_id).update(
-            name=product.name,
-            description=product.description,
-            sku=product.sku,
-            category_id=product.category_id,
-            price=product.price,
-            discount_price=product.discount_price,
-            stock=product.stock,
-            min_stock=product.min_stock,
-            image=product.image_url,
-            is_active=product.is_active,
-            is_featured=product.is_featured,
-            weight=product.weight,
-            unit=product.unit,
-        )
-        if updated:
+    def update(self, product_id: UUID, product: Product) -> Product:
+        try:
             product_model = ProductModel.objects.get(pk=product_id)
+            product_model.name = product.name
+            product_model.description = product.description
+            product_model.sku = product.sku.value
+            product_model.category_id = product.category_id  # type: ignore[union-attr]
+            product_model.price = product.price
+            product_model.discount_price = product.discount_price
+            product_model.stock = product.stock
+            product_model.min_stock = product.min_stock
+            product_model.image = product.image_url  # type: ignore[union-attr]
+            product_model.is_active = product.is_active
+            product_model.is_featured = product.is_featured
+            product_model.weight = product.weight
+            product_model.unit = product.unit.value
+            product_model.save()
             return ProductFactory.from_model(product_model)
-        return None
+        except ProductModel.DoesNotExist as error:
+            raise ProductNotFoundError(self.PRODUCT_NOT_FOUND_MSG) from error
 
     @override
     def delete(self, product_id: UUID) -> None:
@@ -84,17 +84,13 @@ class ProductRepository(ProductRepositoryInterface):
 
     @override
     def list_featured(self) -> list[Product]:
-        return [
-            ProductFactory.from_model(product_model)
-            for product_model in ProductModel.objects.filter(is_featured=True, is_active=True)
-        ]
+        queryset = ProductModel.objects.filter(is_featured=True, is_active=True)
+        return [ProductFactory.from_model(product_model) for product_model in queryset]
 
     @override
     def list_by_category(self, category_id: UUID) -> list[Product]:
-        return [
-            ProductFactory.from_model(product_model)
-            for product_model in ProductModel.objects.filter(category_id=category_id, is_active=True)
-        ]
+        queryset = ProductModel.objects.filter(category_id=category_id, is_active=True)
+        return [ProductFactory.from_model(product_model) for product_model in queryset]
 
     def _apply_filters(self, queryset, filters: dict) -> list[Product]:
         q = filters.get("q")
