@@ -17,9 +17,19 @@ from src.modules.catalog.presentation.providers import (
 )
 from src.modules.catalog.presentation.serializers.category_serializer import CategorySerializer
 from src.modules.catalog.presentation.serializers.product_serializer import ProductSerializer
+from src.modules.catalog.presentation.throttles import (
+    CreateCategoryRateThrottle,
+    DeleteCategoryRateThrottle,
+    ListCategoriesRateThrottle,
+    ListProductsRateThrottle,
+    UpdateCategoryRateThrottle,
+)
+from src.modules.common.presentation.controllers.base_controller import BaseController
 
 
-class CategoryListCreateController(APIView):
+class CategoryListCreateController(BaseController):
+    throttle_map: dict = {"GET": ListCategoriesRateThrottle, "POST": CreateCategoryRateThrottle}
+
     def get_permissions(self) -> list:
         if self.request.method == "POST":
             return [IsAdminUser()]
@@ -46,6 +56,7 @@ class CategoryListCreateController(APIView):
 
 class CategoryDetailController(APIView):
     permission_classes: ClassVar[list] = [IsAdminUser]
+    throttle_map: dict = {"PUT": UpdateCategoryRateThrottle, "DELETE": DeleteCategoryRateThrottle}
 
     def put(self, request: Request, category_id: UUID) -> Response:
         serializer = CategorySerializer(data=request.data)
@@ -67,6 +78,7 @@ class CategoryDetailController(APIView):
 
 class CategoryProductListController(APIView):
     permission_classes: ClassVar[list] = [AllowAny]
+    throttle_map: dict = {"GET": ListProductsRateThrottle}
 
     def get(self, request: Request, category_id: UUID) -> Response:
         use_case = get_list_products_by_category_use_case()

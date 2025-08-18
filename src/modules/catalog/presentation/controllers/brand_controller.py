@@ -5,7 +5,6 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from src.modules.catalog.domain.exceptions import BrandDomainError
 from src.modules.catalog.presentation.providers import (
@@ -17,10 +16,20 @@ from src.modules.catalog.presentation.providers import (
 )
 from src.modules.catalog.presentation.serializers.brand_serializer import BrandInputSerializer, BrandOutputSerializer
 from src.modules.catalog.presentation.serializers.product_serializer import ProductSerializer
+from src.modules.catalog.presentation.throttles import (
+    CreateBrandRateThrottle,
+    DeleteBrandRateThrottle,
+    ListBrandsRateThrottle,
+    ListProductsRateThrottle,
+    UpdateBrandRateThrottle,
+)
+from src.modules.common.presentation.controllers.base_controller import BaseController
 from src.modules.common.presentation.pagination import paginate_queryset
 
 
-class BrandListCreateController(APIView):
+class BrandListCreateController(BaseController):
+    throttle_map: dict = {"GET": ListBrandsRateThrottle, "POST": CreateBrandRateThrottle}
+
     def get_permissions(self) -> list:
         if self.request.method == "POST":
             return [IsAdminUser()]
@@ -44,8 +53,9 @@ class BrandListCreateController(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BrandDetailController(APIView):
+class BrandDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
+    throttle_map: dict = {"PUT": UpdateBrandRateThrottle, "DELETE": DeleteBrandRateThrottle}
 
     def put(self, request: Request, brand_id: UUID) -> Response:
         serializer = BrandInputSerializer(data=request.data)
@@ -65,8 +75,9 @@ class BrandDetailController(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class BrandProductListController(APIView):
+class BrandProductListController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
+    throttle_map: dict = {"GET": ListProductsRateThrottle}
 
     def get(self, request: Request, brand_id: UUID) -> Response:
         use_case = get_list_products_by_brand_use_case()
