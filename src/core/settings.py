@@ -250,5 +250,8 @@ SPECTACULAR_SETTINGS: dict = {
     "SWAGGER_UI_DIST": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
     "REDOC_UI_SETTINGS": {"hideHostname": True, "theme": {"colors": {"primary": {"main": "#FF135B"}}}},
-    "TAGS": [{"name": "users", "description": "Operations related to users"}],
+    "TAGS": [
+        {"name": "users", "description": "Operations related to users"},
+        {"name": "catalog", "description": "Operations related to products"},
+    ],
 }

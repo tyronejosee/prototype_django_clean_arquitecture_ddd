@@ -1,7 +1,23 @@
 from rest_framework import serializers
 
 
-class ProductSerializer(serializers.Serializer):
+class ProductInputSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=200)
+    description = serializers.CharField()
+    sku = serializers.CharField(max_length=100)
+    category_id = serializers.UUIDField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    discount_price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
+    stock = serializers.IntegerField()
+    min_stock = serializers.IntegerField()
+    image_url = serializers.URLField(required=False, allow_null=True)
+    is_active = serializers.BooleanField()
+    is_featured = serializers.BooleanField()
+    weight = serializers.DecimalField(max_digits=8, decimal_places=3, required=False, allow_null=True)
+    unit = serializers.CharField(max_length=10)
+
+
+class ProductOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField(read_only=True)
     name = serializers.CharField(max_length=200)
     description = serializers.CharField()

@@ -1,6 +1,7 @@
 from typing import ClassVar, cast
 from uuid import UUID
 
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
@@ -14,8 +15,13 @@ from src.modules.catalog.presentation.providers import (
     get_list_products_by_brand_use_case,
     get_update_brand_use_case,
 )
+from src.modules.catalog.presentation.schemas.brand_schemas import (
+    brand_detail_schema,
+    brand_list_create_schema,
+    brand_product_list_schema,
+)
 from src.modules.catalog.presentation.serializers.brand_serializer import BrandInputSerializer, BrandOutputSerializer
-from src.modules.catalog.presentation.serializers.product_serializer import ProductSerializer
+from src.modules.catalog.presentation.serializers.product_serializer import ProductOutputSerializer
 from src.modules.catalog.presentation.throttles import (
     CreateBrandRateThrottle,
     DeleteBrandRateThrottle,
@@ -27,6 +33,7 @@ from src.modules.common.presentation.controllers.base_controller import BaseCont
 from src.modules.common.presentation.pagination import paginate_queryset
 
 
+@extend_schema_view(**brand_list_create_schema)
 class BrandListCreateController(BaseController):
     throttle_map: dict = {"GET": ListBrandsRateThrottle, "POST": CreateBrandRateThrottle}
 
@@ -53,6 +60,7 @@ class BrandListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema_view(**brand_detail_schema)
 class BrandDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {"PUT": UpdateBrandRateThrottle, "DELETE": DeleteBrandRateThrottle}
@@ -75,6 +83,7 @@ class BrandDetailController(BaseController):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@extend_schema_view(**brand_product_list_schema)
 class BrandProductListController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     throttle_map: dict = {"GET": ListProductsRateThrottle}
@@ -82,5 +91,4 @@ class BrandProductListController(BaseController):
     def get(self, request: Request, brand_id: UUID) -> Response:
         use_case = get_list_products_by_brand_use_case()
         products = use_case.execute(brand_id)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return paginate_queryset(request, products, ProductOutputSerializer)
