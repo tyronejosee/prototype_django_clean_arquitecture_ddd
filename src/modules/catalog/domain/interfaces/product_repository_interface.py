@@ -28,3 +28,6 @@ class ProductRepositoryInterface(ABC):
 
     @abstractmethod
     def list_by_category(self, category_id: UUID) -> list[Product]: ...
+
+    @abstractmethod
+    def exists_by_sku(self, sku: str) -> bool: ...

@@ -92,6 +92,10 @@ class ProductRepository(ProductRepositoryInterface):
         queryset = ProductModel.objects.filter(category_id=category_id, is_active=True)
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
+    @override
+    def exists_by_sku(self, sku: str) -> bool:
+        return ProductModel.objects.filter(sku=sku, is_active=True).exists()
+
     def _apply_filters(self, queryset, filters: dict) -> list[Product]:
         q = filters.get("q")
         category_id = filters.get("category")
