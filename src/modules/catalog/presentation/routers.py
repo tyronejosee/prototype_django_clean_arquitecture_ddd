@@ -1,5 +1,10 @@
 from django.urls import path
 
+from src.modules.catalog.presentation.controllers.brand_controller import (
+    BrandDetailController,
+    BrandListCreateController,
+    BrandProductListController,
+)
 from src.modules.catalog.presentation.controllers.category_controller import (
     CategoryDetailController,
     CategoryListCreateController,
@@ -14,6 +19,9 @@ from src.modules.catalog.presentation.controllers.product_controller import (
 app_name = "catalog"
 
 urlpatterns: list = [
+    path("brands", BrandListCreateController.as_view(), name="brand-list"),
+    path("brands/<uuid:brand_id>", BrandDetailController.as_view(), name="brand-detail"),
+    path("brands/<uuid:brand_id>/products", BrandProductListController.as_view(), name="products-by-brand"),
     path("categories", CategoryListCreateController.as_view(), name="category-list"),
     path("categories/<uuid:category_id>", CategoryDetailController.as_view(), name="category-detail"),
     path(

@@ -7,7 +7,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.modules.catalog.application.providers import (
+from src.modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.presentation.providers import (
     get_create_product_use_case,
     get_delete_product_use_case,
     get_get_product_use_case,
@@ -15,7 +16,6 @@ from src.modules.catalog.application.providers import (
     get_list_products_use_case,
     get_update_product_use_case,
 )
-from src.modules.catalog.domain.exceptions import ProductDomainError
 from src.modules.catalog.presentation.serializers.product_serializer import ProductSerializer
 
 
