@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from src.modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.exceptions import ProductDomainError, ProductNotFoundError
 from src.modules.catalog.presentation.providers import (
     get_create_product_use_case,
     get_delete_product_use_case,
@@ -54,10 +54,11 @@ class ProductListCreateController(BaseController):
         serializer = ProductInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = cast(dict, serializer.validated_data)
+        image_file = validated_data.pop("image")
         use_case = get_create_product_use_case()
 
         try:
-            product = use_case.execute(validated_data)
+            product = use_case.execute(validated_data, image_file)
             return Response(ProductOutputSerializer(product).data, status=status.HTTP_201_CREATED)
         except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,13 +89,16 @@ class ProductDetailController(BaseController):
         serializer = ProductInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = cast(dict, serializer.validated_data)
+        image_file = validated_data.pop("image", None)
         use_case = get_update_product_use_case()
 
         try:
-            product = use_case.execute(product_id, validated_data)
+            product = use_case.execute(product_id, validated_data, image_file)
             return Response(ProductOutputSerializer(product).data, status=status.HTTP_200_OK)
         except ProductDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except ProductNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request: Request, product_id: UUID) -> Response:
         use_case = get_delete_product_use_case()

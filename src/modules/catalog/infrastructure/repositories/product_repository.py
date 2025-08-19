@@ -28,42 +28,55 @@ class ProductRepository(ProductRepositoryInterface):
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
     @override
-    def create(self, product: Product) -> Product:
+    def create(self, product: Product, image: bytes) -> Product:
         product_model = ProductModel.objects.create(
             id=product.id,
             name=product.name,
             description=product.description,
             sku=product.sku,
             category_id=product.category_id,
+            brand_id=product.brand_id,
             price=product.price,
             discount_price=product.discount_price,
+            currency=product.currency.value,
             stock=product.stock,
             min_stock=product.min_stock,
-            image=product.image_url,
+            warehouse_location=product.warehouse_location,
+            image=image,
             is_active=product.is_active,
             is_featured=product.is_featured,
             weight=product.weight,
             unit=product.unit,
+            nutritional_info=product.nutritional_info,
+            ingredients=product.ingredients,
+            allergens=product.allergens,
         )
         return ProductFactory.from_model(product_model)
 
     @override
-    def update(self, product_id: UUID, product: Product) -> Product:
+    def update(self, product_id: UUID, product: Product, image: bytes | None = None) -> Product:
         try:
             product_model = ProductModel.objects.get(pk=product_id)
             product_model.name = product.name
             product_model.description = product.description
             product_model.sku = product.sku.value
             product_model.category_id = product.category_id  # type: ignore[union-attr]
+            product_model.brand_id = product.brand_id  # type: ignore[union-attr]
             product_model.price = product.price
             product_model.discount_price = product.discount_price
+            product_model.currency = product.currency.value
             product_model.stock = product.stock
             product_model.min_stock = product.min_stock
-            product_model.image = product.image_url  # type: ignore[union-attr]
+            product_model.warehouse_location = product.warehouse_location if product.warehouse_location else ""
             product_model.is_active = product.is_active
             product_model.is_featured = product.is_featured
             product_model.weight = product.weight
             product_model.unit = product.unit.value
+            product_model.nutritional_info = product.nutritional_info  # type: ignore[union-attr]
+            product_model.ingredients = product.ingredients  # type: ignore[union-attr]
+            product_model.allergens = product.allergens  # type: ignore[union-attr]
+            if image:
+                product_model.image = image  # type: ignore[union-attr]
             product_model.save()
             return ProductFactory.from_model(product_model)
         except ProductModel.DoesNotExist as error:
@@ -91,6 +104,8 @@ class ProductRepository(ProductRepositoryInterface):
     def list_by_category(self, category_id: UUID) -> list[Product]:
         queryset = ProductModel.objects.filter(category_id=category_id, is_active=True)
         return [ProductFactory.from_model(product_model) for product_model in queryset]
+
+    # ! TODO: Add list_by_brand
 
     @override
     def exists_by_sku(self, sku: str) -> bool:

@@ -41,7 +41,7 @@ class ProductModel(models.Model):
     stock = models.PositiveIntegerField(default=0)
     min_stock = models.PositiveIntegerField(default=5)
     warehouse_location = models.CharField(max_length=100, blank=True, help_text="Location where the product is stored")
-    image = models.ImageField(upload_to=image_path, null=True, blank=True)
+    image = models.ImageField(upload_to=image_path)
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
     weight = models.DecimalField(max_digits=8, decimal_places=3, null=True, blank=True)

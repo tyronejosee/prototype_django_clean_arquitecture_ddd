@@ -12,8 +12,8 @@ class UpdateProductUseCase:
         self.repo = repo
         self.cache = cache
 
-    def execute(self, product_id: UUID, data: dict) -> Product:
-        product = self.repo.update(product=ProductFactory.from_dict(data), product_id=product_id)
+    def execute(self, product_id: UUID, data: dict, image: bytes | None = None) -> Product:
+        product = self.repo.update(product=ProductFactory.from_dict(data), product_id=product_id, image=image)
 
         [
             self.cache.delete(key)

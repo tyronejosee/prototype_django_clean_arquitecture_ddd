@@ -14,11 +14,11 @@ class CreateProductUseCase:
         self.repo = repo
         self.cache = cache
 
-    def execute(self, data: dict) -> Product:
+    def execute(self, data: dict, image: bytes) -> Product:
         if self.repo.exists_by_sku(data["sku"]):
             raise ProductDomainError(self.SKU_ALREADY_EXISTS_MSG)
 
-        product = self.repo.create(product=ProductFactory.from_dict(data))
+        product = self.repo.create(product=ProductFactory.from_dict(data), image=image)
         [
             self.cache.delete(key)
             for key in (
