@@ -31,6 +31,7 @@ def image_path(instance, filename: str) -> str:
 class ProductModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=200)
+    slug = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     sku = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, related_name="products")
@@ -63,6 +64,7 @@ class ProductModel(models.Model):
             models.Index(fields=["is_featured", "is_active"], name="idx_product_featured_active"),
             models.Index(fields=["sku", "is_active"], name="idx_product_sku_active"),
             models.Index(fields=["price"], name="idx_product_price"),
+            models.Index(fields=["slug"], name="idx_product_slug"),
         ]
         verbose_name: str = "product"
         verbose_name_plural: str = "products"

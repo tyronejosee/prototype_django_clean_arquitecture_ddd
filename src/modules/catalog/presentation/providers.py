@@ -121,8 +121,12 @@ def get_list_featured_products_use_case() -> ListFeaturedProductsUseCase:
 
 
 def get_list_products_by_category_use_case() -> ListProductsByCategoryUseCase:
-    return ListProductsByCategoryUseCase(repo=get_product_repository(), cache=get_product_cache())
+    return ListProductsByCategoryUseCase(
+        product_repo=get_product_repository(), category_repo=get_category_repository(), cache=get_product_cache()
+    )
 
 
 def get_list_products_by_brand_use_case() -> ListProductsByBrandUseCase:
-    return ListProductsByBrandUseCase(repo=get_product_repository(), cache=get_product_cache())
+    return ListProductsByBrandUseCase(
+        product_repo=get_product_repository(), brand_repo=get_brand_repository(), cache=get_product_cache()
+    )

@@ -27,7 +27,9 @@ class BrandRepository(BrandRepositoryInterface):
 
     @override
     def create(self, brand: Brand) -> Brand:
-        brand_model = BrandModel.objects.create(id=brand.id, name=brand.name, is_active=brand.is_active)
+        brand_model = BrandModel.objects.create(
+            id=brand.id, name=brand.name, slug=brand.slug, is_active=brand.is_active
+        )
         return BrandFactory.from_model(brand_model)
 
     @override
@@ -35,6 +37,7 @@ class BrandRepository(BrandRepositoryInterface):
         try:
             brand_model = BrandModel.objects.get(pk=brand_id)
             brand_model.name = brand.name.value
+            brand_model.slug = brand.slug.value
             brand_model.is_active = brand.is_active
             brand_model.save()
             return BrandFactory.from_model(brand_model)
@@ -49,6 +52,10 @@ class BrandRepository(BrandRepositoryInterface):
             brand_model.save()
         except BrandModel.DoesNotExist as error:
             raise BrandNotFoundError(self.BRAND_NOT_FOUND_MSG) from error
+
+    @override
+    def exists(self, brand_id: UUID) -> bool:
+        return BrandModel.objects.filter(pk=brand_id, is_active=True).exists()
 
     @override
     def exists_by_name(self, name: str) -> bool:

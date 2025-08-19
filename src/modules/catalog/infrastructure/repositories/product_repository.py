@@ -32,6 +32,7 @@ class ProductRepository(ProductRepositoryInterface):
         product_model = ProductModel.objects.create(
             id=product.id,
             name=product.name,
+            slug=product.slug,
             description=product.description,
             sku=product.sku,
             category_id=product.category_id,
@@ -58,6 +59,7 @@ class ProductRepository(ProductRepositoryInterface):
         try:
             product_model = ProductModel.objects.get(pk=product_id)
             product_model.name = product.name
+            product_model.slug = product.slug.value
             product_model.description = product.description
             product_model.sku = product.sku.value
             product_model.category_id = product.category_id  # type: ignore[union-attr]
@@ -105,7 +107,10 @@ class ProductRepository(ProductRepositoryInterface):
         queryset = ProductModel.objects.filter(category_id=category_id, is_active=True)
         return [ProductFactory.from_model(product_model) for product_model in queryset]
 
-    # ! TODO: Add list_by_brand
+    @override
+    def list_by_brand(self, brand_id: UUID) -> list[Product]:
+        queryset = ProductModel.objects.filter(brand_id=brand_id, is_active=True)
+        return [ProductFactory.from_model(product_model) for product_model in queryset]
 
     @override
     def exists_by_sku(self, sku: str) -> bool:

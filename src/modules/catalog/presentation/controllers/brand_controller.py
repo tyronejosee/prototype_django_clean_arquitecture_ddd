@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from src.modules.catalog.domain.exceptions import BrandDomainError
+from src.modules.catalog.domain.exceptions import BrandDomainError, BrandNotFoundError
 from src.modules.catalog.presentation.providers import (
     get_create_brand_use_case,
     get_delete_brand_use_case,
@@ -90,5 +90,9 @@ class BrandProductListController(BaseController):
 
     def get(self, request: Request, brand_id: UUID) -> Response:
         use_case = get_list_products_by_brand_use_case()
-        products = use_case.execute(brand_id)
-        return paginate_queryset(request, products, ProductOutputSerializer)
+
+        try:
+            products = use_case.execute(brand_id)
+            return paginate_queryset(request, products, ProductOutputSerializer)
+        except BrandNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)

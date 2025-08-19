@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from src.modules.catalog.domain.exceptions import CategoryDomainError
+from src.modules.catalog.domain.exceptions import CategoryDomainError, CategoryNotFoundError
 from src.modules.catalog.presentation.providers import (
     get_create_category_use_case,
     get_delete_category_use_case,
@@ -93,6 +93,9 @@ class CategoryProductListController(BaseController):
 
     def get(self, request: Request, category_id: UUID) -> Response:
         use_case = get_list_products_by_category_use_case()
-        products = use_case.execute(category_id)
-        serializer = ProductOutputSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        try:
+            products = use_case.execute(category_id)
+            return paginate_queryset(request, products, ProductOutputSerializer)
+        except CategoryNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)

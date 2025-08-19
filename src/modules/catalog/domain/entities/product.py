@@ -6,6 +6,7 @@ from uuid import UUID
 from src.modules.catalog.domain.exceptions import ProductDomainError
 from src.modules.catalog.domain.value_objects.currency import Currency
 from src.modules.catalog.domain.value_objects.sku import SKU
+from src.modules.catalog.domain.value_objects.slug import Slug
 from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
@@ -13,6 +14,7 @@ from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 class Product:
     id: UUID
     name: str
+    slug: Slug
     description: str
     sku: SKU
     category_id: UUID

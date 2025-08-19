@@ -26,6 +26,7 @@ class ProductInputSerializer(serializers.Serializer):
 class ProductOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField(read_only=True)
     name = serializers.CharField(read_only=True)
+    slug = serializers.CharField(read_only=True)
     description = serializers.CharField(read_only=True)
     sku = serializers.CharField(read_only=True)
     category_id = serializers.UUIDField(read_only=True)

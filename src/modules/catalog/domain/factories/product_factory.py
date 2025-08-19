@@ -5,6 +5,7 @@ from uuid import uuid4
 from src.modules.catalog.domain.entities.product import Product
 from src.modules.catalog.domain.value_objects.currency import Currency
 from src.modules.catalog.domain.value_objects.sku import SKU
+from src.modules.catalog.domain.value_objects.slug import Slug
 from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
@@ -14,6 +15,7 @@ class ProductFactory:
         return Product(
             id=data.get("id", uuid4()),
             name=data["name"],
+            slug=Slug.from_name(data["name"]),
             description=data["description"],
             sku=SKU(data["sku"]),
             category_id=data["category_id"],
@@ -41,6 +43,7 @@ class ProductFactory:
         return Product(
             id=data.id,
             name=data.name,
+            slug=data.slug,
             description=data.description,
             sku=data.sku,
             category_id=data.category_id,
