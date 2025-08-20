@@ -19,11 +19,13 @@ class BrandName:
         return self.value
 
     def __post_init__(self) -> None:
+        # Normalize the value
+        object.__setattr__(self, "value", self.value.strip() if self.value else "")
         self._validate()
 
     def _validate(self) -> None:
-        if not self.value or not self.value.strip():
+        if not self.value:
             raise BrandDomainError(self.BRAND_NAME_REQUIRED_MSG)
 
-        if self.value.strip().lower() in self.FORBIDDEN_WORDS:
+        if self.value.lower() in self.FORBIDDEN_WORDS:
             raise BrandDomainError(self.NAME_FORBIDDEN_WORD_MSG.format(value=self.value))

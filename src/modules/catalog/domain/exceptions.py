@@ -1,3 +1,7 @@
+class CatalogDomainError(Exception):
+    pass
+
+
 class CategoryDomainError(Exception):
     pass
 
