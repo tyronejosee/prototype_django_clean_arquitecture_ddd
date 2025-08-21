@@ -79,11 +79,12 @@ class ProductDetailController(BaseController):
 
     def get(self, request: Request, product_id: UUID) -> Response:
         use_case = get_get_product_use_case()
-        product = use_case.execute(product_id)
-        if not product:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = ProductOutputSerializer(product)
-        return Response(serializer.data)
+
+        try:
+            product = use_case.execute(product_id)
+            return Response(ProductOutputSerializer(product).data)
+        except ProductNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request: Request, product_id: UUID) -> Response:
         serializer = ProductInputSerializer(data=request.data)
