@@ -30,7 +30,7 @@ def _media_root(tmp_path: Path) -> Generator:
 @pytest.fixture(autouse=True)
 def _mock_paypal_gateway() -> Generator:
     with patch(
-        "modules.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
+        "src.modules.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
     ) as mock_class:
         mock_instance = Mock()
         mock_instance.create_order.return_value = {"status": "MOCKED"}
