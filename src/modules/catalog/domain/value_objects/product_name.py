@@ -10,12 +10,14 @@ class ProductName:
     # Messages
     PRODUCT_NAME_REQUIRED_MSG: str = "Product name is required."
 
-    def __post_init__(self) -> None:
-        self._validate()
-
     def __str__(self) -> str:
         return self.value
 
+    def __post_init__(self) -> None:
+        # Normalize the value
+        object.__setattr__(self, "value", self.value.strip() if self.value else "")
+        self._validate()
+
     def _validate(self) -> None:
-        if not self.value or not self.value.strip():
+        if not self.value:
             raise ProductDomainError(self.PRODUCT_NAME_REQUIRED_MSG)
