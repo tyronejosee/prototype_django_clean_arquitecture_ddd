@@ -1,0 +1,19 @@
+[run]
+omit =
+    ; Core files
+    */migrations/*
+    */admin/*
+    */settings.py
+    */wsgi.py
+    */urls.py
+    */apps.py
+    */__init__.py
+    ; Project files
+    */domain/interfaces/*
+    */domain/utils/*
+    */presentation/schemas/*
+    */throttles.py
+    */exceptions.py
+    */routers.py
+    */providers.py
+    */health_chech.py

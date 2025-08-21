@@ -1,0 +1,98 @@
+from typing import ClassVar, cast
+from uuid import UUID
+
+from drf_spectacular.utils import extend_schema_view
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.request import Request
+from rest_framework.response import Response
+
+from src.modules.catalog.domain.exceptions import BrandDomainError, BrandNotFoundError
+from src.modules.catalog.presentation.providers import (
+    get_create_brand_use_case,
+    get_delete_brand_use_case,
+    get_list_brands_use_case,
+    get_list_products_by_brand_use_case,
+    get_update_brand_use_case,
+)
+from src.modules.catalog.presentation.schemas.brand_schemas import (
+    brand_detail_schema,
+    brand_list_create_schema,
+    brand_product_list_schema,
+)
+from src.modules.catalog.presentation.serializers.brand_serializer import BrandInputSerializer, BrandOutputSerializer
+from src.modules.catalog.presentation.serializers.product_serializer import ProductOutputSerializer
+from src.modules.catalog.presentation.throttles import (
+    CreateBrandRateThrottle,
+    DeleteBrandRateThrottle,
+    ListBrandsRateThrottle,
+    ListProductsRateThrottle,
+    UpdateBrandRateThrottle,
+)
+from src.modules.common.presentation.controllers.base_controller import BaseController
+from src.modules.common.presentation.pagination import paginate_queryset
+
+
+@extend_schema_view(**brand_list_create_schema)
+class BrandListCreateController(BaseController):
+    throttle_map: dict = {"GET": ListBrandsRateThrottle, "POST": CreateBrandRateThrottle}
+
+    def get_permissions(self) -> list:
+        if self.request.method == "POST":
+            return [IsAdminUser()]
+        return [AllowAny()]
+
+    def get(self, request: Request) -> Response:
+        use_case = get_list_brands_use_case()
+        brands = use_case.execute()
+        return paginate_queryset(request, brands, BrandOutputSerializer)
+
+    def post(self, request: Request) -> Response:
+        serializer = BrandInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = cast(dict, serializer.validated_data)
+        use_case = get_create_brand_use_case()
+
+        try:
+            brand = use_case.execute(validated_data)
+            return Response(BrandOutputSerializer(brand).data, status=status.HTTP_201_CREATED)
+        except BrandDomainError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema_view(**brand_detail_schema)
+class BrandDetailController(BaseController):
+    permission_classes: ClassVar[list] = [IsAdminUser]
+    throttle_map: dict = {"PUT": UpdateBrandRateThrottle, "DELETE": DeleteBrandRateThrottle}
+
+    def put(self, request: Request, brand_id: UUID) -> Response:
+        serializer = BrandInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = cast(dict, serializer.validated_data)
+        use_case = get_update_brand_use_case()
+
+        try:
+            brand = use_case.execute(brand_id, validated_data)
+            return Response(BrandOutputSerializer(brand).data, status=status.HTTP_200_OK)
+        except BrandDomainError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request: Request, brand_id: UUID) -> Response:
+        use_case = get_delete_brand_use_case()
+        use_case.execute(brand_id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@extend_schema_view(**brand_product_list_schema)
+class BrandProductListController(BaseController):
+    permission_classes: ClassVar[list] = [AllowAny]
+    throttle_map: dict = {"GET": ListProductsRateThrottle}
+
+    def get(self, request: Request, brand_id: UUID) -> Response:
+        use_case = get_list_products_by_brand_use_case()
+
+        try:
+            products = use_case.execute(brand_id)
+            return paginate_queryset(request, products, ProductOutputSerializer)
+        except BrandNotFoundError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)

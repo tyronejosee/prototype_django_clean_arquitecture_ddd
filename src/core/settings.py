@@ -162,6 +162,7 @@ THROTTLE_5_PER_MINUTE = "5/minute"
 THROTTLE_10_PER_MINUTE = "10/minute"
 THROTTLE_5_PER_HOUR = "5/hour"
 THROTTLE_10_PER_HOUR = "10/hour"
+THROTTLE_25_PER_HOUR = "25/hour"
 THROTTLE_2_PER_DAY = "2/day"
 
 MARKETING_THROTTLE_RATES: dict[str, str] = {
@@ -249,5 +250,8 @@ SPECTACULAR_SETTINGS: dict = {
     "SWAGGER_UI_DIST": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
     "REDOC_UI_SETTINGS": {"hideHostname": True, "theme": {"colors": {"primary": {"main": "#FF135B"}}}},
-    "TAGS": [{"name": "users", "description": "Operations related to users"}],
+    "TAGS": [
+        {"name": "users", "description": "Operations related to users"},
+        {"name": "catalog", "description": "Operations related to products"},
+    ],
 }

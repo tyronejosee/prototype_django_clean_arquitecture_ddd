@@ -4,7 +4,9 @@ from decimal import Decimal
 from uuid import UUID
 
 from src.modules.catalog.domain.exceptions import ProductDomainError
+from src.modules.catalog.domain.value_objects.currency import Currency
 from src.modules.catalog.domain.value_objects.sku import SKU
+from src.modules.catalog.domain.value_objects.slug import Slug
 from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 
 
@@ -12,18 +14,25 @@ from src.modules.catalog.domain.value_objects.weight_unit import WeightUnit
 class Product:
     id: UUID
     name: str
+    slug: Slug
     description: str
     sku: SKU
     category_id: UUID
+    brand_id: UUID
     price: Decimal
     discount_price: Decimal | None = None
+    currency: Currency
     stock: int = 0
     min_stock: int = 5
+    warehouse_location: str | None = None
     image_url: str | None = None
     is_active: bool = True
     is_featured: bool = False
     weight: Decimal | None = None
     unit: WeightUnit
+    nutritional_info: dict | None
+    ingredients: dict | None = None
+    allergens: dict | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
 

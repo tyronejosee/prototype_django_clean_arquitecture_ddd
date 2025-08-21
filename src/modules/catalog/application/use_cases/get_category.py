@@ -1,9 +1,7 @@
 from uuid import UUID
 
 from src.modules.catalog.domain.entities.category import Category
-from src.modules.catalog.domain.interfaces.category_repository_interface import (
-    CategoryRepositoryInterface,
-)
+from src.modules.catalog.domain.interfaces.category_repository_interface import CategoryRepositoryInterface
 
 
 class GetCategoryUseCase:

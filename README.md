@@ -240,6 +240,26 @@ Load the created backup if needed (Optional).
 docker compose exec web python manage.py loaddata
 ```
 
+## 🧪 Testing
+
+Run all tests.
+
+```bash
+pytest
+```
+
+Run tests for type and domain.
+
+```bash
+pytest tests/<type>/<domain>
+```
+
+Run unit tests for a specific domain (with coverage).
+
+```bash
+pytest tests/unit/<domain> -o addopts="--cov=src/modules/<domain> --cov-report=term-missing"
+```
+
 ## ⚖️ License
 
 This project is under the [MIT License](https://github.com/tyronejosee/project_marketly/blob/main/LICENSE).

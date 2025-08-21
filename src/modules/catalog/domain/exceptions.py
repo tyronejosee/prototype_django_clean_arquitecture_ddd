@@ -1,8 +1,20 @@
+class CatalogDomainError(Exception):
+    pass
+
+
 class CategoryDomainError(Exception):
     pass
 
 
 class CategoryNotFoundError(Exception):
+    pass
+
+
+class BrandDomainError(Exception):
+    pass
+
+
+class BrandNotFoundError(Exception):
     pass
 
 

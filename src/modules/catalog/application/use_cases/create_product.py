@@ -1,14 +1,31 @@
 from src.modules.catalog.domain.entities.product import Product
+from src.modules.catalog.domain.exceptions import ProductDomainError
 from src.modules.catalog.domain.factories.product_factory import ProductFactory
-from src.modules.catalog.domain.interfaces.product_repository_interface import (
-    ProductRepositoryInterface,
-)
+from src.modules.catalog.domain.interfaces.product_cache_interface import ProductCacheInterface
+from src.modules.catalog.domain.interfaces.product_repository_interface import ProductRepositoryInterface
+from src.modules.catalog.domain.utils.product_cache_keys import ProductCacheKeys
 
 
 class CreateProductUseCase:
-    def __init__(self, repo: ProductRepositoryInterface) -> None:
-        self.repo = repo
+    # Messages
+    SKU_ALREADY_EXISTS_MSG: str = "SKU already exists."
 
-    def execute(self, data: dict) -> Product:
-        product = ProductFactory.from_dict(data)
-        return self.repo.create(product=product)
+    def __init__(self, repo: ProductRepositoryInterface, cache: ProductCacheInterface) -> None:
+        self.repo = repo
+        self.cache = cache
+
+    def execute(self, data: dict, image: bytes) -> Product:
+        if self.repo.exists_by_sku(data["sku"]):
+            raise ProductDomainError(self.SKU_ALREADY_EXISTS_MSG)
+
+        product = self.repo.create(product=ProductFactory.from_dict(data), image=image)
+        [
+            self.cache.delete(key)
+            for key in (
+                ProductCacheKeys.product_list_key(),
+                ProductCacheKeys.product_list_featured_key(),
+                ProductCacheKeys.product_list_by_category_key(product.category_id),
+            )
+        ]
+
+        return product
