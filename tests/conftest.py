@@ -1,15 +1,15 @@
-import os
 from collections.abc import Generator
 from pathlib import Path
 from unittest.mock import Mock, patch
 from uuid import uuid4
+import os
 
-import django
-import pytest
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from rest_framework.test import APIClient
+import django
+import pytest
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.core.settings")
 django.setup()

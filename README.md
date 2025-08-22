@@ -248,16 +248,16 @@ Run all tests.
 pytest
 ```
 
-Run tests for type and domain.
+Run tests for a specific domain.
 
 ```bash
-pytest tests/<type>/<domain>
+pytest tests/<domain>
 ```
 
 Run unit tests for a specific domain (with coverage).
 
 ```bash
-pytest tests/unit/<domain> -o addopts="--cov=src/modules/<domain> --cov-report=term-missing"
+pytest tests/<domain> -o addopts="--cov=src/modules/<domain> --cov-report=term-missing"
 ```
 
 ## ⚖️ License
