@@ -6,42 +6,35 @@ import pytest
 
 from src.modules.marketing.infrastructure.models import CouponModel, PromotionModel
 
-# --------------------------
-# CouponModel
-# --------------------------
+
+@pytest.mark.django_db()
+class TestCouponModel:
+    def test_should_create_coupon_and_return_expected_str(self) -> None:
+        coupon = CouponModel.objects.create(
+            code="WELCOME10",
+            discount_percent=Decimal("0.1"),
+            is_active=True,
+            max_uses=10,
+            used_count=1,
+            user_id=uuid4(),
+            expires_at=datetime.now(UTC) + timedelta(days=5),
+        )
+
+        assert coupon.id is not None
+        assert str(coupon) == f"Coupon(code={coupon.code}, discount_percent=0.1)"
 
 
 @pytest.mark.django_db()
-def test_coupon_model_creation_and_str() -> None:
-    coupon = CouponModel.objects.create(
-        code="WELCOME10",
-        discount_percent=Decimal("0.1"),
-        is_active=True,
-        max_uses=10,
-        used_count=1,
-        user_id=uuid4(),
-        expires_at=datetime.now(UTC) + timedelta(days=5),
-    )
+class TestPromotionModel:
+    def test_should_create_promotion_and_return_expected_str(self) -> None:
+        promo = PromotionModel.objects.create(
+            name="Christmas",
+            description="Holiday discounts",
+            discount_percent=Decimal("0.15"),
+            is_active=True,
+            starts_at=datetime.now(UTC),
+            ends_at=datetime.now(UTC) + timedelta(days=15),
+        )
 
-    assert coupon.id is not None
-    assert str(coupon) == f"Coupon(code={coupon.code}, discount_percent=0.1)"
-
-
-# --------------------------
-# PromotionModel
-# --------------------------
-
-
-@pytest.mark.django_db()
-def test_promotion_model_creation_and_str() -> None:
-    promo = PromotionModel.objects.create(
-        name="Christmas",
-        description="Holiday discounts",
-        discount_percent=Decimal("0.15"),
-        is_active=True,
-        starts_at=datetime.now(UTC),
-        ends_at=datetime.now(UTC) + timedelta(days=15),
-    )
-
-    assert promo.id is not None
-    assert str(promo) == "Promotion(name=Christmas)"
+        assert promo.id is not None
+        assert str(promo) == "Promotion(name=Christmas)"
