@@ -4,7 +4,6 @@ import pytest
 
 from src.modules.cart.domain.entities.cart import Cart
 from src.modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError, CartNotFoundError
-from src.modules.cart.domain.factories.cart_factory import CartFactory
 from src.modules.cart.infrastructure.models import CartItemModel, CartModel
 from src.modules.cart.infrastructure.repositories.cart_repository import CartRepository
 
@@ -12,16 +11,14 @@ from src.modules.cart.infrastructure.repositories.cart_repository import CartRep
 @pytest.mark.django_db()
 class TestCartRepository:
     def test_create_cart_successfully(self) -> None:
-        # Given: a user with cart data
+        # Given: a user
         user_id = uuid4()
-        data = {"user_id": user_id}
 
         # When: the user creates a cart
-        cart = CartFactory.from_dict(data)
         repo = CartRepository()
-        result = repo.create(cart)
+        result = repo.create(user_id=user_id)
 
-        # Then: a valid cart is returned with one item
+        # Then: a valid cart is returned
         assert isinstance(result, Cart)
         assert result.user_id == user_id
 
@@ -29,15 +26,13 @@ class TestCartRepository:
         # Given: a user who already has a cart
         user_id = uuid4()
         CartModel.objects.create(user_id=user_id)
-
-        # When: the user tries to create a new cart
-        cart = CartFactory.from_dict({"user_id": user_id, "items": []})
         repo = CartRepository()
 
-        # Then: an error is raised indicating the cart already exists
+        # When: the user tries to create a new cart
         with pytest.raises(CartDomainError) as exc:
-            repo.create(cart)
+            repo.create(user_id=user_id)
 
+        # Then: an error is raised indicating the cart already exists
         assert "Cart already exists." in str(exc.value)
 
     def test_get_cart_by_user_successful(self) -> None:
@@ -95,11 +90,11 @@ class TestCartRepository:
 
         # When: the item is deleted
         repo = CartRepository()
-        result = repo.delete_item(user_id=user_id, item_id=item.id)
+        repo.delete_item(user_id=user_id, item_id=item.id)
 
-        # Then: the item is removed from the cart and the DB
-        assert all(i.id != item.id for i in result.items)  # type: ignore[union-attr]
+        # Then:
         assert CartItemModel.objects.count() == 0
+        assert not CartItemModel.objects.filter(id=item.id).exists()
 
     def test_delete_cart_item_not_found(self) -> None:
         # Given: a user and item ID that do not exist

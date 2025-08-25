@@ -25,14 +25,11 @@ class CartRepository(CartRepositoryInterface):
         return CartFactory.from_model(cart_model)
 
     @override
-    def create(self, cart: Cart) -> Cart:
-        if CartModel.objects.filter(user_id=cart.user_id).exists():
+    def create(self, user_id: UUID) -> Cart:
+        if CartModel.objects.filter(user_id=user_id).exists():
             raise CartDomainError(self.CART_ALREADY_EXISTS_MSG)
 
-        cart_model = CartModel.objects.create(
-            id=cart.id,
-            user_id=cart.user_id,
-        )
+        cart_model = CartModel.objects.create(user_id=user_id)
         return CartFactory.from_model(cart_model)
 
     @override
@@ -52,12 +49,11 @@ class CartRepository(CartRepositoryInterface):
         return self.get_by_user(user_id=user_id)
 
     @override
-    def delete_item(self, user_id: UUID, item_id: UUID) -> Cart:
+    def delete_item(self, user_id: UUID, item_id: UUID) -> None:
         cart_item = CartItemModel.objects.filter(id=item_id)
         if not cart_item:
             raise CartItemNotFoundError(self.ITEM_NOT_FOUND_MSG)
         cart_item.delete()
-        return self.get_by_user(user_id=user_id)
 
     @override
     def clear(self, user_id: UUID) -> None:

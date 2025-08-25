@@ -1,6 +1,7 @@
 API_MESSAGES: dict[str, str] = {
     "OK": "OK",
     "CREATED": "Created",
+    "NO_CONTENT": "No Content",
     "BAD_REQUEST": "Bad Request",
     "UNAUTHORIZED": "Unauthorized",
     "FORBIDDEN": "Forbidden",

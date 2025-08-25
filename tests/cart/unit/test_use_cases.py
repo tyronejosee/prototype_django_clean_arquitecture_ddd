@@ -23,9 +23,10 @@ class TestAddCartItemsUseCase:
         }
         expected_cart = Mock(spec=Cart)
         repo_mock.add_items.return_value = expected_cart
+        product_catalog_mock = Mock()
 
         # When: executing the use case with the data
-        use_case = AddCartItemsUseCase(repo=repo_mock, cache=cache_mock)
+        use_case = AddCartItemsUseCase(repo=repo_mock, cache=cache_mock, product_catalog=product_catalog_mock)
         result = use_case.execute(user_id=user_id, items_data=items_payload["items"])
 
         # Then: the result is the expected cart
@@ -48,7 +49,7 @@ class TestCreateCartUseCase:
 
         # When: creating a cart use case and executing with the data
         use_case = CreateCartUseCase(repo=repo_mock)
-        result = use_case.execute(cart_data)
+        result = use_case.execute(user_id=user_id)
 
         # Then: the result is a Cart with the correct user_id and repo.create called once
         assert isinstance(result, Cart)
@@ -104,15 +105,14 @@ class TestDeleteCartItemUseCase:
         cache_mock = Mock()
         user_id = uuid4()
         item_id = uuid4()
-        expected_cart = Mock(spec=Cart)
-        repo_mock.delete_item.return_value = expected_cart
 
         # When: deleting cart item via use case
         use_case = DeleteCartItemUseCase(repo=repo_mock, cache=cache_mock)
         result = use_case.execute(user_id=user_id, item_id=item_id)
 
-        # Then: returned cart matches expected and
-        # repo.delete_item called once with correct args
-        assert result == expected_cart
+        # Then: nothing is returned
+        assert result is None
+
+        # And: dependencies were called correctly
         repo_mock.delete_item.assert_called_once_with(user_id=user_id, item_id=item_id)
         cache_mock.delete.assert_called_once_with(CartCacheKeys.cart_user_key(user_id))

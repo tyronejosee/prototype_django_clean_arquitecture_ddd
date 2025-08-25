@@ -8,19 +8,7 @@ from src.modules.cart.presentation.controllers.cart_item_detail_controller impor
 app_name = "cart"
 
 urlpatterns: list[URLPattern] = [
-    path(
-        "cart",
-        CartController.as_view(),
-        name="cart-main",
-    ),
-    path(
-        "cart/items",
-        CartItemController.as_view(),
-        name="cart-item",
-    ),
-    path(
-        "cart/items/<uuid:item_id>",
-        CartItemDetailController.as_view(),
-        name="cart-item",
-    ),
+    path("cart", CartController.as_view(), name="cart-main"),
+    path("cart/items", CartItemController.as_view(), name="cart-item"),
+    path("cart/items/<uuid:item_id>", CartItemDetailController.as_view(), name="cart-item"),
 ]
