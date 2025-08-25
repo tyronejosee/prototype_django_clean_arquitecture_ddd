@@ -26,4 +26,3 @@ class CartOutputSerializer(serializers.Serializer):
     items = CartItemOutputSerializer(many=True, read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
-    total = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)

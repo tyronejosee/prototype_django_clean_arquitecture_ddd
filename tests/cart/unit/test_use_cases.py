@@ -105,15 +105,14 @@ class TestDeleteCartItemUseCase:
         cache_mock = Mock()
         user_id = uuid4()
         item_id = uuid4()
-        expected_cart = Mock(spec=Cart)
-        repo_mock.delete_item.return_value = expected_cart
 
         # When: deleting cart item via use case
         use_case = DeleteCartItemUseCase(repo=repo_mock, cache=cache_mock)
         result = use_case.execute(user_id=user_id, item_id=item_id)
 
-        # Then: returned cart matches expected and
-        # repo.delete_item called once with correct args
-        assert result == expected_cart
+        # Then: nothing is returned
+        assert result is None
+
+        # And: dependencies were called correctly
         repo_mock.delete_item.assert_called_once_with(user_id=user_id, item_id=item_id)
         cache_mock.delete.assert_called_once_with(CartCacheKeys.cart_user_key(user_id))

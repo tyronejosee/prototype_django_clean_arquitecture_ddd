@@ -1,5 +1,6 @@
 from typing import ClassVar, cast
 
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -7,11 +8,13 @@ from rest_framework.response import Response
 
 from src.modules.cart.domain.exceptions import CartDomainError
 from src.modules.cart.presentation.providers import get_add_cart_items_use_case
+from src.modules.cart.presentation.schemas.cart_item_schemas import cart_item_create_schema
 from src.modules.cart.presentation.serializers.cart_serializer import CartInputSerializer, CartOutputSerializer
 from src.modules.cart.presentation.throttles import AddCartItemsRateThrottle
 from src.modules.common.presentation.controllers.base_controller import BaseController
 
 
+@extend_schema_view(**cart_item_create_schema)
 class CartItemController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
     throttle_map: dict = {"POST": AddCartItemsRateThrottle}

@@ -90,11 +90,11 @@ class TestCartRepository:
 
         # When: the item is deleted
         repo = CartRepository()
-        result = repo.delete_item(user_id=user_id, item_id=item.id)
+        repo.delete_item(user_id=user_id, item_id=item.id)
 
-        # Then: the item is removed from the cart and the DB
-        assert all(i.id != item.id for i in result.items)  # type: ignore[union-attr]
+        # Then:
         assert CartItemModel.objects.count() == 0
+        assert not CartItemModel.objects.filter(id=item.id).exists()
 
     def test_delete_cart_item_not_found(self) -> None:
         # Given: a user and item ID that do not exist

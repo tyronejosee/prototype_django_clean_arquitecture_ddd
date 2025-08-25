@@ -1,5 +1,4 @@
 from datetime import UTC, datetime
-from decimal import Decimal
 from typing import cast
 from uuid import uuid4
 
@@ -141,7 +140,6 @@ class TestCartOutputSerializer:
             ],
             "created_at": datetime.now(UTC),
             "updated_at": datetime.now(UTC),
-            "total": Decimal("49.99"),
         }
 
         # When: serializing the output
@@ -153,6 +151,5 @@ class TestCartOutputSerializer:
         assert result["user_id"] == str(data["user_id"])
         assert isinstance(result["items"], list)
         assert result["items"][0]["quantity"] == 2
-        assert result["total"] == "49.99"
         assert result["created_at"] == data["created_at"].isoformat().replace("+00:00", "Z")
         assert result["updated_at"] == data["updated_at"].isoformat().replace("+00:00", "Z")

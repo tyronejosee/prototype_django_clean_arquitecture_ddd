@@ -1,6 +1,7 @@
 from typing import ClassVar, cast
 from uuid import UUID
 
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -9,11 +10,13 @@ from rest_framework.response import Response
 from src.modules.cart.domain.exceptions import CartDomainError, CartItemNotFoundError
 from src.modules.cart.domain.value_objects.item_quantity import ItemQuantity
 from src.modules.cart.presentation.providers import get_delete_cart_item_use_case, get_patch_cart_item_use_case
+from src.modules.cart.presentation.schemas.cart_item_schemas import cart_item_detail_schema
 from src.modules.cart.presentation.serializers.cart_serializer import CartOutputSerializer, QuantityInputSerializer
 from src.modules.cart.presentation.throttles import DeleteCartItemRateThrottle, UpdateCartItemRateThrottle
 from src.modules.common.presentation.controllers.base_controller import BaseController
 
 
+@extend_schema_view(**cart_item_detail_schema)
 class CartItemDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
     throttle_map: dict = {"PATCH": UpdateCartItemRateThrottle, "DELETE": DeleteCartItemRateThrottle}
