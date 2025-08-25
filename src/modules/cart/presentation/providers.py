@@ -5,6 +5,7 @@ from src.modules.cart.application.use_cases.create_cart import CreateCartUseCase
 from src.modules.cart.application.use_cases.delete_cart_item import DeleteCartItemUseCase
 from src.modules.cart.application.use_cases.get_cart import GetCartUseCase
 from src.modules.cart.application.use_cases.patch_cart_item import PatchCartItemUseCase
+from src.modules.cart.infrastructure.acls.catalog_acl import CatalogACL
 from src.modules.cart.infrastructure.cache.cart_cache_service import CartCacheService
 from src.modules.cart.infrastructure.repositories.cart_repository import CartRepository
 
@@ -19,6 +20,11 @@ def get_cart_cache() -> CartCacheService:
     return CartCacheService()
 
 
+@lru_cache
+def get_catalog_acl() -> CatalogACL:
+    return CatalogACL()
+
+
 def get_get_cart_use_case() -> GetCartUseCase:
     return GetCartUseCase(repo=get_cart_repository(), cache=get_cart_cache())
 
@@ -28,7 +34,7 @@ def get_create_cart_use_case() -> CreateCartUseCase:
 
 
 def get_add_cart_items_use_case() -> AddCartItemsUseCase:
-    return AddCartItemsUseCase(repo=get_cart_repository(), cache=get_cart_cache())
+    return AddCartItemsUseCase(repo=get_cart_repository(), cache=get_cart_cache(), product_catalog=get_catalog_acl())
 
 
 def get_patch_cart_item_use_case() -> PatchCartItemUseCase:
