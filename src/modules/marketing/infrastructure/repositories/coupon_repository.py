@@ -7,9 +7,7 @@ from django.db import models
 from src.modules.marketing.domain.entities.coupon import Coupon
 from src.modules.marketing.domain.exceptions import CouponNotFoundError
 from src.modules.marketing.domain.factories.coupon_factory import CouponFactory
-from src.modules.marketing.domain.interfaces.coupon_repository_interface import (
-    CouponRepositoryInterface,
-)
+from src.modules.marketing.domain.interfaces.coupon_repository_interface import CouponRepositoryInterface
 from src.modules.marketing.infrastructure.models.coupon_model import CouponModel
 
 
@@ -19,9 +17,9 @@ class CouponRepository(CouponRepositoryInterface):
 
     @override
     def get_active_by_user(self, user_id: UUID) -> list[Coupon]:
-        queryset: models.BaseManager[CouponModel] = CouponModel.objects.filter(
-            is_active=True,
-        ).filter(models.Q(user_id=user_id) | models.Q(user_id__isnull=True))
+        queryset = CouponModel.objects.filter(is_active=True).filter(
+            models.Q(user_id=user_id) | models.Q(user_id__isnull=True)
+        )
 
         coupons: list[Coupon] = []
         for coupon_model in queryset:

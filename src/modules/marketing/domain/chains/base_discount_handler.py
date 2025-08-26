@@ -1,6 +1,4 @@
-from src.modules.marketing.domain.interfaces.discount_handler_interface import (
-    DiscountHandlerInterface,
-)
+from src.modules.marketing.domain.interfaces.discount_handler_interface import DiscountHandlerInterface
 from src.modules.marketing.domain.value_objects.discount_result import DiscountResult
 
 

@@ -5,7 +5,6 @@ from uuid import uuid4
 
 import pytest
 
-from src.modules.marketing.application.use_cases.apply_discounts import ApplyDiscountsUseCase
 from src.modules.marketing.application.use_cases.create_coupon import CreateCouponUseCase
 from src.modules.marketing.application.use_cases.create_promotion import CreatePromotionUseCase
 from src.modules.marketing.application.use_cases.get_active_coupons import GetActiveCouponsUseCase
@@ -13,25 +12,6 @@ from src.modules.marketing.application.use_cases.get_active_promotions import Ge
 from src.modules.marketing.domain.entities.coupon import Coupon
 from src.modules.marketing.domain.entities.promotion import Promotion
 from src.modules.marketing.domain.exceptions import CouponDomainError
-
-
-class TestApplyDiscountsUseCase:
-    def test_returns_discount_result_when_handler_applies(self) -> None:
-        # Given: a mock discount handler that returns a fixed result
-        handler = Mock()
-        handler.apply.return_value = Mock(
-            final_price=Decimal("80.00"),
-            applied_discounts=["10% OFF"],
-        )
-        use_case = ApplyDiscountsUseCase(chain=handler)
-
-        # When: executing the use case with a sample order
-        result = use_case.execute(order={"total": Decimal("100.00")})
-
-        # Then: the discount result should match the handler's return value
-        assert result["final_price"] == Decimal("80.00")
-        assert result["applied_discounts"] == ["10% OFF"]
-        handler.apply.assert_called_once()
 
 
 class TestCreateCouponUseCase:

@@ -1,12 +1,8 @@
 from src.modules.marketing.domain.entities.coupon import Coupon
 from src.modules.marketing.domain.exceptions import CouponDomainError
 from src.modules.marketing.domain.factories.coupon_factory import CouponFactory
-from src.modules.marketing.domain.interfaces.coupon_repository_interface import (
-    CouponRepositoryInterface,
-)
-from src.modules.marketing.domain.services.coupon_code_generator import (
-    CouponCodeGenerator,
-)
+from src.modules.marketing.domain.interfaces.coupon_repository_interface import CouponRepositoryInterface
+from src.modules.marketing.domain.services.coupon_code_generator import CouponCodeGenerator
 
 
 class CreateCouponUseCase:

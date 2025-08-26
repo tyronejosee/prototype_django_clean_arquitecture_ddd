@@ -7,28 +7,17 @@ from rest_framework.response import Response
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
 from src.modules.common.presentation.pagination import paginate_queryset
-from src.modules.marketing.application.providers import (
+from src.modules.marketing.domain.exceptions import MarketingDomainError, PromotionDomainError
+from src.modules.marketing.presentation.providers import (
     get_create_promotion_use_case,
     get_get_active_promotions_use_case,
 )
-from src.modules.marketing.domain.exceptions import (
-    MarketingDomainError,
-    PromotionDomainError,
-)
-from src.modules.marketing.presentation.serializers.promotion_serializer import (
-    PromotionSerializer,
-)
-from src.modules.marketing.presentation.throttles import (
-    CreatePromotionRateThrottle,
-    ListPromotionsRateThrottle,
-)
+from src.modules.marketing.presentation.serializers.promotion_serializer import PromotionSerializer
+from src.modules.marketing.presentation.throttles import CreatePromotionRateThrottle, ListPromotionsRateThrottle
 
 
 class PromotionListCreateController(BaseController):
-    throttle_map: dict = {
-        "GET": ListPromotionsRateThrottle,
-        "POST": CreatePromotionRateThrottle,
-    }
+    throttle_map: dict = {"GET": ListPromotionsRateThrottle, "POST": CreatePromotionRateThrottle}
 
     def get_permissions(self) -> list:
         if self.request.method == "POST":
@@ -45,14 +34,11 @@ class PromotionListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = PromotionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         use_case = get_create_promotion_use_case()
+
         try:
             data = cast(dict, serializer.validated_data)
             promotion = use_case.execute(data=data)
-            return Response(
-                PromotionSerializer(promotion).data,
-                status=status.HTTP_201_CREATED,
-            )
+            return Response(PromotionSerializer(promotion).data, status=status.HTTP_201_CREATED)
         except (PromotionDomainError, MarketingDomainError) as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
