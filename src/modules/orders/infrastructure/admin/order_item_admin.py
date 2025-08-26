@@ -1,5 +1,3 @@
-from typing import ClassVar
-
 from django.contrib import admin
 
 from src.modules.orders.infrastructure.models.order_item_model import OrderItemModel
@@ -7,14 +5,8 @@ from src.modules.orders.infrastructure.models.order_item_model import OrderItemM
 
 @admin.register(OrderItemModel)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display: ClassVar[tuple] = (
-        "id",
-        "order",
-        "product_id",
-        "quantity",
-        "unit_price",
-    )
-    list_filter: ClassVar[tuple] = ("order__status",)
-    search_fields: ClassVar[tuple] = ("id", "product_id")
-    ordering: ClassVar[tuple] = ("-id",)
-    readonly_fields: ClassVar[tuple] = ("id",)
+    list_display = ("id", "order", "product_id", "quantity", "unit_price")
+    list_filter = ("order__status",)
+    search_fields = ("id", "product_id")
+    ordering = ("-id",)
+    readonly_fields = ("id",)

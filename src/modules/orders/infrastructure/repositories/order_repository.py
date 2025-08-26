@@ -4,9 +4,7 @@ from uuid import UUID
 from src.modules.orders.domain.entities.order import Order
 from src.modules.orders.domain.exceptions import OrderNotFoundError
 from src.modules.orders.domain.factories.order_factory import OrderFactory
-from src.modules.orders.domain.interfaces.order_repository_interface import (
-    OrderRepositoryInterface,
-)
+from src.modules.orders.domain.interfaces.order_repository_interface import OrderRepositoryInterface
 from src.modules.orders.domain.value_objects.order_status import OrderStatus
 from src.modules.orders.infrastructure.models import OrderItemModel, OrderModel
 
@@ -17,11 +15,7 @@ class OrderRepository(OrderRepositoryInterface):
 
     @override
     def create(self, order: Order) -> Order:
-        order_model = OrderModel.objects.create(
-            id=order.id,
-            user_id=order.user_id,
-            status=order.status.value,
-        )
+        order_model = OrderModel.objects.create(id=order.id, user_id=order.user_id, status=order.status.value)
 
         for item in order.items:
             OrderItemModel.objects.create(
@@ -39,9 +33,7 @@ class OrderRepository(OrderRepositoryInterface):
         try:
             model = OrderModel.objects.prefetch_related("items").get(id=order_id)
         except OrderModel.DoesNotExist as error:
-            raise OrderNotFoundError(
-                self.ORDER_NOT_FOUND_MSG.format(order_id=order_id),
-            ) from error
+            raise OrderNotFoundError(self.ORDER_NOT_FOUND_MSG.format(order_id=order_id)) from error
 
         return OrderFactory.from_model(model)
 
@@ -55,9 +47,7 @@ class OrderRepository(OrderRepositoryInterface):
         try:
             model = OrderModel.objects.get(id=order.id)
         except OrderModel.DoesNotExist as error:
-            raise OrderNotFoundError(
-                self.ORDER_NOT_FOUND_MSG.format(order_id=order.id),
-            ) from error
+            raise OrderNotFoundError(self.ORDER_NOT_FOUND_MSG.format(order_id=order.id)) from error
         model.status = order.status.value
         model.save()
         return self.get_by_id(order.id)

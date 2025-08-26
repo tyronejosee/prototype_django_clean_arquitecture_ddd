@@ -15,10 +15,7 @@ class OrderModel(models.Model):
         verbose_name = "Order"
         verbose_name_plural = "Orders"
         ordering = ["-created_at"]
-        indexes = [
-            models.Index(fields=["user_id"]),
-            models.Index(fields=["status"]),
-        ]
+        indexes = [models.Index(fields=["user_id"]), models.Index(fields=["status"])]
 
     def __str__(self) -> str:
         return f"Order: {self.id}"
