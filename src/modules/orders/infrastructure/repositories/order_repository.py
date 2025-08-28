@@ -15,7 +15,13 @@ class OrderRepository(OrderRepositoryInterface):
 
     @override
     def create(self, order: Order) -> Order:
-        order_model = OrderModel.objects.create(id=order.id, user_id=order.user_id, status=order.status.value)
+        order_model = OrderModel.objects.create(
+            id=order.id,
+            user_id=order.user_id,
+            status=order.status.value,
+            total_price=order.total(),
+            final_price=order.final_price,
+        )
 
         for item in order.items:
             OrderItemModel.objects.create(
