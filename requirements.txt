@@ -7,7 +7,7 @@ drf-spectacular==0.28.0
 drf-spectacular-sidecar==2025.8.1
 
 # Utils
-requests==2.32.4
+httpx==0.28.1,
 python-decouple>=3.8
 bcrypt>=4.3.0
 Pillow>=9.0.0
