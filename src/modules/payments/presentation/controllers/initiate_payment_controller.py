@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import ClassVar, cast
 
 from django.db import transaction
 from rest_framework import status
@@ -7,12 +7,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
-from src.modules.orders.domain.exceptions import OrderNotFoundError
-from src.modules.payments.application.providers import get_initiate_payment_use_case
-from src.modules.payments.domain.exceptions import PaymentDomainError
-from src.modules.payments.presentation.serializers.initiate_payment_serializer import (
-    InitiatePaymentSerializer,
-)
+from src.modules.payments.domain.exceptions import GatewayTimeoutError, GatewayTokenError, PaymentDomainError
+from src.modules.payments.presentation.providers import get_initiate_payment_use_case
+from src.modules.payments.presentation.serializers.initiate_payment_serializer import InitiatePaymentInputSerializer
 
 
 class InitiatePaymentController(BaseController):
@@ -20,19 +17,21 @@ class InitiatePaymentController(BaseController):
 
     @transaction.atomic
     def post(self, request: Request) -> Response:
-        serializer = InitiatePaymentSerializer(data=request.data)
+        serializer = InitiatePaymentInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
+        validated_data = cast(dict, serializer.validated_data)
         use_case = get_initiate_payment_use_case()
+
         try:
-            data = serializer.validated_data  # type: ignore[arg-type]
             result = use_case.execute(
-                order_id=data["order_id"],  # type: ignore[arg-type]
-                payment_method=data["payment_method"],  # type: ignore[arg-type]
+                order_id=validated_data["order_id"],
+                payment_method=validated_data["payment_method"],
                 email=request.user.email,
             )
             return Response(result, status=status.HTTP_200_OK)
-        except OrderNotFoundError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
         except PaymentDomainError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except GatewayTokenError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+        except GatewayTimeoutError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_504_GATEWAY_TIMEOUT)

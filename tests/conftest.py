@@ -1,6 +1,6 @@
 from collections.abc import Generator
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from uuid import uuid4
 import os
 
@@ -25,18 +25,6 @@ class TypedAPIClient(APIClient):
 def _media_root(tmp_path: Path) -> Generator:
     settings.MEDIA_ROOT = tmp_path
     yield
-
-
-@pytest.fixture(autouse=True)
-def _mock_paypal_gateway() -> Generator:
-    with patch(
-        "src.modules.payments.infrastructure.gateways.paypal_gateway.PaypalGateway",
-    ) as mock_class:
-        mock_instance = Mock()
-        mock_instance.create_order.return_value = {"status": "MOCKED"}
-        mock_instance.capture_order.return_value = {"status": "MOCKED"}
-        mock_class.return_value = mock_instance
-        yield
 
 
 @pytest.fixture()
