@@ -238,6 +238,13 @@ PASSWORD_HASHERS: list = [
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
 ]
 
+PAYPAL_BASE_URL = "https://api-m.sandbox.paypal.com" if DEBUG else "https://api-m.paypal.com"
+PAYPAL_CLIENT_ID = config("PAYPAL_CLIENT_ID", default="secret-client-id")
+PAYPAL_CLIENT_SECRET = config("PAYPAL_CLIENT_SECRET", default="secret-client-secret")
+PAYPAL_RETURN_URL = config("PAYPAL_RETURN_URL", default="http://localhost:8000/payments/success")
+PAYPAL_CANCEL_URL = config("PAYPAL_CANCEL_URL", default="http://localhost:8000/payments/cancel")
+
+
 AUTH_USER_MODEL = "users.UserModel"
 
 SPECTACULAR_SETTINGS: dict = {
@@ -251,8 +258,12 @@ SPECTACULAR_SETTINGS: dict = {
     "REDOC_DIST": "SIDECAR",
     "REDOC_UI_SETTINGS": {"hideHostname": True, "theme": {"colors": {"primary": {"main": "#FF135B"}}}},
     "TAGS": [
+        {"name": "health", "description": "Operations related to health checks"},
         {"name": "users", "description": "Operations related to users"},
         {"name": "catalog", "description": "Operations related to products"},
         {"name": "cart", "description": "Operations related to carts"},
+        {"name": "orders", "description": "Operations related to orders"},
+        {"name": "payments", "description": "Operations related to payments"},
+        {"name": "marketing", "description": "Operations related to marketing"},
     ],
 }

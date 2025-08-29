@@ -6,8 +6,4 @@ class OrderItemSerializer(serializers.Serializer):
     product_id = serializers.UUIDField()
     quantity = serializers.IntegerField()
     unit_price = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_price = serializers.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        read_only=True,
-    )
+    total_price = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)

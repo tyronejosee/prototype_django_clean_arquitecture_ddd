@@ -2,19 +2,15 @@ from typing import override
 
 from src.modules.marketing.domain.entities.promotion import Promotion
 from src.modules.marketing.domain.factories.promotion_factory import PromotionFactory
-from src.modules.marketing.domain.interfaces.promotion_repository_interface import (
-    PromotionRepositoryInterface,
-)
+from src.modules.marketing.domain.interfaces.promotion_repository_interface import PromotionRepositoryInterface
 from src.modules.marketing.infrastructure.models.promotion_model import PromotionModel
 
 
 class PromotionRepository(PromotionRepositoryInterface):
     @override
     def get_active(self) -> list[Promotion]:
-        return [
-            PromotionFactory.from_model(promotion_model)
-            for promotion_model in PromotionModel.objects.filter(is_active=True)
-        ]
+        queryset = PromotionModel.objects.filter(is_active=True)
+        return [PromotionFactory.from_model(promotion_model) for promotion_model in queryset]
 
     @override
     def create(self, promotion: Promotion) -> Promotion:

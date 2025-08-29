@@ -1,9 +1,7 @@
 from uuid import UUID
 
 from src.modules.marketing.domain.entities.coupon import Coupon
-from src.modules.marketing.domain.interfaces.coupon_repository_interface import (
-    CouponRepositoryInterface,
-)
+from src.modules.marketing.domain.interfaces.coupon_repository_interface import CouponRepositoryInterface
 
 
 class GetActiveCouponsUseCase:

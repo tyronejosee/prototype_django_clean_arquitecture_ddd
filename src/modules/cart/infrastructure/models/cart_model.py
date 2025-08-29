@@ -1,6 +1,10 @@
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from django.db import models
+
+if TYPE_CHECKING:
+    from src.modules.cart.infrastructure.models.cart_item_model import CartItemModel
 
 
 class CartModel(models.Model):
@@ -8,6 +12,9 @@ class CartModel(models.Model):
     user_id = models.UUIDField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    if TYPE_CHECKING:
+        items: models.Manager["CartItemModel"]
 
     class Meta:
         db_table = "cart"

@@ -1,9 +1,7 @@
 from uuid import UUID
 
 from src.modules.orders.domain.entities.order import Order
-from src.modules.orders.domain.interfaces.order_repository_interface import (
-    OrderRepositoryInterface,
-)
+from src.modules.orders.domain.interfaces.order_repository_interface import OrderRepositoryInterface
 
 
 class ListOrdersUseCase:

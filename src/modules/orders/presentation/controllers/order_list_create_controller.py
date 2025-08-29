@@ -8,24 +8,15 @@ from rest_framework.response import Response
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
 from src.modules.common.presentation.pagination import paginate_queryset
-from src.modules.orders.application.providers import (
-    get_create_order_use_case,
-    get_list_orders_use_case,
-)
 from src.modules.orders.domain.exceptions import OrderDomainError
+from src.modules.orders.presentation.providers import get_create_order_use_case, get_list_orders_use_case
 from src.modules.orders.presentation.serializers.order_serializer import OrderSerializer
-from src.modules.orders.presentation.throttles import (
-    CreateOrderRateThrottle,
-    ListOrdersRateThrottle,
-)
+from src.modules.orders.presentation.throttles import CreateOrderRateThrottle, ListOrdersRateThrottle
 
 
 class OrderListCreateController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
-    throttle_map: dict = {
-        "GET": ListOrdersRateThrottle,
-        "POST": CreateOrderRateThrottle,
-    }
+    throttle_map: dict = {"GET": ListOrdersRateThrottle, "POST": CreateOrderRateThrottle}
 
     def get(self, request: Request) -> Response:
         use_case = get_list_orders_use_case()
@@ -38,8 +29,8 @@ class OrderListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = OrderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         use_case = get_create_order_use_case()
+
         try:
             order = use_case.execute(user_id=request.user.id)
             return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)

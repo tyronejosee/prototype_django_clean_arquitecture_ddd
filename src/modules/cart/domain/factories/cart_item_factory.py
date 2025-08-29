@@ -1,3 +1,4 @@
+from decimal import Decimal
 from uuid import UUID, uuid4
 
 from src.modules.cart.domain.entities.cart_item import CartItem
@@ -12,6 +13,7 @@ class CartItemFactory:
             cart_id=cart_id,
             product_id=data["product_id"],
             quantity=ItemQuantity(int(data["quantity"])),
+            unit_price=data.get("unit_price", Decimal("0.00")),
         )
 
     @staticmethod
@@ -21,4 +23,5 @@ class CartItemFactory:
             cart_id=model.cart_id,
             product_id=model.product_id,
             quantity=ItemQuantity(model.quantity),
+            unit_price=model.unit_price,
         )

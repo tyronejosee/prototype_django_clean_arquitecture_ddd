@@ -1,9 +1,7 @@
 from decimal import Decimal
 from typing import override
 
-from src.modules.marketing.domain.chains.base_discount_handler import (
-    BaseDiscountHandler,
-)
+from src.modules.marketing.domain.chains.base_discount_handler import BaseDiscountHandler
 from src.modules.marketing.domain.value_objects.discount_result import DiscountResult
 
 

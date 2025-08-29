@@ -3,12 +3,8 @@ from uuid import UUID
 
 from src.modules.payments.domain.entities.transaction import Transaction
 from src.modules.payments.domain.factories.transaction_factory import TransactionFactory
-from src.modules.payments.domain.interfaces.transaction_repository_interface import (
-    TransactionRepositoryInterface,
-)
-from src.modules.payments.infrastructure.models.transaction_model import (
-    TransactionModel,
-)
+from src.modules.payments.domain.interfaces.transaction_repository_interface import TransactionRepositoryInterface
+from src.modules.payments.infrastructure.models.transaction_model import TransactionModel
 
 
 class TransactionRepository(TransactionRepositoryInterface):

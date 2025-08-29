@@ -14,24 +14,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="TransactionModel",
             fields=[
-                (
-                    "id",
-                    models.UUIDField(
-                        default=uuid.uuid4,
-                        editable=False,
-                        primary_key=True,
-                        serialize=False,
-                    ),
-                ),
+                ("id", models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ("external_id", models.CharField(max_length=64)),
                 ("order_id", models.UUIDField()),
                 ("amount", models.DecimalField(decimal_places=2, max_digits=10)),
                 ("status", models.CharField(max_length=32)),
                 ("payment_method", models.CharField(max_length=32)),
-                (
-                    "payer_email",
-                    models.EmailField(blank=True, default="", max_length=254),
-                ),
+                ("payer_email", models.EmailField(blank=True, default="", max_length=254)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={

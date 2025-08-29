@@ -12,11 +12,13 @@ class CartItemMergerService:
 
         for item in new_items:
             quantity = int(item.quantity)
+            unit_price = item.unit_price
             product_id = item.product_id
 
             if product_id in existing_items:
                 existing_item = existing_items[product_id]
                 existing_item.quantity = quantity
+                existing_item.unit_price = unit_price
                 to_update.append(existing_item)
             else:
                 to_create.append(
@@ -25,6 +27,7 @@ class CartItemMergerService:
                         cart_id=cart_model,
                         product_id=product_id,
                         quantity=quantity,
+                        unit_price=unit_price,
                     )
                 )
 

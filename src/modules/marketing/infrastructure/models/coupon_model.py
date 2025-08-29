@@ -15,10 +15,7 @@ class CouponModel(models.Model):
 
     class Meta:
         db_table: str = "marketing_coupon"
-        indexes: list[models.Index] = [
-            models.Index(fields=["code"]),
-            models.Index(fields=["is_active"]),
-        ]
+        indexes: list[models.Index] = [models.Index(fields=["code"]), models.Index(fields=["is_active"])]
         ordering: list[str] = ["discount_percent"]
         verbose_name_plural: str = "coupons"
         verbose_name: str = "coupon"

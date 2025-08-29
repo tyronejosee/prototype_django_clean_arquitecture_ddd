@@ -7,28 +7,14 @@ from rest_framework.response import Response
 
 from src.modules.common.presentation.controllers.base_controller import BaseController
 from src.modules.common.presentation.pagination import paginate_queryset
-from src.modules.marketing.application.providers import (
-    get_create_coupon_use_case,
-    get_get_active_coupons_use_case,
-)
-from src.modules.marketing.domain.exceptions import (
-    CouponDomainError,
-    MarketingDomainError,
-)
-from src.modules.marketing.presentation.serializers.coupon_serializer import (
-    CouponSerializer,
-)
-from src.modules.marketing.presentation.throttles import (
-    CreateCouponRateThrottle,
-    ListCouponsRateThrottle,
-)
+from src.modules.marketing.domain.exceptions import CouponDomainError, MarketingDomainError
+from src.modules.marketing.presentation.providers import get_create_coupon_use_case, get_get_active_coupons_use_case
+from src.modules.marketing.presentation.serializers.coupon_serializer import CouponSerializer
+from src.modules.marketing.presentation.throttles import CreateCouponRateThrottle, ListCouponsRateThrottle
 
 
 class CouponListCreateController(BaseController):
-    throttle_map: dict = {
-        "GET": ListCouponsRateThrottle,
-        "POST": CreateCouponRateThrottle,
-    }
+    throttle_map: dict = {"GET": ListCouponsRateThrottle, "POST": CreateCouponRateThrottle}
 
     def get_permissions(self) -> list:
         if self.request.method == "POST":
@@ -45,10 +31,10 @@ class CouponListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = CouponSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
+        data = cast(dict, serializer.validated_data)
         use_case = get_create_coupon_use_case()
+
         try:
-            data = cast(dict, serializer.validated_data)
             coupon = use_case.execute(data=data)
             return Response(CouponSerializer(coupon).data, status=201)
         except (CouponDomainError, MarketingDomainError) as e:

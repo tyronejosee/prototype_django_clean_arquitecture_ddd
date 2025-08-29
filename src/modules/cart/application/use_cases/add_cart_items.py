@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.modules.cart.domain.contracts.product_catalog_interface import ProductCatalogInterface
+from src.modules.cart.domain.contracts.catalog_service_interface import CatalogServiceInterface
 from src.modules.cart.domain.entities.cart import Cart
 from src.modules.cart.domain.exceptions import CartDomainError
 from src.modules.cart.domain.factories.cart_item_factory import CartItemFactory
@@ -17,7 +17,7 @@ class AddCartItemsUseCase:
         self,
         repo: CartRepositoryInterface,
         cache: CartCacheInterface,
-        product_catalog: ProductCatalogInterface,
+        product_catalog: CatalogServiceInterface,
     ) -> None:
         self.repo = repo
         self.cache = cache
@@ -27,11 +27,19 @@ class AddCartItemsUseCase:
         items = []
 
         for item_data in items_data:
-            product_id = item_data["product_id"]
-            if not self.product_catalog.exists(product_id):
+            product_id: UUID = item_data["product_id"]
+            product = self.product_catalog.get_product(product_id)
+            if not product:
                 raise CartDomainError(self.PRODUCT_NOT_FOUND_MSG.format(product_id=product_id))
 
-            items.append(CartItemFactory.from_dict(item_data))
+            item = CartItemFactory.from_dict(
+                {
+                    "product_id": product.id,
+                    "quantity": item_data["quantity"],
+                    "unit_price": product.price,
+                }
+            )
+            items.append(item)
 
         cart = self.repo.add_items(user_id=user_id, items=items)
         self.cache.delete(CartCacheKeys.cart_user_key(user_id))
