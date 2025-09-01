@@ -44,7 +44,7 @@ class WishlistController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = WishlistCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_add_to_wishlist_use_case()
 
         try:

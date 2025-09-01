@@ -41,7 +41,7 @@ class UserListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_create_user_use_case()
 
         try:
@@ -72,7 +72,7 @@ class UserDetailController(BaseController):
     def put(self, request: Request, user_id: UUID) -> Response:
         serializer = UserCreateSerializer(data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_update_user_use_case()
 
         try:

@@ -53,7 +53,7 @@ class CategoryListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = CategoryInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_create_category_use_case()
 
         try:
@@ -71,7 +71,7 @@ class CategoryDetailController(BaseController):
     def put(self, request: Request, category_id: UUID) -> Response:
         serializer = CategoryInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_update_category_use_case()
 
         try:

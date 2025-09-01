@@ -31,7 +31,7 @@ class CouponListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = CouponSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_create_coupon_use_case()
 
         try:

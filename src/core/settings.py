@@ -11,6 +11,8 @@ SECRET_KEY: bool = config("SECRET_KEY", default="change-me")
 
 DEBUG: bool = config("DEBUG", default=True, cast=bool)
 
+IS_RUNNING_PIPELINE: bool = config("IS_RUNNING_PIPELINE", default=False, cast=bool)
+
 IS_RUNNING_PYTEST: bool = any("pytest" in arg or "test" in arg for arg in sys.argv)
 
 ALLOWED_HOSTS = config(
@@ -90,7 +92,7 @@ TEMPLATES: list = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-if IS_RUNNING_PYTEST:
+if IS_RUNNING_PYTEST or IS_RUNNING_PIPELINE:
     DATABASES: dict = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -105,11 +107,11 @@ else:
             "USER": config("DB_USER", default="grocery_user"),
             "PASSWORD": config("DB_PASSWORD", default="grocery_password"),
             "HOST": config("DB_HOST", default="db"),
-            "PORT": config("DB_PORT", default="5432"),
+            "PORT": config("DB_PORT", default=5432),
         },
     }
 
-if IS_RUNNING_PYTEST:
+if IS_RUNNING_PYTEST or IS_RUNNING_PIPELINE:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",

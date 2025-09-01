@@ -19,7 +19,7 @@ class InitiatePaymentController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = InitiatePaymentInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_initiate_payment_use_case()
 
         try:

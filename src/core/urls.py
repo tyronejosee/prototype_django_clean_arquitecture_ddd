@@ -1,11 +1,12 @@
 """URLs config for the project."""
 
-from core.health_chech import health_check
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
+from src.core.health_chech import health_check
 
 urlpatterns: list = [
     path("", health_check),

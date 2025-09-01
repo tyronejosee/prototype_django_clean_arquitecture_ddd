@@ -50,7 +50,7 @@ class BrandListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = BrandInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_create_brand_use_case()
 
         try:
@@ -68,7 +68,7 @@ class BrandDetailController(BaseController):
     def put(self, request: Request, brand_id: UUID) -> Response:
         serializer = BrandInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_update_brand_use_case()
 
         try:

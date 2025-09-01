@@ -45,7 +45,7 @@ class RegisterController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_create_user_use_case()
 
         try:
@@ -101,7 +101,7 @@ class ChangePasswordController(BaseController):
     def patch(self, request: Request) -> Response:
         serializer = ChangePasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_change_password_use_case()
 
         try:
@@ -126,7 +126,7 @@ class LogoutController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = LogoutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = cast(dict, serializer.validated_data)
+        data = cast("dict", serializer.validated_data)
         use_case = get_logout_user_use_case()
 
         try:

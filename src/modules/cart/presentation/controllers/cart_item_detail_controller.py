@@ -24,7 +24,7 @@ class CartItemDetailController(BaseController):
     def patch(self, request: Request, item_id: UUID) -> Response:
         serializer = QuantityInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         use_case = get_patch_cart_item_use_case()
 
         try:
