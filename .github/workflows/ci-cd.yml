@@ -24,6 +24,7 @@ jobs:
       PROJECT_VERSION: ${{ secrets.PROJECT_VERSION }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DEBUG: ${{ secrets.DEBUG }}
+      IS_RUNNING_PIPELINE: ${{ secrets.IS_RUNNING_PIPELINE }}
       ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_USER: ${{ secrets.DB_USER }}
