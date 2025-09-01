@@ -22,7 +22,7 @@ class CartItemController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = CartInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         items_data = validated_data.get("items", [])
         use_case = get_add_cart_items_use_case()
 

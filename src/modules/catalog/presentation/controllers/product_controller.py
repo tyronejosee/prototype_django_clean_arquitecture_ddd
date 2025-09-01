@@ -53,7 +53,7 @@ class ProductListCreateController(BaseController):
     def post(self, request: Request) -> Response:
         serializer = ProductInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         image_file = validated_data.pop("image")
         use_case = get_create_product_use_case()
 
@@ -89,7 +89,7 @@ class ProductDetailController(BaseController):
     def put(self, request: Request, product_id: UUID) -> Response:
         serializer = ProductInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        validated_data = cast(dict, serializer.validated_data)
+        validated_data = cast("dict", serializer.validated_data)
         image_file = validated_data.pop("image", None)
         use_case = get_update_product_use_case()
 

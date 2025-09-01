@@ -37,7 +37,7 @@ class PromotionListCreateController(BaseController):
         use_case = get_create_promotion_use_case()
 
         try:
-            data = cast(dict, serializer.validated_data)
+            data = cast("dict", serializer.validated_data)
             promotion = use_case.execute(data=data)
             return Response(PromotionSerializer(promotion).data, status=status.HTTP_201_CREATED)
         except (PromotionDomainError, MarketingDomainError) as e:
