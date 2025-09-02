@@ -18,7 +18,7 @@ from src.modules.users.domain.exceptions import (
     WishlistItemAlreadyExistsError,
     WishlistItemNotFoundError,
 )
-from src.modules.users.presentation.schemas.wishlist_schemas import wishlist_detail_schema, wishlist_schema
+from src.modules.users.presentation.schemas.wishlist_schema import WISHLIST_DETAIL_SCHEMA, WISHLIST_SCHEMA
 from src.modules.users.presentation.serializers.wishlist_serializer import (
     WishlistCreateSerializer,
     WishlistListSerializer,
@@ -30,7 +30,7 @@ from src.modules.users.presentation.throttles import (
 )
 
 
-@extend_schema_view(**wishlist_schema)
+@extend_schema_view(**WISHLIST_SCHEMA)
 class WishlistController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
     throttle_map: dict = {"GET": ListWishlistRateThrottle, "POST": AddWishlistItemRateThrottle}
@@ -54,7 +54,7 @@ class WishlistController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema_view(**wishlist_detail_schema)
+@extend_schema_view(**WISHLIST_DETAIL_SCHEMA)
 class WishlistDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
     throttle_map: dict = {"DELETE": DeleteWishlistItemRateThrottle}

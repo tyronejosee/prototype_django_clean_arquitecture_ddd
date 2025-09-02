@@ -1,8 +1,10 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern
 
-from src.modules.payments.presentation.controllers.capture_payment_controller import CapturePaymentController
-from src.modules.payments.presentation.controllers.initiate_payment_controller import InitiatePaymentController
+from src.modules.payments.presentation.controllers.payment_controller import (
+    CapturePaymentController,
+    InitiatePaymentController,
+)
 
 app_name = "payments"
 

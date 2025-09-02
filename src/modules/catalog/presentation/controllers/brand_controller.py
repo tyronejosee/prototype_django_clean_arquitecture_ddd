@@ -15,10 +15,10 @@ from src.modules.catalog.presentation.providers import (
     get_list_products_by_brand_use_case,
     get_update_brand_use_case,
 )
-from src.modules.catalog.presentation.schemas.brand_schemas import (
-    brand_detail_schema,
-    brand_list_create_schema,
-    brand_product_list_schema,
+from src.modules.catalog.presentation.schemas.brand_schema import (
+    BRAND_DETAIL_SCHEMA,
+    BRAND_LIST_CREATE_SCHEMA,
+    BRAND_PRODUCT_LIST_SCHEMA,
 )
 from src.modules.catalog.presentation.serializers.brand_serializer import BrandInputSerializer, BrandOutputSerializer
 from src.modules.catalog.presentation.serializers.product_serializer import ProductOutputSerializer
@@ -33,7 +33,7 @@ from src.modules.common.presentation.controllers.base_controller import BaseCont
 from src.modules.common.presentation.pagination import paginate_queryset
 
 
-@extend_schema_view(**brand_list_create_schema)
+@extend_schema_view(**BRAND_LIST_CREATE_SCHEMA)
 class BrandListCreateController(BaseController):
     throttle_map: dict = {"GET": ListBrandsRateThrottle, "POST": CreateBrandRateThrottle}
 
@@ -60,7 +60,7 @@ class BrandListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema_view(**brand_detail_schema)
+@extend_schema_view(**BRAND_DETAIL_SCHEMA)
 class BrandDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {"PUT": UpdateBrandRateThrottle, "DELETE": DeleteBrandRateThrottle}
@@ -83,7 +83,7 @@ class BrandDetailController(BaseController):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@extend_schema_view(**brand_product_list_schema)
+@extend_schema_view(**BRAND_PRODUCT_LIST_SCHEMA)
 class BrandProductListController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     throttle_map: dict = {"GET": ListProductsRateThrottle}
