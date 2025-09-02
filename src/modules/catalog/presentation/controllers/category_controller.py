@@ -15,10 +15,10 @@ from src.modules.catalog.presentation.providers import (
     get_list_products_by_category_use_case,
     get_update_category_use_case,
 )
-from src.modules.catalog.presentation.schemas.category_schemas import (
-    category_detail_schema,
-    category_list_create_schema,
-    category_product_list_schema,
+from src.modules.catalog.presentation.schemas.category_schema import (
+    CATEGORY_DETAIL_SCHEMA,
+    CATEGORY_LIST_CREATE_SCHEMA,
+    CATEGORY_PRODUCT_LIST_SCHEMA,
 )
 from src.modules.catalog.presentation.serializers.category_serializer import (
     CategoryInputSerializer,
@@ -36,7 +36,7 @@ from src.modules.common.presentation.controllers.base_controller import BaseCont
 from src.modules.common.presentation.pagination import paginate_queryset
 
 
-@extend_schema_view(**category_list_create_schema)
+@extend_schema_view(**CATEGORY_LIST_CREATE_SCHEMA)
 class CategoryListCreateController(BaseController):
     throttle_map: dict = {"GET": ListCategoriesRateThrottle, "POST": CreateCategoryRateThrottle}
 
@@ -63,7 +63,7 @@ class CategoryListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema_view(**category_detail_schema)
+@extend_schema_view(**CATEGORY_DETAIL_SCHEMA)
 class CategoryDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {"PUT": UpdateCategoryRateThrottle, "DELETE": DeleteCategoryRateThrottle}
@@ -86,7 +86,7 @@ class CategoryDetailController(BaseController):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@extend_schema_view(**category_product_list_schema)
+@extend_schema_view(**CATEGORY_PRODUCT_LIST_SCHEMA)
 class CategoryProductListController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     throttle_map: dict = {"GET": ListProductsRateThrottle}

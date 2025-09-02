@@ -6,35 +6,42 @@ from src.modules.users.presentation.serializers.wishlist_serializer import (
     WishlistListSerializer,
 )
 
-wishlist_schema: dict = {
+WISHLIST_SCHEMA: dict = {
     "get": extend_schema(
+        operation_id="list_wishlist",
         summary="List wishlist items for authenticated user",
         responses={
             200: OpenApiResponse(WishlistListSerializer(many=True), description=API_MESSAGES["OK"]),
+            401: OpenApiResponse(description=API_MESSAGES["UNAUTHORIZED"]),
+            429: OpenApiResponse(description=API_MESSAGES["TOO_MANY_REQUESTS"]),
         },
         tags=["users"],
     ),
     "post": extend_schema(
+        operation_id="add_to_wishlist",
         summary="Add a product to the authenticated user's wishlist",
         request=WishlistCreateSerializer,
         responses={
             201: OpenApiResponse(WishlistListSerializer, description=API_MESSAGES["CREATED"]),
             400: OpenApiResponse(description=API_MESSAGES["BAD_REQUEST"]),
-            409: OpenApiResponse(description=API_MESSAGES["CONFLICT"]),
+            401: OpenApiResponse(description=API_MESSAGES["UNAUTHORIZED"]),
+            403: OpenApiResponse(description=API_MESSAGES["FORBIDDEN"]),
+            429: OpenApiResponse(description=API_MESSAGES["TOO_MANY_REQUESTS"]),
         },
-        auth=["jwt"],
         tags=["users"],
     ),
 }
 
-wishlist_detail_schema: dict = {
+WISHLIST_DETAIL_SCHEMA: dict = {
     "delete": extend_schema(
+        operation_id="remove_from_wishlist",
         summary="Remove a product from the authenticated user's wishlist",
         responses={
             204: OpenApiResponse(description=API_MESSAGES["OK"]),
+            401: OpenApiResponse(description=API_MESSAGES["UNAUTHORIZED"]),
             404: OpenApiResponse(description=API_MESSAGES["NOT_FOUND"]),
+            429: OpenApiResponse(description=API_MESSAGES["TOO_MANY_REQUESTS"]),
         },
-        auth=["jwt"],
         tags=["users"],
     ),
 }

@@ -16,10 +16,10 @@ from src.modules.catalog.presentation.providers import (
     get_list_products_use_case,
     get_update_product_use_case,
 )
-from src.modules.catalog.presentation.schemas.product_schemas import (
-    featured_products_schema,
-    product_detail_schema,
-    product_list_create_schema,
+from src.modules.catalog.presentation.schemas.product_schema import (
+    FEATURED_PRODUCTS_SCHEMA,
+    PRODUCT_DETAIL_SCHEMA,
+    PRODUCT_LIST_CREATE_SCHEMA,
 )
 from src.modules.catalog.presentation.serializers.product_serializer import (
     ProductInputSerializer,
@@ -36,7 +36,7 @@ from src.modules.common.presentation.controllers.base_controller import BaseCont
 from src.modules.common.presentation.pagination import paginate_queryset
 
 
-@extend_schema_view(**product_list_create_schema)
+@extend_schema_view(**PRODUCT_LIST_CREATE_SCHEMA)
 class ProductListCreateController(BaseController):
     throttle_map: dict = {"GET": ListProductsRateThrottle, "POST": CreateProductRateThrottle}
 
@@ -64,7 +64,7 @@ class ProductListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema_view(**product_detail_schema)
+@extend_schema_view(**PRODUCT_DETAIL_SCHEMA)
 class ProductDetailController(BaseController):
     throttle_map: dict = {
         "GET": GetProductRateThrottle,
@@ -107,7 +107,7 @@ class ProductDetailController(BaseController):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@extend_schema_view(**featured_products_schema)
+@extend_schema_view(**FEATURED_PRODUCTS_SCHEMA)
 class FeaturedProductsController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     throttle_map: dict = {"GET": ListProductsRateThrottle}

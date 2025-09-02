@@ -14,13 +14,13 @@ from src.modules.users.application.providers import (
     get_logout_user_use_case,
 )
 from src.modules.users.domain.exceptions import LogoutError, UserAlreadyExistsError, UserDomainError, UserNotFoundError
-from src.modules.users.presentation.schemas.auth_schemas import (
-    change_password_schema,
-    login_schema,
-    logout_schema,
-    refresh_schema,
-    register_schema,
-    token_verify_schema,
+from src.modules.users.presentation.schemas.auth_schema import (
+    CHANGE_PASSWORD_SCHEMA,
+    LOGIN_SCHEMA,
+    LOGOUT_SCHEMA,
+    REFRESH_SCHEMA,
+    REGISTER_SCHEMA,
+    TOKEN_VERIFY_SCHEMA,
 )
 from src.modules.users.presentation.serializers.auth_serializer import (
     ChangePasswordSerializer,
@@ -37,7 +37,7 @@ from src.modules.users.presentation.throttles import (
 )
 
 
-@extend_schema_view(**register_schema)
+@extend_schema_view(**REGISTER_SCHEMA)
 class RegisterController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     throttle_map: dict = {"POST": RegisterRateThrottle}
@@ -57,7 +57,7 @@ class RegisterController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
 
-@extend_schema_view(**login_schema)
+@extend_schema_view(**LOGIN_SCHEMA)
 class LoginController(TokenObtainPairView, BaseController):
     """
     Obtains access and refresh JWT tokens.
@@ -69,7 +69,7 @@ class LoginController(TokenObtainPairView, BaseController):
     throttle_map: dict = {"POST": LoginRateThrottle}
 
 
-@extend_schema_view(**refresh_schema)
+@extend_schema_view(**REFRESH_SCHEMA)
 class RefreshController(TokenRefreshView, BaseController):
     """
     Refreshes an access token using a valid refresh token.
@@ -81,7 +81,7 @@ class RefreshController(TokenRefreshView, BaseController):
     throttle_map: dict = {"POST": RefreshRateThrottle}
 
 
-@extend_schema_view(**token_verify_schema)
+@extend_schema_view(**TOKEN_VERIFY_SCHEMA)
 class TokenVerifyController(TokenVerifyView, BaseController):
     """
     Verifies the validity of a given JWT token.
@@ -93,7 +93,7 @@ class TokenVerifyController(TokenVerifyView, BaseController):
     throttle_map: dict = {"POST": TokenVerifyRateThrottle}
 
 
-@extend_schema_view(**change_password_schema)
+@extend_schema_view(**CHANGE_PASSWORD_SCHEMA)
 class ChangePasswordController(BaseController):
     permission_classes: ClassVar[list] = [IsAuthenticated]
     throttle_map: dict = {"PATCH": ChangePasswordRateThrottle}
@@ -117,7 +117,7 @@ class ChangePasswordController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
-@extend_schema_view(**logout_schema)
+@extend_schema_view(**LOGOUT_SCHEMA)
 class LogoutController(BaseController):
     permission_classes: ClassVar[list] = [AllowAny]
     serializer_class = None

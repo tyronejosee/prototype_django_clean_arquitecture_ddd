@@ -16,7 +16,7 @@ from src.modules.users.application.providers import (
     get_user_use_case,
 )
 from src.modules.users.domain.exceptions import UserAlreadyExistsError, UserDomainError, UserNotFoundError
-from src.modules.users.presentation.schemas.user_schemas import user_detail_schema, user_list_create_schema
+from src.modules.users.presentation.schemas.user_schema import USER_DETAIL_SCHEMA, USER_LIST_CREATE_SCHEMA
 from src.modules.users.presentation.serializers.user_serializer import UserCreateSerializer, UserSerializer
 from src.modules.users.presentation.throttles import (
     CreateUserRateThrottle,
@@ -27,7 +27,7 @@ from src.modules.users.presentation.throttles import (
 )
 
 
-@extend_schema_view(**user_list_create_schema)
+@extend_schema_view(**USER_LIST_CREATE_SCHEMA)
 class UserListCreateController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {"GET": ListUsersRateThrottle, "POST": CreateUserRateThrottle}
@@ -53,7 +53,7 @@ class UserListCreateController(BaseController):
             return Response({"detail": str(e)}, status=status.HTTP_409_CONFLICT)
 
 
-@extend_schema_view(**user_detail_schema)
+@extend_schema_view(**USER_DETAIL_SCHEMA)
 class UserDetailController(BaseController):
     permission_classes: ClassVar[list] = [IsAdminUser]
     throttle_map: dict = {
