@@ -1,8 +1,11 @@
 from django.urls import URLPattern, URLResolver, get_resolver
-from rest_framework import status
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
+from rest_framework import serializers, status
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+from src.modules.common.presentation.api_messages import API_MESSAGES
 
 
 def _collect_urls(resolver: URLResolver, prefix: str = "") -> list[str]:
@@ -20,6 +23,22 @@ def _collect_urls(resolver: URLResolver, prefix: str = "") -> list[str]:
     return endpoints
 
 
+@extend_schema(
+    summary="Health check",
+    responses={
+        200: OpenApiResponse(
+            inline_serializer(
+                name="HealthCheckResponse",
+                fields={
+                    "status": serializers.CharField(),
+                    "endpoints": serializers.ListField(child=serializers.CharField()),
+                },
+            ),
+            description=API_MESSAGES["OK"],
+        ),
+    },
+    tags=["health"],
+)
 @api_view(["GET"])
 def health_check(request: Request) -> Response:
     resolver = get_resolver()
