@@ -1,17 +1,23 @@
 from rest_framework import serializers
 
-from src.modules.orders.presentation.serializers.order_item_serializer import OrderItemSerializer
+
+class OrderItemOutputSerializer(serializers.Serializer):
+    id = serializers.UUIDField(read_only=True)
+    product_id = serializers.UUIDField()
+    quantity = serializers.IntegerField()
+    unit_price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    total_price = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
 
 
-class OrderSerializer(serializers.Serializer):
+class OrderOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField(read_only=True)
     user_id = serializers.UUIDField(read_only=True)
     status = serializers.SerializerMethodField()
-    items = OrderItemSerializer(many=True, read_only=True)
+    items = OrderItemOutputSerializer(many=True, read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
-    total = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
-    final_price = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
+    total = serializers.DecimalField(read_only=True, max_digits=12, decimal_places=2)
+    final_price = serializers.DecimalField(read_only=True, max_digits=12, decimal_places=2)
     applied_discounts = serializers.ListField(read_only=True)
     coupon = serializers.DictField(read_only=True)
     promotions = serializers.ListField(read_only=True)

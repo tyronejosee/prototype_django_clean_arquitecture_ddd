@@ -37,9 +37,7 @@ def test_get_order_detail_successfully(user_client: APIClient) -> None:
     order_id = uuid4()
     order = build_order(user_client.user.id)  # type: ignore
 
-    with patch(
-        "src.modules.orders.presentation.controllers." "order_detail_controller.get_get_order_use_case"
-    ) as mock_provider:
+    with patch("src.modules.orders.presentation.controllers.order_controller.get_get_order_use_case") as mock_provider:
         mock_use_case = Mock()
         mock_use_case.execute.return_value = order
         mock_provider.return_value = mock_use_case
@@ -59,9 +57,7 @@ def test_get_order_detail_not_found_returns_404(user_client: APIClient) -> None:
     # Given: an authenticated user and a non-existent order
     order_id = uuid4()
 
-    with patch(
-        "src.modules.orders.presentation.controllers." "order_detail_controller.get_get_order_use_case"
-    ) as mock_provider:
+    with patch("src.modules.orders.presentation.controllers.order_controller.get_get_order_use_case") as mock_provider:
         mock_use_case = Mock()
         mock_use_case.execute.side_effect = OrderNotFoundError("Order not found")
         mock_provider.return_value = mock_use_case
@@ -82,7 +78,7 @@ def test_delete_order_successfully(user_client: APIClient) -> None:
     order = build_order(user_client.user.id)  # type: ignore
 
     with patch(
-        "src.modules.orders.presentation.controllers." "order_detail_controller.get_cancel_order_use_case"
+        "src.modules.orders.presentation.controllers.order_controller.get_cancel_order_use_case"
     ) as mock_provider:
         mock_use_case = Mock()
         mock_use_case.execute.return_value = order
@@ -103,7 +99,7 @@ def test_delete_order_with_domain_error_returns_400(user_client: APIClient) -> N
     order_id = uuid4()
 
     with patch(
-        "src.modules.orders.presentation.controllers." "order_detail_controller.get_cancel_order_use_case"
+        "src.modules.orders.presentation.controllers.order_controller.get_cancel_order_use_case"
     ) as mock_provider:
         mock_use_case = Mock()
         mock_use_case.execute.side_effect = OrderDomainError("Cannot cancel shipped order")

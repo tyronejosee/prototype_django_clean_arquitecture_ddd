@@ -1,8 +1,10 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern
 
-from src.modules.orders.presentation.controllers.order_detail_controller import OrderDetailController
-from src.modules.orders.presentation.controllers.order_list_create_controller import OrderListCreateController
+from src.modules.orders.presentation.controllers.order_controller import (
+    OrderDetailController,
+    OrderListCreateController,
+)
 
 app_name = "orders"
 
