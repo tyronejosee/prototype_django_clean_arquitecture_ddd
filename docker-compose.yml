@@ -1,16 +1,18 @@
 services:
   db:
     image: postgres:15
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: grocery_db
-      POSTGRES_USER: grocery_user
-      POSTGRES_PASSWORD: grocery_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5500:5432"
+      - "5500:${POSTGRES_PORT}"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U grocery_user -d grocery_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -18,8 +20,10 @@ services:
   redis:
     image: redis:8.2.0
     container_name: grocery_redis
+    env_file:
+      - .env
     ports:
-      - 6400:6379
+      - "6400:${REDIS_PORT}"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -28,22 +32,20 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    container_name: grocery_web
+    command: python manage.py runserver 0.0.0.0:${DJANGO_PORT}
+    env_file:
+      - .env
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8000:${DJANGO_PORT}"
     depends_on:
       - db
       - redis
-    environment:
-      - DEBUG=1
-      - DB_HOST=db
-      - DB_NAME=grocery_db
-      - DB_USER=grocery_user
-      - DB_PASSWORD=grocery_password
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:${DJANGO_PORT}/health-check"]
       interval: 15s
       timeout: 5s
       retries: 5
