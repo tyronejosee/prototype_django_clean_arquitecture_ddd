@@ -5,7 +5,7 @@
   :root {
     --primary: #171717;
     --secondary: #404040;
-    --accent: #00ff88;
+    --accent: #00a521;
     --primary-fg: #fafafa;
     --muted: #f5f5f5;
     --muted-foreground: #737373;
@@ -18,28 +18,28 @@
     --body-loud-color: #0a0a0a;
 
     /* Header colors */
-    --header-color: #fafafa;
+    --header-color: #ff0000;
     --header-branding-color: var(--primary);
-    --header-bg: #171717;
-    --header-link-color: #e5e5e5;
+    --header-bg: #ffffff;
+    --header-link-color: #262626;
 
     /* Breadcrumbs */
     --breadcrumbs-fg: #d4d4d4;
     --breadcrumbs-link-fg: #fafafa;
-    --breadcrumbs-bg: #262626;
+    --breadcrumbs-bg: #ffffff;
 
     /* Links */
-    --link-fg: #00ff88;
+    --link-fg: #00a521;
     --link-hover-color: #00cc6a;
     --link-selected-fg: #00b359;
 
     /* Borders */
-    --hairline-color: #e5e5e5;
+    --hairline-color: #d4d4d4;
     --border-color: #d4d4d4;
 
     /* States */
     --error-fg: #ff0066;
-    --success-fg: #00ff88;
+    --success-fg: #00a521;
     --warning-fg: #ffaa00;
     --info-fg: #00aaff;
 
@@ -51,17 +51,17 @@
     --message-error-bg: #ffe6f0;
 
     /* Surfaces */
-    --darkened-bg: #fafafa;
+    --darkened-bg: #ffffff;
     --selected-bg: #e5e5e5;
     --selected-row: #e6ffe6;
     --card-bg: #ffffff;
 
     /* Buttons */
     --button-fg: #0a0a0a;
-    --button-bg: #00ff88;
-    --button-hover-bg: #00ff88bb;
-    --default-button-bg: #00ff88;
-    --default-button-hover-bg: #00ff88bb;
+    --button-bg: #00a521;
+    --button-hover-bg: #00a521bb;
+    --default-button-bg: #00a521;
+    --default-button-hover-bg: #00a521bb;
     --close-button-bg: #737373;
     --close-button-hover-bg: #525252;
     --delete-button-bg: #ff0066;
@@ -215,7 +215,7 @@
   textarea,
   select,
   .vTextField {
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-radius: 6px;
     padding: 8px 12px;
     font-size: 0.875rem;
@@ -276,11 +276,11 @@
 
   /* ENHANCED CARDS/MODULES */
   .module {
-    border: 1px solid var(--hairline-color);
+    border: 2px solid var(--hairline-color);
     margin-bottom: 1rem;
     background: var(--card-bg);
     border-radius: 1rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     overflow: hidden;
   }
 
@@ -293,7 +293,7 @@
     font-size: 1rem;
     background: var(--darkened-bg);
     color: var(--body-loud-color);
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
   }
 
   /* ENHANCED TABLES */
@@ -310,7 +310,7 @@
   td,
   th {
     padding: 12px 16px;
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
@@ -329,14 +329,17 @@
 
   /* ENHANCED HEADER */
   #header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     background: linear-gradient(
       135deg,
       var(--breadcrumbs-bg) 0%,
       var(--breadcrumbs-bg) 100%
     );
-    padding: 1rem 2.5rem;
+    padding: 0.5rem 1rem;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
   }
 
   #site-name {
@@ -350,7 +353,7 @@
   div.breadcrumbs {
     background: var(--breadcrumbs-bg);
     padding: 12px 2.5rem;
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
     text-align: center;
     font-size: 0.875rem;
     margin-bottom: 1rem;
@@ -371,7 +374,7 @@
   /* ENHANCED MESSAGES */
   ul.messagelist li {
     border-radius: 1rem;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     font-weight: 500;
     margin-bottom: 1rem;
     margin-left: 2rem;
@@ -407,7 +410,7 @@
   #content-related {
     background: var(--darkened-bg);
     border-radius: 8px;
-    border: 1px solid var(--hairline-color);
+    border: 2px solid var(--hairline-color);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   }
 
@@ -584,7 +587,7 @@
     left: -276px;
     margin-left: -276px;
     border-top: 1px solid transparent;
-    border-right: 1px solid var(--hairline-color);
+    border-right: 0px solid var(--hairline-color);
     background-color: var(--body-bg);
     overflow: auto;
   }
@@ -679,7 +682,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 1rem 1.5rem 1rem 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     background-color: var(--darkened-bg);
     color: var(--body-fg);
     border-radius: 1rem;
@@ -753,12 +756,13 @@
     vertical-align: top;
     height: 1.5rem;
     color: var(--body-fg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 0.5rem !important;
     font-size: 0.875rem;
     padding: 0 0 0 4px;
     margin: 0;
     margin-left: 10px;
+    box-shadow: none;
   }
 
   #changelist .actions select:focus {
@@ -773,7 +777,7 @@
 
   #changelist .actions .button {
     font-size: 0.8125rem;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-radius: 4px;
     background: var(--body-bg);
     box-shadow: 0 -15px 20px -10px rgba(0, 0, 0, 0.15) inset;
@@ -795,7 +799,7 @@
     padding: 12px 14px 12px;
     margin: 0 0 20px;
     background: var(--darkened-bg);
-    border: 1px solid var(--hairline-color);
+    border: 2px solid var(--hairline-color) !important;
     border-radius: 1rem !important;
     overflow: hidden;
     display: flex;
@@ -869,7 +873,7 @@
   th {
     font-size: 0.8125rem;
     line-height: 1rem;
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 0px solid var(--hairline-color) !important;
     vertical-align: top;
     padding: 8px;
   }
@@ -887,7 +891,7 @@
     background: var(--body-bg);
     border: none;
     border-top: 0px solid var(--hairline-color);
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
   }
 
   tfoot td {
@@ -934,12 +938,14 @@
 
   #toolbar #searchbar {
     height: 1.1875rem;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color) !important;
+    border-radius: 0.5rem;
     padding: 2px 5px;
     margin: 0;
     vertical-align: top;
     font-size: 0.8125rem;
     max-width: 100%;
+    box-shadow: none !important;
   }
 
   #toolbar #searchbar:focus {
@@ -947,7 +953,7 @@
   }
 
   #toolbar form input[type="submit"] {
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     font-size: 0.8125rem;
     padding: 4px 8px;
     margin: 0;
@@ -1026,7 +1032,7 @@
   }
 
   #changelist .toplinks {
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
   }
 
   #changelist .changelist-footer {
@@ -1035,7 +1041,7 @@
     justify-content: space-between;
     padding: 10px;
     border-top: 1px solid var(--hairline-color);
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
   }
 
   #changelist .changelist-footer .paginator {
@@ -1047,7 +1053,7 @@
 
   #changelist .paginator {
     color: var(--body-quiet-color);
-    border-bottom: 1px solid var(--hairline-color);
+    border-bottom: 2px solid var(--hairline-color);
     background: var(--body-bg);
   }
 
@@ -1077,6 +1083,40 @@
     vertical-align: top;
   }
 
+  /* FORM ROWS */
+  .form-row {
+    overflow: hidden;
+    padding: 10px;
+    font-size: 0.8125rem;
+    border-bottom: 0px solid var(--hairline-color) !important;
+  }
+
+  .form-row img,
+  .form-row input {
+    vertical-align: middle;
+  }
+
+  .form-row label input[type="checkbox"] {
+    margin-top: 0;
+    vertical-align: 0;
+  }
+
+  form .form-row p {
+    padding-left: 0;
+  }
+
+  .flex-container {
+    display: flex;
+  }
+
+  .form-multiline {
+    flex-wrap: wrap;
+  }
+
+  .form-multiline > div {
+    padding-bottom: 10px;
+  }
+
   /*
 Minifiers remove the default (text) "type" attribute from "input" HTML tags.
 Add input:not([type]) to make the CSS stylesheet work the same.
@@ -1091,7 +1131,7 @@ Add input:not([type]) to make the CSS stylesheet work the same.
   textarea,
   select,
   .vTextField {
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 5px 6px;
     margin-top: 0;

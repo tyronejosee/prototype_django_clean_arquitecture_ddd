@@ -33,6 +33,7 @@ dependencies = [
   "pytest-xdist==3.6.1",
   "factory-boy==3.3.0",
   "ruff>=0.12.11",
+  "pre-commit>=4.3.0",
 ]
 
 [project.optional-dependencies]
