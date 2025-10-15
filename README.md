@@ -75,22 +75,10 @@ cd project_marketly
 
 >💡 We recommend using [uv](https://docs.astral.sh/uv/getting-started/installation/) for this project. It is a fast, modern Python package manager that handles dependency resolution, virtual environments, and installs with superior performance and safety.
 
-Create a virtual environment.
-
-```bash
-uv venv
-```
-
 Install the project dependencies.
 
 ```bash
-uv pip install .
-```
-
-Activate the virtual environment.
-
-```bash
-.venv\Scripts\activate
+uv sync
 ```
 
 Create a copy of the `.env.example` file and rename it to `.env`.

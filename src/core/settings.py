@@ -77,7 +77,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES: list = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "resources" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -103,11 +103,11 @@ else:
     DATABASES: dict = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("DB_NAME", default="grocery_db"),
-            "USER": config("DB_USER", default="grocery_user"),
-            "PASSWORD": config("DB_PASSWORD", default="grocery_password"),
-            "HOST": config("DB_HOST", default="db"),
-            "PORT": config("DB_PORT", default=5432),
+            "NAME": config("POSTGRES_DB", default="grocery_db"),
+            "USER": config("POSTGRES_USER", default="grocery_user"),
+            "PASSWORD": config("POSTGRES_PASSWORD", default="grocery_password"),
+            "HOST": config("POSTGRES_HOST", default="db"),
+            "PORT": config("POSTGRES_PORT", default=5432),
         },
     }
 
