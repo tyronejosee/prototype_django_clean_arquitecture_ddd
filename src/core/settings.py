@@ -7,7 +7,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(BASE_DIR / "src"))
 
-SECRET_KEY: bool = config("SECRET_KEY", default="change-me")
+SECRET_KEY: bool = config("DJANGO_SECRET_KEY", default="change-me")
 
 DEBUG: bool = config("DEBUG", default=True, cast=bool)
 
