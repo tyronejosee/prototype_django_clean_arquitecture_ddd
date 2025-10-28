@@ -34,6 +34,8 @@ dependencies = [
   "factory-boy==3.3.0",
   "ruff>=0.12.11",
   "pre-commit>=4.3.0",
+  "boto3==1.40.55",
+  "django-storages==1.14.6",
 ]
 
 [project.optional-dependencies]

@@ -2,7 +2,14 @@
 TODO.md
 .vscode
 repomix-output.md
+docs/assets
 
+# Terraform
+terraform.tfvars
+*.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
 
 # Django
 *.log

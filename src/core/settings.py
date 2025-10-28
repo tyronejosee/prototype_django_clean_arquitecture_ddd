@@ -7,7 +7,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(BASE_DIR / "src"))
 
-SECRET_KEY: bool = config("SECRET_KEY", default="change-me")
+SECRET_KEY: bool = config("DJANGO_SECRET_KEY", default="change-me")
 
 DEBUG: bool = config("DEBUG", default=True, cast=bool)
 
@@ -37,6 +37,7 @@ THIRD_PARTY_MODULES: list = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "storages",
 ]
 
 LOCAL_MODULES: list = [
@@ -269,3 +270,38 @@ SPECTACULAR_SETTINGS: dict = {
         {"name": "marketing", "description": "Operations related to marketing"},
     ],
 }
+
+if not DEBUG:
+    DATABASES["default"]["OPTIONS"] = {"sslmode": "require"}
+
+    # AWS
+    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", "us-east-1")
+    AWS_S3_CUSTOM_DOMAIN = config("AWS_S3_CUSTOM_DOMAIN", f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com")
+    AWS_QUERYSTRING_AUTH = False
+    AWS_DEFAULT_ACL = None
+    AWS_S3_OBJECT_PARAMETERS: dict = {"CacheControl": "max-age=31536000"}  # 1 year
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+    AWS_S3_FILE_OVERWRITE = True
+
+    STORAGES: dict = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "region_name": AWS_S3_REGION_NAME,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "location": "static",
+            },
+        },
+    }
+
+    STATIC_URL: str = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL: str = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
